@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.auth.forms import LoginForm, RegistrationForm
+from app.ticket.forms import TicketForm
 from app.models import User
 
 @app.route('/')
@@ -10,6 +11,17 @@ from app.models import User
 @login_required
 def index():
     return render_template('index.html', title='Home')
+
+@app.route('/ticket', methods=['GET', 'POST'])
+@login_required
+def ticket():
+    form = TicketForm()
+    if form.validate_on_submit():
+        #create db for ticket submission
+        #commit to db
+        flash('Your ticket has been submitted.')
+        return redirect(url_for('ticket'))
+    return render_template('ticket.html', title = 'Ticket', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
