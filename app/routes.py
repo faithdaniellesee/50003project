@@ -1,16 +1,30 @@
-from app import app
-import requests
-from flask import Flask, render_template, request, redirect, url_for, flash
-from app.forms import LanguageForm, LoginForm
-from app.models import User
+from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
+from app import app, db
+from app.auth.forms import LoginForm, RegistrationForm
+from app.forms import LanguageForm, LoginForm
+from app.ticket.forms import TicketForm
+from app.models import User
+import requests
+
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    return "Hello friends! :)"
+    return render_template('index.html', title='Home')
+
+@app.route('/ticket', methods=['GET', 'POST'])
+@login_required
+def ticket():
+    form = TicketForm()
+    if form.validate_on_submit():
+        #create db for ticket submission
+        #commit to db
+        flash('Your ticket has been submitted.')
+        return redirect(url_for('ticket'))
+    return render_template('ticket.html', title = 'Ticket', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -29,19 +43,28 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+  
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 
-
-bearer_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlF6Y3hRVEl5UkRVeU1qYzNSakEzT"\
-                + "npKQ01qVTROVVJFUlVZelF6VTRPRUV6T0RreE1UVTVPQSJ9.eyJpc3MiOiJodHRwczovL2FjbmFwaS1w"\
-                + "cm9kLmF1dGgwLmNvbS8iLCJzdWIiOiJpNzlBOVJReHFlMWZQMmlPb0dlTHE0aERGYzNyaUNQckBjbGll"\
-                + "bnRzIiwiYXVkIjoiaHR0cHM6Ly9wbGFjZWhvbGRlci5jb20vcGxhY2UiLCJpYXQiOjE1NDk5NTI3MDMs"\
-                + "ImV4cCI6MTU1MjU0NDcwMywiYXpwIjoiaTc5QTlSUXhxZTFmUDJpT29HZUxxNGhERmMzcmlDUHIiLCJn"\
-                + "dHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.P1zV9IRXUZttmdetxvhYEI9wcbr8ZsznxtRV5S9XLSRXF"\
-                + "MqDOz8D5wPdkFu6mS0FCsGQ2eeMPIi1jTNDLzH6CsgJLlAH8A_47BS1DswYcn--bORVQA0as-TZqkMsq"\
-                + "97X67Y0P2GX_CE_K-4jtqd_jKWD74WqPkeD4z2JFRV0DS3FQ56aKuJOPWK4WriCniRPLJYulTp8IJeQ8"\
-                + "X3wzDlwbJXYjGtMYB1DKMT21lorY5bHF3Daghfqe08m5tqUAU7ErfWTx2zp6pRTzy67acJja-9O4D3DP"\
-                + "CwiRkC-EOUa_gOdTzxeZ-sCugVW15e_XXqVHctADp5Zr7bjHGn-RcOVkQ"
+bearer_token = {{fill in bearer token}}
 
 
 @app.route('/api/')
