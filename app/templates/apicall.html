@@ -6,7 +6,30 @@
 </head>
 <body>
     <div>
-        {{ value }}
+        <form action="{{ url_for('getLanguage') }}" method=post>
+            <h3>Get Language</h3>
+            <label>Text</label>
+            <input type="text" name="getLanguage">
+            <input type="submit">
+        </form>
+        <p>{{ get_language }}</p>
+    </div>
+    <br><br><br>
+    <div>
+        <form action = "{{ url_for ('textCluster') }}" method = post>
+            <h3>Text Clustering</h3>
+            <p>Separate each text with a full stop</p>
+
+                {{ form.hidden_tag() }}
+                {{ form.text.label }}
+                {{ form.text }}<br>
+                {{ form.language.label }}
+                {{ form.language }}
+                <br><br>
+                {{ form.submit }}
+                <br>
+        </form>
+        <p>{{ text_cluster }}</p>
     </div>
 </body>
 </html>
