@@ -47,13 +47,12 @@
       <div class="form-check", style="margin-bottom: 20px">
         {{ form.remember_me(id="checkbox", class="form-check-input") }}
         <label class="form-check-label">Remember me</label>
-
       </div>
       <div class="row">
         <div class="col">
-          <button type="Log In" class="btn btn-primary" style="margin-right: 130px">Log In</button>
-          <button type="Sign Up" class="btn btn-primary">Sign Up</button>
-          <button type="forget" class="btn btn-primary">Forgot Email / Password?</button>
+            {{ form.submit(class="btn btn-primary", style="margin-right: 130px") }}
+          <a href="/register" type="Sign Up" class="btn btn-primary">Sign Up</a>
+          <button type="forget" class="btn btn-primary" >Forgot Email / Password?</button>
         </div>
       </div>
     </form>
