@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.auth.forms import LoginForm, RegistrationForm
-from app.forms import LanguageForm, LoginForm
+from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
 from app.models import User
 import requests
@@ -76,8 +76,10 @@ bearer_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlF6Y3hRVEl5UkRVeU1q
 
 @app.route('/api/')
 def apipage():
-    form = LanguageForm()
-    return render_template("apicall.html", get_language="", text_cluster="", form=form)
+    clusterForm = LanguageForm()
+    getLangForm = GetLanguage()
+    return render_template("apicall.html", get_language="", text_cluster="", getlangform=getLangForm,
+                           clusterform=clusterForm)
 
 
 value = ""
@@ -87,7 +89,10 @@ text_cluster = ""
 @app.route('/api/languagecheck', methods=["GET", "POST"])
 def getLanguage():
     url = "https://ug-api.acnapiv3.io/swivel/language-identification/lang-2.0?of=json&txt="
-    text = request.form['getLanguage']
+    clusterForm = LanguageForm()
+    getLangForm = GetLanguage()
+
+    text = getLangForm.text2.data
     print(text)
     url = url + text
 
@@ -99,21 +104,23 @@ def getLanguage():
     except:
         pass
     get_language = str(response.json()['language_list'][0])
-    return render_template("apicall.html", get_language=get_language)
+    return render_template("apicall.html", get_language=get_language, getlangform=getLangForm,
+                           clusterform=clusterForm)
 
 
 @app.route('/api/textclustering', methods=["GET", "POST"])
 def textCluster():
     url = "https://ug-api.acnapiv3.io/swivel/text-clustering/clustering-1.1?of=json&txt="
-    form = LanguageForm()
+    getLangForm = GetLanguage()
+    clusterForm = LanguageForm()
     data = {}
-    if form.validate():
-        text = form.text.data
+    if clusterForm.validate():
+        text = clusterForm.text.data
         textlist = text.split('.')
         textlist = [i for i in textlist if i != ""]
         for enum, i in enumerate(textlist):
             data["text" + f'{enum+1:02}'] = i
-        language = '&lang=' + form.language.data
+        language = '&lang=' + clusterForm.language.data
         for (key, value) in data.items():
             url += '"{}":"{}" \n'.format(key, value)
         url += language
@@ -126,7 +133,9 @@ def textCluster():
         except:
             pass
         text_cluster = str(response.json()["cluster_list"])
-        return render_template("apicall.html", text_cluster=text_cluster, form=form)
+        return render_template("apicall.html", text_cluster=text_cluster, getlangform=getLangForm,
+                               clusterform=clusterForm)
     else:
-        return render_template("apicall.html", text_cluster="Please Enter Text", form=form)
+        return render_template("apicall.html", text_cluster="Please Enter Text", getlangform=getLangForm,
+                               clusterform=clusterForm)
 
