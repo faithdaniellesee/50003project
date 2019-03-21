@@ -10,8 +10,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-csrf = CSRFProtect(app)
-csrf.init_app(app)
+# not needed
+# csrf = CSRFProtect(app)
+# csrf.init_app(app)
 app.secret_key = 'myverylongsecretkey'
 
 

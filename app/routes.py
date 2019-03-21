@@ -6,10 +6,7 @@ from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
 from app.models import User
-import requests
 from app import secrets
-bearer_token = secrets.bearer_token
-
 
 @app.route('/')
 @app.route('/index')
@@ -65,7 +62,6 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
 
 @app.route('/dashboard')
 @login_required
