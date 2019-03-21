@@ -1,5 +1,17 @@
 <html>
     <head>
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">   
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"          crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+            <style>
+                    .base-body {
+                      width: 100%;
+                      max-width: 0px auto;
+                      margin-left: 30px;
+                      margin-top: 15px;
+                    }
+        
+            </style>   
         {% if title %}
         <title>{{ title }} - 50.003 Project</title>
         {% else %}
@@ -7,8 +19,8 @@
         {% endif %}
     </head>
     <body>
-        <div>
-            50.003 Project:
+        <div class = "base-body">
+            <p><font size="4"><strong>50.003 Project:
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('ticket') }}">Ticket</a>
             {% if current_user.is_anonymous %}
@@ -16,6 +28,10 @@
             {% else %}
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        </strong>
+        </font>
+        </p>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
@@ -30,3 +46,7 @@
         {% block content %}{% endblock %}
     </body>
 </html>
+
+<nav class="navbar fixed-bottom navbar-light" style="background-color: #e3f2fd">
+        <a class="navbar-brand" href="#" >Contact Us</a>
+      </nav>

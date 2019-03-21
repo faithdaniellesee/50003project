@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, db
+from app import app, db, secrets
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
@@ -9,6 +9,7 @@ from app.models import User
 import requests
 from app import secrets
 bearer_token = secrets.bearer_token
+
 
 @app.route('/')
 @app.route('/index')
@@ -44,7 +45,7 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
-  
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -66,6 +67,12 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('submissions.html', title='Dashboard')
+
+
 @app.route('/api/')
 def apipage():
     clusterForm = LanguageForm()
@@ -73,6 +80,7 @@ def apipage():
     return render_template("apicall.html", get_language="", text_cluster="", getlangform=getLangForm,
                            clusterform=clusterForm)
 
+bearer_token = secrets.bearer_token
 
 value = ""
 text_cluster = ""
@@ -111,7 +119,7 @@ def textCluster():
         textlist = text.split('.')
         textlist = [i for i in textlist if i != ""]
         for enum, i in enumerate(textlist):
-            data["text" + f'{enum+1:02}'] = i
+            data["text" + "{enum+1:02}"] = i
         language = '&lang=' + clusterForm.language.data
         for (key, value) in data.items():
             url += '"{}":"{}" \n'.format(key, value)
@@ -130,4 +138,3 @@ def textCluster():
     else:
         return render_template("apicall.html", text_cluster="Please Enter Text", getlangform=getLangForm,
                                clusterform=clusterForm)
-
