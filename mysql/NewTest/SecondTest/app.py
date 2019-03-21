@@ -30,14 +30,32 @@ def index():
         # Fetch form data
         userDetails = request.form
         name = userDetails['name']
+        password = userDetails['password']
         email = userDetails['email']
         cur = mysql.get_db().cursor()
-        cur.execute("INSERT INTO Registration(id, Username, email, password_hash) VALUES(%s, %s, %s, %s)",("21", name, email,"12345"))
+        cur.execute("INSERT INTO Registration(id, Username, email, password_hash) VALUES(%s, %s, %s, %s)",("21", name, email,password))
         mysql.get_db().commit()
         cur.close()
         return redirect('/users') #after clicking submit it will go straight to expected place
     return render_template('index.html') #creating a typeform of username and email
 
+@app.route("/login")
+def login():
+	return render_template("login.html",title="data")
+
+@app.route("/checkUser",methods=["POST"])
+def check():
+    name = userDetails['name']
+    password = userDetails['password']
+    cur = mysql.get_db().cursor()
+    cur.execute("SELECT name FROM Registratrion WHERE name ='"+username+"'")
+    user = cur.fetchone()
+    
+    if user == name :
+        return "Success"
+    else:
+        return "failed"
+    
 #@app.route('/users') #display the users
 #def users():
 #    cur = mysql.get_db().cursor()
