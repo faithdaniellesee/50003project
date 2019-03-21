@@ -28,10 +28,17 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
+
 class LanguageForm(FlaskForm):
 
     text = TextAreaField("Text")
     language = SelectField('Languages', choices=[('en', 'English'),
                                                  ('fr', 'French'),
                                                  ('de', 'German')])
-    submit = SubmitField("Send")
+    submit = SubmitField("Submit")
+
+
+class GetLanguage(FlaskForm):
+
+    text2 = TextAreaField("Text")
+    submit2 = SubmitField("Submit")
