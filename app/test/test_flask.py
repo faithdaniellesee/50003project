@@ -5,10 +5,27 @@ from app import app
 class FlaskTestCase(unittest.TestCase):
 
     # Ensure that Flask was set up correctly
-    def test_index(self):
+    def test_anon_index(self):
         tester = app.test_client(self)
         response = tester.get('/', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+
+    # Ensure that app redirects if not logged in
+    def test_anon_index(self):
+        tester = app.test_client(self)
+        response = tester.get('/', content_type='html/text')
+        self.assertEqual(response.status_code, 302)
+
+    # Ensure that app redirects if not logged in
+    def test_anon_ticket(self):
+        tester = app.test_client(self)
+        response = tester.get('/', content_type='html/text')
+        self.assertEqual(response.status_code, 302)
+
+    def test_anon_ticket(self):
+        tester = app.test_client(self)
+        response = tester.get('/', content_type='html/text')
+        self.assertEqual(response.status_code, 302)
 
     # Ensure that the login page loads correctly
     def test_login_page_loads(self):

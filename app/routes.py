@@ -23,7 +23,7 @@ def ticket():
     if form.validate_on_submit():
         #create db for ticket submission
         #commit to db
-        flash('Your ticket has been submitted.')
+        flash('Your ticket has been submitted.', 'error')
         return redirect(url_for('ticket'))
     return render_template('ticket.html', title = 'Ticket', form=form)
 
@@ -36,7 +36,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
