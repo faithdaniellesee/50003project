@@ -63,10 +63,10 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/dashboard')
+@app.route('/submissions')
 @login_required
-def dashboard():
-    return render_template('submissions.html', title='Dashboard')
+def submissions():
+    return render_template('submissions.html', title='Submissions')
 
 
 @app.route('/api/')
