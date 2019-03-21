@@ -106,4 +106,4 @@ venv.bak/
 
 
 /app/secrets.py
-
+app.db
