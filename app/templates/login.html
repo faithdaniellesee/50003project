@@ -50,6 +50,7 @@
         {{ form.remember_me(id="checkbox", class="form-check-input") }}
         <label class="form-check-label">Remember me</label>
       </div>
+        </form>
       <div class="row">
         <div class="col">
             {{ form.submit(class="btn btn-primary", style="margin-right: 130px") }}
@@ -57,7 +58,7 @@
           <button type="forget" class="btn btn-primary" >Forgot Email / Password?</button>
         </div>
       </div>
-    </form>
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
       <script>

@@ -18,7 +18,8 @@
 <body>
     <div class = "register-body">
        <p><font size="10"><strong>Sign Up</strong></font></p>    
-    <form>
+    <form action="" method="post" novalidate>
+      {{ form.hidden_tag() }}
         <div class="form-row">
                   <div class="form-group col-md-12">
                     <label>Email</label> <br>
@@ -49,6 +50,13 @@
                         {% for error in form.password2.errors %}
                         
                         {% endfor %}
+                      </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button type="create account" class="btn btn-primary" style="margin-left: 15px">Create Account</button>
+                </div>
+            </div>
+        </div>
                   <!--</div>-->
         <!--</div>-->
                 <!--<div class="form-group">-->
@@ -84,8 +92,6 @@
                     <!--<input type="text" class="form-control" id="inputZip">-->
                   <!--</div>-->
                 <!--</div>-->
-                <button type="create account" class="btn btn-primary">Create Account</button>
-                  </div></div>
               </form>
             </div>
         {% with messages = get_flashed_messages() %}
