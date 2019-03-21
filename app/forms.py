@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, StringField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from app.models import User
+from wtforms_test import FormTestCase
 
 
 class LoginForm(FlaskForm):
@@ -42,3 +43,13 @@ class GetLanguage(FlaskForm):
 
     text2 = TextAreaField("Text")
     submit2 = SubmitField("Submit")
+
+
+class TestLoginForm(FormTestCase):
+    form_class = LoginForm
+
+    def test_age_is_required(self):
+        res = client.get(url_for('auth.register'))
+        assert res.status_code == 200
+        res = client.post(url_for('auth.register'),
+                          data={'fname': 'test', 'lname': 'user', 'email': 'test@user.org', 'password': '12'})
