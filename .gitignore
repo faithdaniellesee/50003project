@@ -107,4 +107,5 @@ venv.bak/
 
 /app/secrets.py
 app.db
+.idea/workspace.xml
 
