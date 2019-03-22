@@ -35,7 +35,7 @@
                     <label>Username</label><br>
                         {{ form.username(class="form-control", placeholder="Username", size=32) }}
                         {% for error in form.username.errors %}
-
+                        <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                   </div>
         </div>
@@ -44,17 +44,24 @@
                     <label>Password</label><br>
                         {{ form.password(class="form-control", placeholder="Password", size=32) }}
                         {% for error in form.password.errors %}
-
+                        <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                   </div>
                   <div class="form-group col-md-6">
                     <label>Confirm Password</label><br>
                         {{ form.password2(class="form-control", placeholder="Confirm Password", size=32) }}
                         {% for error in form.password2.errors %}
-
+                        <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
-                  <!-- </div>
-        </div> -->
+                      </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button type="create account" class="btn btn-primary" style="margin-left: 15px">Create Account</button>
+                </div>
+            </div>
+        </div>
+                  <!--</div>-->
+        <!--</div>-->
                 <!--<div class="form-group">-->
                   <!--<label for="inputCompany">Company Name</label>-->
                   <!--<input type="text" class="form-control" id="inputCompany" placeholder="e.g. SUTD">-->
@@ -88,11 +95,18 @@
                     <!--<input type="text" class="form-control" id="inputZip">-->
                   <!--</div>-->
                 <!--</div>-->
-                <button type="create account" class="btn btn-primary">Create Account</button>
-                </div>
-                </div>
               </form>
             </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+      <script>
+        var messages = {{ messages | safe }};
+        for (var i=0; i<messages.length; i++) {
+            alert(messages[i]);
+        }
+       </script>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>
 {% endblock %}
