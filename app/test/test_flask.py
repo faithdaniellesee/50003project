@@ -69,15 +69,15 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'<title>Login Page</title>', response.data)
 
-    # # 9 Ensure app can register new user
-    # def test_register_user(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/register',
-    #         data=dict(email="testing@testing.com", username="testing", password="testing",password2="testing"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'<title>Login Page</title>', response.data)
+    # 9 Ensure app can register new user
+    def test_register_user(self):
+        tester = app.test_client()
+        response = tester.post(
+            '/register',
+            data=dict(email="testing@testing.com", username="testing", password="testing",password2="testing"),
+            follow_redirects=True
+        )
+        self.assertIn(b'<title>Login Page</title>', response.data)
 
     # 10 Ensure app does not register already registered user
     def test_existing_user(self):
