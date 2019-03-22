@@ -1,8 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
 <!DOCTYPE html>
 <html>
-        
-<head>      
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">   
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"          crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
     <style>
@@ -12,14 +15,14 @@
               margin: 0px auto;
               margin-top: 50px;
             }
-          </style> 
-</head>  
+          </style>
+</head>
 
 <body>
     <div class = "register-body">
-       <p><font size="10"><strong>Sign Up</strong></font></p>    
-    <form action="" method="post" novalidate>
-      {{ form.hidden_tag() }}
+       <p><font size="10"><strong>Sign Up</strong></font></p>
+       <form action="" method="post" novalidate>
+         {{ form.hidden_tag() }}
         <div class="form-row">
                   <div class="form-group col-md-12">
                     <label>Email</label> <br>
@@ -106,3 +109,4 @@
     {% endwith %}
 </body>
 </html>
+{% endblock %}
