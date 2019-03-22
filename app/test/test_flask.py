@@ -74,7 +74,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="testing@testing.com", username="testing", password="testing",password2="testing"),
+            data=dict(email="testing@testing.com", username="testing",
+                      password="testing",password2="testing"),
             follow_redirects=True
         )
         self.assertIn(b'<title>Login Page</title>', response.data)
@@ -84,7 +85,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="admin@example.com", username="admin", password="admin", password2="admin"),
+            data=dict(email="admin@example.com", username="admin",
+                      password="admin", password2="admin"),
             follow_redirects=True
         )
         self.assertIn(b'[Please use a different email address.]', response.data)
@@ -94,7 +96,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="something@example.com", username="", password="admin", password2="admin"),
+            data=dict(email="something@example.com", username="",
+                      password="admin", password2="admin"),
             follow_redirects=True
         )
         self.assertIn(b'[This field is required.]', response.data)
@@ -104,7 +107,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="something@example.com", username="usertest", password="", password2="admin"),
+            data=dict(email="something@example.com", username="usertest",
+                      password="", password2="admin"),
             follow_redirects=True
         )
         self.assertIn(b'[This field is required.]', response.data)
@@ -114,7 +118,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="something@example.com", username="usertest", password="admin", password2=""),
+            data=dict(email="something@example.com", username="usertest",
+                      password="admin", password2=""),
             follow_redirects=True
         )
         self.assertIn(b'[This field is required.]', response.data)
@@ -124,7 +129,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="", username="usertest", password="admin", password2="admin"),
+            data=dict(email="", username="usertest",
+                      password="admin", password2="admin"),
             follow_redirects=True
         )
         self.assertIn(b'[This field is required.]', response.data)
@@ -134,7 +140,8 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/register',
-            data=dict(email="itssomething", username="usertest", password="admin", password2="admin"),
+            data=dict(email="itssomething", username="usertest",
+                      password="admin", password2="admin"),
             follow_redirects=True
         )
         self.assertIn(b'[Invalid email address.]', response.data)
