@@ -106,6 +106,6 @@ venv.bak/
 
 
 /app/secrets.py
-app.db
+/app.db
 .idea/workspace.xml
-.pyc
+*.pyc
