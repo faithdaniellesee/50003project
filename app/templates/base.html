@@ -6,44 +6,64 @@
             <style>
                     .base-body {
                       width: 100%;
-                      max-width: 0px auto;
+                      max-width: auto;
                       margin-left: 30px;
-                      margin-top: 15px;
+                      /* margin-top: 0px auto; */
                     }
 
             </style>
-        {% if title %}
+        <!-- {% if title %}
         <title>{{ title }} - 50.003 Project</title>
         {% else %}
         <title>50.003 Project</title>
-        {% endif %}
+        {% endif %} -->
     </head>
     <body>
-        <div class = "base-body">
-            <p><font size="4"><strong>50.003 Project:
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('ticket') }}">Ticket</a>
-            <a href="{{ url_for('submissions') }}">Submissions</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
-        </strong>
-        </font>
-        </p>
-        </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+                <div class = "base-body">
+                        <p style="font-size:40px", ><strong>
+                        <div clss="container">
+                            <div class="row justify-content-md-center">
+                                            <div class="col col-lg-2">
+                                                50.003 Project:
+                                            </div>
+                                            <div class="col col-lg-2">
+                                            <a href="{{ url_for('index') }}">Home</a>
+                                            </div>
+                                            <div class="col col-lg-2">
+                                            <a href="{{ url_for('ticket') }}">Ticket</a>
+                                            </div>
+                                            <div class="col col-lg-2">
+                                            <a href="{{ url_for('submissions') }}">Submissions</a>
+                                            </div>
+                                            <div class="col col-lg-2">
+                                            </div>
+                                            {% if current_user.is_anonymous %}
+                                            <div class="col-lg-auto">
+                                            <a href="{{ url_for('login') }}">Login</a>
+                                            <!-- </div> -->
+                                            {% else %}
+                                            <!-- <div class="col"> -->
+                                            <a href="{{ url_for('logout') }}">Logout</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>                    
+                                    </div>
+                                    </strong>
+                                    </p>
+            
+                            </div>            
+                    <hr>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    {% block content %}{% endblock %}
+
     </body>
 </html>
 
