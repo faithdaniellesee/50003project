@@ -21,6 +21,7 @@ def ticket():
     if form.validate_on_submit():
         #create db for ticket submission
         #commit to db
+        
         flash('Your ticket has been submitted.', 'error')
         return redirect(url_for('ticket'))
     return render_template('ticket.html', title = 'Ticket', form=form)
@@ -57,8 +58,9 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        
+       # db.session.add(user) #faith db
+        # db.session.commit() # faithdb
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
