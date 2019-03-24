@@ -1,27 +1,13 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, secrets
+from app import app, secrets,db
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
-from app.models import User
+#from app.models import User
 from app import secrets
-from flaskext.mysql import MySQL #Billio ADD
 
-#Initialising the db.
-app = Flask(__name__)
-
-#Configuration of db by Billio
-app.config['MYSQL_DATABASE_HOST'] = 'sql12.freemysqlhosting.net' 
-app.config['MYSQL_DATABASE_USER'] = 'sql12280733' 
-app.config['MYSQL_DATABASE_PASSWORD'] ='fUVjrQzntU'
-app.config['MYSQL_DATABASE_DB'] = 'sql12280733'
-
-#Init MySql Billio 
-mysql = MySQL()
-mysql.init_app(app)
-#end
 
 @app.route('/')
 @app.route('/index')
@@ -47,9 +33,13 @@ def login():
     if current_user.is_authenticated: #if the password and username are correct, it is authenticated
         return redirect(url_for('index')) #give to index
     form = LoginForm()
-    if form.validate_on_submit(): #
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
+    if form.validate_on_submit(): 
+        cur = db.get_db().cursor()
+        cur.execute("SELECT Username,password_hash FROM Registration WHERE '"+form.username.data+"' = Username AND '"+form.password.data+"' = password_hash")
+        user = cur.fetchall()
+        #user = User.query.filter_by(username=form.username.data).first()
+        #if user is None or not user.check_password(form.password.data):
+        if len(user) != 1:
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
@@ -71,12 +61,12 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
+        #user = User(username=form.username.data, email=form.email.data)
+        #user.set_password(form.password.data)
         #Billio add
-        cur = mysql.get_db().cursor() #get the details of the db
+        cur = db.get_db().cursor() #get the details of the db
         cur.execute("INSERT INTO Registration(id, Username, email, password_hash) VALUES(%s, %s, %s, %s)",("21", form.username.data, form.email.data,form.password.data))
-        mysql.get_db().commit()
+        db.get_db().commit()
        # db.session.add(user) #faith db
         # db.session.commit() # faithdb
         flash('Congratulations, you are now a registered user!')

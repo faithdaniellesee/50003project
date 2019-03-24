@@ -1,15 +1,16 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from flaskext.mysql import MySQL
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-db = SQLAlchemy(app)
+db = MySQL(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
