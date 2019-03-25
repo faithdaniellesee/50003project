@@ -5,6 +5,7 @@ from flask_login import LoginManager, current_user
 from config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from flaskext.mysql import MySQL
 
 app = Flask(__name__)
 app.config.from_object(Config)

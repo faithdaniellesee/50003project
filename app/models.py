@@ -5,7 +5,7 @@ from app import db, login
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for
 
-class User(UserMixin, db.Model):
+class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
