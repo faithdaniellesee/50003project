@@ -7,6 +7,7 @@ from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
 from app.models import User
 from app import secrets
+import requests
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
@@ -26,7 +27,7 @@ def ticket():
         #commit to db
         flash('Your ticket has been submitted.', 'error')
         return redirect(url_for('ticket'))
-    return render_template('ticket.html', title = 'Ticket', form=form)
+    return render_template('ticket.html', title='Ticket', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -140,12 +141,19 @@ def textCluster():
 
 @app.route('/email', methods=["GET", "POST"])
 def emailsending():
+    form = LoginForm()
+    user = "faith"
+    ticketnumber = "12345"
+    content = "Dear {user}, <br><br><p>We have received your ticket submission #{ticketnumber}, " \
+              "and our development team will be looking into the issue shortly. We will send you a follow up" \
+              "email once your ticket has been reviewed.</p><p>You can view your existing tickets at {website}" \
+              "</p><br><br> Best regards, <br>Accenture Service Team"
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
-    body = {"subject": "I am you",
-            "sender": "faith_see@mymail.sutd.edu.sg",
-            "recipient": "billio_jeverson@mymail.sutd.edu.sg",
+    body = {"subject": "Accenture: Confirmation of ticket submission",
+            "sender": "weijin_tan@mymail.sutd.edu.sg",
+            "recipient": "weijin_tan@mymail.sutd.edu.sg",
             "html": "I am sending this from your own account"
             }
-    response = requests.get(url, headers=headers, body=body)
-    return render_template()
+    response = requests.post(url, headers=headers, json=body)
+    return render_template("login.html", form=form)
