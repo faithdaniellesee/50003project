@@ -43,7 +43,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('index', user_data= current_user)
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -144,16 +144,17 @@ def emailsending():
     form = LoginForm()
     user = "faith"
     ticketnumber = "12345"
-    content = "Dear {user}, <br><br><p>We have received your ticket submission #{ticketnumber}, " \
-              "and our development team will be looking into the issue shortly. We will send you a follow up" \
-              "email once your ticket has been reviewed.</p><p>You can view your existing tickets at {website}" \
-              "</p><br><br> Best regards, <br>Accenture Service Team"
+    content = "Dear {user}, <br><br>Thank you for contacting accenture!<p>We have received your ticket " \
+              "submission #{ticketnumber}, and our development team will be looking into the issue shortly " \
+              "and will send you a follow up email once it has been reviewed.</p>You can view your " \
+              "existing tickets at accenture.com <br>Thanks and have a great day.<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user="Wei Jin", ticketnumber="234")
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Confirmation of ticket submission",
             "sender": "weijin_tan@mymail.sutd.edu.sg",
             "recipient": "weijin_tan@mymail.sutd.edu.sg",
-            "html": "I am sending this from your own account"
+            "html": content
             }
     response = requests.post(url, headers=headers, json=body)
-    return render_template("login.html", form=form)
+    return redirect(url_for("index"))
