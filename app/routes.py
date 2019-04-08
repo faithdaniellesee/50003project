@@ -1,5 +1,5 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
-from flask_login import login_user, logout_user, current_user, login_required
+from flask import Flask, render_template, flash, redirect, url_for, request, g
+from flask_login import login_user, logout_user
 from werkzeug.urls import url_parse
 from app import app, db, secrets
 from app.auth.forms import LoginForm, RegistrationForm
@@ -7,6 +7,15 @@ from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
 from app.models import User
 from app import secrets
+#flask-user implementation
+from flask_user import roles_required, current_user, login_required
+
+# #flask-security & flask-principal implementation
+# from flask_security import roles_required
+# from flask_principal import Principal, Permission, RoleNeed
+#
+# # Create a permission with a single Need, in this case a RoleNeed.
+# admin_permission = Permission(RoleNeed('admin'))
 
 @app.route('/')
 @app.route('/index')
@@ -26,7 +35,7 @@ def ticket():
     return render_template('ticket.html', title = 'Ticket', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/user/sign-in', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -37,6 +46,8 @@ def login():
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
+        # Tell Flask-Principal the identity changed
+        # identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
@@ -63,8 +74,11 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+# @app.route('/admin')
 @app.route('/submissions')
 @login_required
+@roles_required('admin')
+# @admin_permission.require() #flask-security & flask-principal implementation
 def submissions():
     return render_template('submissions.html', title='Submissions')
 
