@@ -12,10 +12,6 @@ from flaskext.mysql import MySQL
 from flask_user import roles_required, UserManager, current_user
 from flask_babelex import Babel
 
-#flask-security & flask-principal implementation
-# from flask_principal import Principal, Permission, RoleNeed
-# from flask_security import roles_required
-
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -25,7 +21,6 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 app.jinja_env.autoescape = True
-# principals = Principal(app) #flask-security & flask-principal implementation
 
 from app.models import User, Role, UserRoles, MyModelView
 

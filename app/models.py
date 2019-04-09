@@ -1,5 +1,4 @@
 import datetime
-# from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from flask_admin.contrib.sqla import ModelView
@@ -36,7 +35,6 @@ class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
-
 
 # Define the UserRoles association table
 class UserRoles(db.Model):

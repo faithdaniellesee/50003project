@@ -14,13 +14,6 @@ bearer_token = secrets.bearer_token
 #flask-user implementation
 from flask_user import roles_required, current_user, login_required
 
-# #flask-security & flask-principal implementation
-# from flask_security import roles_required
-# from flask_principal import Principal, Permission, RoleNeed
-#
-# # Create a permission with a single Need, in this case a RoleNeed.
-# admin_permission = Permission(RoleNeed('admin'))
-
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -82,7 +75,6 @@ def register():
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
-# @admin_permission.require() #flask-security & flask-principal implementation
 def submissions():
     return render_template('submissions.html', title='Submissions')
 
