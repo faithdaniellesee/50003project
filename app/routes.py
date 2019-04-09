@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, db, secrets
+from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
@@ -19,6 +19,10 @@ def index():
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():
+        #ticket = form.request
+        #cur = mysql.get_db.cursor()
+        #cur.execute("INSERT INTO Tickets(TicketOptions, Category, Details, File) VALUES(%s, %s, %s, %b)",
+        #( str (ticket['exampleFormControlSelect1']), str(ticket['exampleFormControlSelect2']),ticket['Details'], ticket['']))
         #create db for ticket submission
         #commit to db
         flash('Your ticket has been submitted.', 'error')
@@ -29,7 +33,7 @@ def ticket():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('ticket'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()

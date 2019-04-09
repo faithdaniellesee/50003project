@@ -1,7 +1,23 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>Submissions</h1>
+<html>
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"          crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+            <style>
+                    .submissions-body {
+                      width: 100%;
+                      max-width: 0px auto;
+                      margin-left: 30px;
+                      margin-right: 30px;
+                      margin-top: 30px;
+                    }
+            </style>
+  </head>
+  <body>
+  <div class = "submissions-body">
+    <h1>Submissions</h1>
     <br>
     <table class="table">
       <thead>
@@ -9,6 +25,7 @@
           <th>Type</th>
           <th>Category</th>
           <th>Details</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -16,17 +33,23 @@
           <td>Type1</td>
           <td>Category1</td>
           <td>Details1</td>
+          <td>Status1</td>
         </tr>
         <tr>
           <td>Type2</td>
           <td>Category2</td>
           <td>Details2</td>
+          <td>Status2</td>
         </tr>
         <tr>
           <td>Type3</td>
           <td>Category3</td>
           <td>Details3</td>
+          <td>Status3</td>
         </tr>
       </tbody>
     </table>
+  </div>
+  </body>
+</html>
 {% endblock %}
