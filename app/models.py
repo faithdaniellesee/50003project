@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for, g
+from passlib.hash import sha256_crypt
 
 #flask-user implementation
 from flask_user import UserManager, UserMixin, current_user
@@ -15,8 +16,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True) #The collation='NOCASE' is required to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
     email_confirmed_at = db.Column(db.DateTime())
-    # password_hash = db.Column(db.String(128), nullable=False, server_default='')
-    password = db.Column(db.String(255), nullable=False, server_default='')
+    password = db.Column(db.String(128), nullable=False, server_default='')
+    #password = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
 
     # Relationships
@@ -25,11 +26,11 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-    # def set_password(self, password):
-    #     self.password_hash = generate_password_hash(password)
+    def set_password(self, password):
+        self.password = sha256_crypt.encrypt(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return sha256_crypt.verify(password, self.password)
 
 # Define the Role data-model
 class Role(db.Model):

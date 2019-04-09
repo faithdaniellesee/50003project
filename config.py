@@ -8,8 +8,9 @@ class Config(object):
     #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
      #   'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    SECURITY_SEND_REGISTER_EMAIL = False
     # Flask-Mail SMTP server settings
+    '''
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
@@ -17,13 +18,14 @@ class Config(object):
     MAIL_USERNAME = 'email@example.com'
     MAIL_PASSWORD = 'password'
     MAIL_DEFAULT_SENDER = '"MyApp" <noreply@example.com>'
-
+    '''
     # Flask-User settings
     USER_APP_NAME = "Accenture Customer Support System"      # Shown in and email templates and page footers
     USER_ENABLE_EMAIL = True        # Enable email authentication
     USER_ENABLE_USERNAME = True     # Enable username authentication
     USER_EMAIL_SENDER_NAME = USER_APP_NAME
     USER_EMAIL_SENDER_EMAIL = "noreply@example.com"
+
 
     # collation = "NOCASE"
     # USER_IFIND_MODE = 'nocase_collation'
