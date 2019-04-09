@@ -19,7 +19,7 @@ def index():
     return render_template('index.html', title='Home')
 
 @app.route('/ticket', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():

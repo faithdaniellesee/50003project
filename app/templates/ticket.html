@@ -15,44 +15,43 @@
               margin: 0px auto;
               margin-top: 50px;
             }
+            .row{
+                width:100%;
+            }
 
     </style>   
 </head>
 
 <body>
-        <div class = "ticket-body">
-                <p style="font-size:59px"><strong>Ticket Submission</strong></p>    
-        <form action="" method="post" novalidate>
-                <div class="form-group">
-                  <label>Ticket Options</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
-                   <option>Select...</option>
-                   <option>Query</option>
-                   <option>Feedback</option>
-                   <option>Suggestion</option>
-                   <option>Others</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label>Category</label>
-                  <select class="form-control" id="exampleFormControlSelect2">
-                    <option>Layout</option>
-                    <option>Function</option>
-                    <option>Account</option>
-                    <option>Others</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="Details">Details</label>
-                  <textarea class="form-control" id="Details" rows="10"></textarea>
+    <div class = "ticket-body">
+        <p style="font-size:59px"><strong>Ticket Submission</strong></p>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                <label>Options</label>
+              {{form.options(placeholder="--select--", class="form-control", id="exampleFormControlSelect1")}}
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              {{form.category(placeholder="--select--", class="form-control", id="exampleFormControlSelect2")}}
+            </div>
+            <div class="form-group">
+                <label>Details</label>
+                {{form.details(class="form-control", id="Details", rows="10")}}
+            </div>
+            <div class="row">
+                <div class="uploadFile col-md-2">
+                    {{form.submit(class="btn btn-primary", align="left")}}
                 </div>
                 <div class="uploadFile col-md-5" style="margin-left: auto">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                        <font size="0.5"><label class="form-text text-muted" align="right">* JPEG, PNG, PDF</label></font>
+                    {{form.file(class="custom-file-input")}}
+                    <label class="custom-file-label">Choose file</label>
+                    <font size="0.5"><label class="form-text text-muted">* JPG, PNG, PDF</label></font>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </div>
+
+        </form>
+    </div>
 </body>
 </html>
 
