@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, redirect, url_for, request, g
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db, secrets
 from app.auth.forms import LoginForm, RegistrationForm
@@ -12,13 +12,15 @@ bearer_token = secrets.bearer_token
 
 # sanitize form inputs
 #flask-user implementation
-from flask_user import roles_required, current_user, login_required
+from flask_user import roles_required, current_user
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html', title='Home')
+    if current_user.is_authenticated:
+        return render_template('index.html', title='Home')
+    return redirect(url_for('login'))
 
 @app.route('/ticket', methods=['GET', 'POST'])
 #@login_required
@@ -32,7 +34,7 @@ def ticket():
     return render_template('ticket.html', title='Ticket', form=form)
 
 
-@app.route('/user/sign-in', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
