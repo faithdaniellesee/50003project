@@ -58,36 +58,6 @@ if not User.query.filter(User.email == 'admin@example.com').first():
     db.session.add(user)
     db.session.commit()
 
-# if not User.query.filter(User.email == 'member2@example.com').first():
-#     user = User(
-#         username = 'member2',
-#         email='member2@example.com',
-#         email_confirmed_at=datetime.datetime.utcnow(),
-#         password=user_manager.hash_password('Password1'),
-#     )
-#     db.session.add(user)
-#     db.session.commit()
-#
-# if not User.query.filter(User.email == 'member3@example.com').first():
-#     user = User(
-#         username = 'member3',
-#         email='member3@example.com',
-#         email_confirmed_at=datetime.datetime.utcnow(),
-#         password=user_manager.hash_password('Password1'),
-#     )
-#     db.session.add(user)
-#     db.session.commit()
-#
-# if not User.query.filter(User.email == 'faith@example.com').first():
-#     user = User(
-#         username = 'faith',
-#         email='faith@example.com',
-#         email_confirmed_at=datetime.datetime.utcnow(),
-#         password=user_manager.hash_password('Password1'),
-#     )
-#     user.roles.append(Role(name='admin'))
-#     db.session.add(user)
-#     db.session.commit()
 
 # flask-admin implementation
 class MyAdminIndexView(AdminIndexView):
