@@ -2,24 +2,24 @@ import datetime
 from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
 
 #flask-user implementation
-from flask_user import roles_required, UserManager, current_user
+from flask_user import roles_required, UserManager
 from flask_babelex import Babel
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-babel = Babel(app)
+#babel = Babel(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.login_view = 'login'
+login.login_view = '\login'
 app.jinja_env.autoescape = True
 
 from app.models import User, Role, UserRoles, MyModelView
