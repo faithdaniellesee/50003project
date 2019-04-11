@@ -9,7 +9,7 @@ from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
 
 #flask-user implementation
-from flask_user import roles_required, UserManager
+#from flask_user import roles_required, UserManager
 from flask_babelex import Babel
 
 #flask-security & flask-principal implementation
@@ -23,18 +23,18 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.login_view = '\login'
+login.login_view = 'login'
 app.jinja_env.autoescape = True
 # principals = Principal(app) #flask-security & flask-principal implementation
 
 from app.models import User, Role, UserRoles, MyModelView
 
-user_manager = UserManager(app, db, User) #initialize flask-user implementation
+#user_manager = UserManager(app, db, User) #initialize flask-user implementation
 
 # database creation and user addition
 # Create all database tables
 db.create_all()
-
+'''
 # Create 'member@example.com' user with no roles
 if not User.query.filter(User.email == 'member@example.com').first():
     user = User(
@@ -47,6 +47,7 @@ if not User.query.filter(User.email == 'member@example.com').first():
     db.session.commit()
 
 # Create 'admin@example.com' user with 'admin' roles
+
 if not User.query.filter(User.email == 'admin@example.com').first():
     user = User(
         username = 'admin',
@@ -58,7 +59,7 @@ if not User.query.filter(User.email == 'admin@example.com').first():
     db.session.add(user)
     db.session.commit()
 
-
+'''
 # flask-admin implementation
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):

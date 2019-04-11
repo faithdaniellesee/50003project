@@ -12,7 +12,7 @@ class Config(object):
     SECURITY_UNAUTHORIZED_VIEW = '/login'
     USER_ENABLE_EMAIL = False
     USER_ENABLE_USERNAME = False
-    USER_LOGIN_URL = '/login'
+    USER_LOGIN_URL = 'login'
     USER_LOGIN_TEMPLATE = '/login.html'
     # Flask-Mail SMTP server settings
     '''

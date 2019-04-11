@@ -46,6 +46,12 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
+class Tickets(db.Model):
+    __tablename__ = 'Tickets'
+    options = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.Integer())
+    details = db.Column(db.String(256))
+
 @login.user_loader
 def load_user(id):
     return User.query.get_id(id)

@@ -32,10 +32,12 @@ def index():
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():
-        #create db for ticket submission
-        #commit to db
-        flash('Your ticket has been submitted.', 'error')
-        return redirect(url_for('ticket'))
+        options = form.options.data
+        category = form.category.data
+        details = form.details.data
+
+        flash('Your ticket has been submitted.')
+        return redirect(url_for('index'))
     return render_template('ticket.html', title='Ticket', form=form)
 
 
@@ -154,15 +156,15 @@ def textCluster():
                                clusterform=clusterForm)
 
 @app.route('/email', methods=["GET", "POST"])
-def emailsending():
+def emailsending(ticketnumber, ):
     form = LoginForm()
     user = "faith"
-    ticketnumber = "12345"
+    ticketnumber = ticketnumber
     content = "Dear {user}, <br><br>Thank you for contacting accenture!<p>We have received your ticket " \
               "submission #{ticketnumber}, and our development team will be looking into the issue shortly " \
               "and will send you a follow up email once it has been reviewed.</p>You can view your " \
               "existing tickets at accenture.com <br>Thanks and have a great day.<br><br> Best regards, <br>" \
-              "Accenture Service Team".format(user="Wei Jin", ticketnumber="234")
+              "Accenture Service Team".format(user=user, ticketnumber=ticketnumber)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Confirmation of ticket submission",
