@@ -83,7 +83,9 @@ def register():
 @login_required
 @roles_required('admin')
 def submissions():
-    return render_template('submissions.html', title='Submissions')
+    tickets = Tickets.query.all()
+    return render_template('submissions.html', title='Submissions', tickets=tickets)
+    # return render_template('submissions.html', title='Submissions')
 
 
 @app.route('/api/')
