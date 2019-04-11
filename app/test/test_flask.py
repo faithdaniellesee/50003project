@@ -44,7 +44,7 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/login',
-            data=dict(username="admin", password="admin"),
+            data=dict(username="admin", password="Password1"),
             follow_redirects=True
         )
         self.assertIn(b'<title>Home Page</title>', response.data)
@@ -69,16 +69,16 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'<title>Login Page</title>', response.data)
 
-    # 9 Ensure app can register new user
-    def test_register_user(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/register',
-            data=dict(email="testing@testing.com", username="testing",
-                      password="testing", password2="testing"),
-            follow_redirects=True
-        )
-        self.assertIn(b'<title>Login Page</title>', response.data)
+    # # 9 Ensure app can register new user
+    # def test_register_user(self):
+    #     tester = app.test_client()
+    #     response = tester.post(
+    #         '/register',
+    #         data=dict(email="testing@testing.com", username="testing",
+    #                   password="testing", password2="testing"),
+    #         follow_redirects=True
+    #     )
+    #     self.assertIn(b'<title>Login Page</title>', response.data)
 
     # 10 Ensure app does not register already registered user
     def test_existing_user(self):
@@ -146,51 +146,25 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'[Invalid email address.]', response.data)
 
-    #
-    # # Ensure that logout page requires user login
-    # def test_logout_route_requires_login(self):
-    #     tester = app.test_client()
-    #     response = tester.get('/logout', follow_redirects=True)
-    #     self.assertIn(b'You need to login first.', response.data)
 
-    # Ensure login behaves correctly with incorrect credentials
-    # def test_incorrect_login(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/login',
-    #         data=dict(username="wrong", password="wrong"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'Invalid Credentials. Please try again.', response.data)
-    #
-    # # Ensure logout behaves correctly
-    # def test_logout(self):
-    #     tester = app.test_client()
-    #     tester.post(
-    #         '/login',
-    #         data=dict(username="admin", password="admin"),
-    #         follow_redirects=True
-    #     )
-    #     response = tester.get('/logout', follow_redirects=True)
-    #     self.assertIn(b'You were logged out', response.data)
-    #
-    # # Ensure that main page requires user login
-    # def test_main_route_requires_login(self):
-    #     tester = app.test_client()
-    #     response = tester.get('/', follow_redirects=True)
-    #     self.assertIn(b'You need to login first.', response.data)
-    #
-    #
-    # # Ensure that posts show up on the main page
-    # def test_posts_show_up_on_main_page(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/login',
-    #         data=dict(username="admin", password="admin"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'Hello from the shell', response.data)
-    #
+    # Ensure that logout page requires user login
+    def test_logout_requires_login(self):
+        tester = app.test_client()
+        response = tester.get('/logout', follow_redirects=True)
+        self.assertIn(b'<meta http-equiv="refresh" content="0; url=/login">', response.data)
+
+    # Ensure logout behaves correctly
+    def test_logout(self):
+        tester = app.test_client()
+        tester.post(
+            '/login',
+            data=dict(username="admin", password="Password1"),
+            follow_redirects=True
+        )
+        response = tester.get('/logout', follow_redirects=True)
+        self.assertIn(b'You were successfully logged out', response.data)
+
+    
 
 if __name__ == '__main__':
     unittest.main()
