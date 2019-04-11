@@ -28,18 +28,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Type</th>
+            <th>ID</th>
+            <th>Name</th>
             <th>Details</th>
             <th>Status</th>
-            <th>View Ticket</th>
           </tr>
         </thead>
         <tbody>
             {% for i in tickets %}
               <tr onclick="viewTicket('{{i.id}}')">
                 <td>{{i.id}}</td>
+                <td>{{i.name}}</td>
                 <td>{{i.options}}</td>
-                <td>{{i.category}}</td>
                 <td>{{i.details}}</td>
                 <!-- <td><button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View</button></td> -->
               </tr>
