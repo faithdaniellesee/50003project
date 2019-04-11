@@ -10,11 +10,12 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SECURITY_SEND_REGISTER_EMAIL = False
-    SECURITY_UNAUTHORIZED_VIEW = '/login'
+    SECURITY_UNAUTHORIZED_VIEW = '/home'
     USER_ENABLE_EMAIL = False
     USER_ENABLE_USERNAME = False
-    USER_LOGIN_URL = 'login'
-    USER_LOGIN_TEMPLATE = '/login.html'
+    USER_LOGIN_URL = '/home'
+    USER_LOGIN_TEMPLATE = '/landingpage.html'
+
     # Flask-Mail SMTP server settings
     '''
     MAIL_SERVER = 'smtp.gmail.com'

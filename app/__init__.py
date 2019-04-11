@@ -9,7 +9,7 @@ from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
 
 #flask-user implementation
-# from flask_user import roles_required, UserManager
+from flask_user import UserManager
 # from flask_babelex import Babel
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ app.jinja_env.autoescape = True
 
 from app.models import User, Role, UserRoles, MyModelView
 
-# user_manager = UserManager(app, db, User) #initialize flask-user implementation
+user_manager = UserManager(app, db, User) #initialize flask-user implementation
 
 # database creation and user addition
 # Create all database tables

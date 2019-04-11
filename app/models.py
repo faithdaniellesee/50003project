@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
         return '<User {}>'.format(self.username)
 
     def set_password(self, password):
-        self.password = sha256_crypt.encrypt(password)
+        self.password = sha256_crypt.hash(password)
 
     def check_password(self, password):
         return sha256_crypt.verify(password, self.password)
@@ -44,9 +44,10 @@ class UserRoles(db.Model):
 
 class Tickets(db.Model):
     __tablename__ = 'Tickets'
-    options = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.Integer())
-    details = db.Column(db.String(256))
+    id = db.Column(db.String(256), primary_key=True)
+    options = db.Column(db.String(10))
+    category = db.Column(db.String(10))
+    details = db.Column(db.Text())
 
 @login.user_loader
 def load_user(id):

@@ -5,9 +5,10 @@ from app import app, db, secrets
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
-from app.models import User
+from app.models import User, Tickets
 from app import secrets
 import requests
+import uuid
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
@@ -28,7 +29,8 @@ def ticket():
         options = form.options.data
         category = form.category.data
         details = form.details.data
-
+        uid = uuid.uuid()
+        ticket = Tickets(id=uid, options=options, category=category, details=details)
         flash('Your ticket has been submitted.')
         return redirect(url_for('index'))
     return render_template('ticket.html', title='Ticket', form=form)
