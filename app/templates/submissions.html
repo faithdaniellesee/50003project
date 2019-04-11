@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+<meta charset="UTF-8" />
 <html>
 <head>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -15,10 +17,10 @@
                     }
             </style>
               <script>
-                  function viewTicket(ticketId) {
-                    alert(ticketId)
-                  }
-              </script>
+                function viewTicket(ticketId) {
+                  window.location.href = 'submissions/' + ticketId;
+                }
+            </script>
   </head>
   <body>
   <div class = "submissions-body">
@@ -30,7 +32,7 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Details</th>
+            <th>Type</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -39,9 +41,10 @@
               <tr onclick="viewTicket('{{i.id}}')">
                 <td>{{i.id}}</td>
                 <td>{{i.name}}</td>
-                <td>{{i.types}}</td>
-                <td>{{i.details}}</td>
-                <!-- <td><button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View</button></td> -->
+                <td>{{i.options}}</td>
+                <td>{{i.status}}</td>
+                <!-- <td>{{i.details}}</td> -->
+                <td><button class="btn btn-danger" onclick="viewTicket('{{i.id}}')">Delete</button></td>
               </tr>
             {% endfor %}
         </tbody>
