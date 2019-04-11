@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm
+from app.ticket.forms import TicketForm, ViewForm
 from app.models import User, Tickets
 from app import secrets
 import requests
@@ -83,25 +83,27 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/submissions/<id>')
+@app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 @roles_required('admin')
 def submission(id):
-    tickets = Tickets.query.get(id)  
-    print(tickets)            #<class 'app.models.Tickets'>
+    form = ViewForm()
+    tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
     #this part really depends on how you're doing your HTML stuff
-    # ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
-    return render_template('submissionById.html', title='Submission', tickets=tickets)
+    if form.validate_on_submit():
+        ticket = Tickets.query.filter_by(id=id)
+        ticket.status = 'Resolved'
+        db.session.commit()
+        return redirect('/submissions')
+    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form)
 
-
-@app.route('/submissions', methods=['GET', 'POST'])
+@app.route('/submissions')
 @login_required
 @roles_required('admin')
 def submissions():
     tickets = Tickets.query.all()
+    #print(tickets)
     return render_template('submissions.html', title='Submissions', tickets=tickets)
-    # return render_template('submissions.html', title='Submissions')
-
 
 
 @app.route('/api/')
