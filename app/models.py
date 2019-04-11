@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True) #The collation='NOCASE' is required to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
     email_confirmed_at = db.Column(db.DateTime())
-    password = db.Column(db.String(128), nullable=False, server_default='')
+    password = db.Column(db.String(256), nullable=False, server_default='')
     #password = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
 
