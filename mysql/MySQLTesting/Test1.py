@@ -12,17 +12,13 @@ def ShowTables():
 	cur.execute("SHOW TABLES")
 	for x in cur:
 		print(x)
-#cur.execute("SHOW TABLES")
-
-#ShowTables()
-#cur.execute ("CREATE TABLE TEST1 (name VARCHAR(255))")
-#cur.commit()
-#ShowTables()
-
-#cur.execute("DROP TABLE Tickets")
-#cnx.commit()
-
-cur.execute("DROP TABLE tickets")
-#cnx.commit()
+cur.execute("SHOW TABLES")
 
 ShowTables()
+cur.execute ("CREATE TABLE TEST1 (name VARCHAR(255))")
+cur.commit()
+ShowTables()
+cur.execute("DROP TABLE Tickets")
+
+
+

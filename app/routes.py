@@ -19,10 +19,10 @@ def index():
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():
-        #ticket = form.request
-        #cur = mysql.get_db.cursor()
-        #cur.execute("INSERT INTO Tickets(TicketOptions, Category, Details, File) VALUES(%s, %s, %s, %b)",
-        #( str (ticket['exampleFormControlSelect1']), str(ticket['exampleFormControlSelect2']),ticket['Details'], ticket['']))
+        ticket = form.request
+        cur = mysql.get_db.cursor()
+        cur.execute("INSERT INTO Tickets(TicketOptions, Category, Details, File) VALUES(%s, %s, %s, %b)",
+        ( str (ticket['exampleFormControlSelect1']), str(ticket['exampleFormControlSelect2']),ticket['Details'], ticket['']))
         #create db for ticket submission
         #commit to db
         flash('Your ticket has been submitted.', 'error')
