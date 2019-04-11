@@ -1,0 +1,11 @@
+from flask import Flask
+from flaskext.mysql import MySQL
+
+mydb = mysql.connector.connect(
+	host = "sql12.freemysqlhosting.net",
+	user = 
+	passwd = 
+	database =  
+)
+
+

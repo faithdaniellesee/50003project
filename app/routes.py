@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
-from app import app, db, secrets
+from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm
@@ -27,11 +27,11 @@ def ticket():
     form = TicketForm()
     if form.validate_on_submit():
         options = form.options.data
-        category = form.category.data
         details = form.details.data
+        title = form.title.data
         uid = uuid.uuid1()
         user = current_user.username
-        ticket = Tickets(id=uid, name=user, options=options, category=category, details=details)
+        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details)
         emailsending(uid, user)
         db.session.add(ticket)
         db.session.commit()
@@ -44,7 +44,7 @@ def ticket():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('ticket'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -84,7 +84,9 @@ def register():
 @login_required
 @roles_required('admin')
 def submissions():
-    return render_template('submissions.html', title='Submissions')
+    tickets = Tickets.query.all()
+    return render_template('submissions.html', title='Submissions', tickets=tickets)
+    # return render_template('submissions.html', title='Submissions')
 
 
 @app.route('/api/')

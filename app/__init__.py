@@ -7,6 +7,7 @@ from config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
+from passlib.hash import sha256_crypt
 
 #flask-user implementation
 from flask_user import UserManager
@@ -17,6 +18,7 @@ app.config.from_object(Config)
 
 #babel = Babel(app)
 db = SQLAlchemy(app)
+#mysql = MySQL(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
@@ -29,14 +31,14 @@ user_manager = UserManager(app, db, User) #initialize flask-user implementation
 # database creation and user addition
 # Create all database tables
 db.create_all()
-'''
+
 # Create 'member@example.com' user with no roles
 if not User.query.filter(User.email == 'member@example.com').first():
     user = User(
         username = 'member',
         email='member@example.com',
         email_confirmed_at=datetime.datetime.utcnow(),
-        password=user_manager.hash_password('Password1'),
+        password=sha256_crypt.hash('Password1'),
     )
     db.session.add(user)
     db.session.commit()
@@ -48,13 +50,12 @@ if not User.query.filter(User.email == 'admin@example.com').first():
         username = 'admin',
         email='admin@example.com',
         email_confirmed_at=datetime.datetime.utcnow(),
-        password=user_manager.hash_password('Password1'),
+        password=sha256_crypt.hash('Password1'),
     )
     user.roles.append(Role(name='admin'))
     db.session.add(user)
     db.session.commit()
 
-'''
 # flask-admin implementation
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
