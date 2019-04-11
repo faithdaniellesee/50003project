@@ -14,6 +14,11 @@
                       margin-top: 30px;
                     }
             </style>
+              <script>
+                  function viewTicket(ticketId) {
+                    alert(ticketId)
+                  }
+              </script>
   </head>
   <body>
   <div class = "submissions-body">
@@ -24,18 +29,19 @@
         <thead>
           <tr>
             <th>Type</th>
-            <th>Category</th>
             <th>Details</th>
             <th>Status</th>
+            <th>View Ticket</th>
           </tr>
         </thead>
         <tbody>
             {% for i in tickets %}
-              <tr>
+              <tr onclick="viewTicket('{{i.id}}')">
                 <td>{{i.id}}</td>
                 <td>{{i.options}}</td>
                 <td>{{i.category}}</td>
                 <td>{{i.details}}</td>
+                <!-- <td><button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View</button></td> -->
               </tr>
             {% endfor %}
         </tbody>
