@@ -8,6 +8,7 @@ from app.ticket.forms import TicketForm
 from app.models import User, Tickets
 from app import secrets
 import requests
+from app.errors import too_many_requests_error
 import uuid
 bearer_token = secrets.bearer_token
 
@@ -43,7 +44,7 @@ def ticket():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("30/minute", methods=['POST'], error_handler(429))
+@limiter.limit("2/minute", methods=['POST'], error_message=too_many_requests_error)
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))
