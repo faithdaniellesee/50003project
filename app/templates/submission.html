@@ -14,42 +14,14 @@
                       margin-top: 30px;
                     }
             </style>
-              <script>
-                  function viewTicket(ticketId) {
-                    alert(ticketId)
-                  }
-              </script>
   </head>
   <body>
-  <div class = "submissions-body">
-    <h1>Submissions</h1>
+  <div class = "submission-body">
+    <h1>Submission</h1>
     <br>
-    {% if tickets|length > 0 %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Details</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for i in tickets %}
-              <tr onclick="viewTicket('{{i.id}}')">
-                <td>{{i.id}}</td>
-                <td>{{i.name}}</td>
-                <td>{{i.types}}</td>
-                <td>{{i.details}}</td>
-                <!-- <td><button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View</button></td> -->
-              </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    {% else %} 
-      <p>No Tickets</p>
-    {% endif %}
-  </div>
+    <p>
+      This is your individual submission page!
+    </p>
   </body>
 </html>
 {% endblock %}

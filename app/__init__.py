@@ -75,4 +75,4 @@ class MyAdminIndexView(AdminIndexView):
 admin = Admin(app, index_view = MyAdminIndexView())
 admin.add_view(MyModelView(User, db.session))
 
-from app import routes, models
+from app import routes, models, errors
