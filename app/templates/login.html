@@ -36,7 +36,6 @@
       {{ form.hidden_tag() }}
       <div class="form-group">
         <label>Username</label><br>
-            <!-- {{ form.username(class="form-control", id="email", size=64, placeholder="Enter email") }} -->
             <input class="form-control", type="text" placeholder="Enter Email" name="email" value="{{request.form.username}}", size=64>
             {% for error in form.username.errors %}
             <span style="color: red;">[{{ error }}]</span>

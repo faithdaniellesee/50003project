@@ -6,7 +6,7 @@ from passlib.hash import sha256_crypt
 
 #flask-user implementation
 from flask_user import UserManager, UserMixin, current_user
-from flask_babelex import Babel
+# from flask_babelex import Babel
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
