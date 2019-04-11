@@ -78,13 +78,22 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-# @app.route('/admin')
-@app.route('/submissions')
+@app.route('/submissions', methods=['GET', 'POST'])
 @login_required
 @roles_required('admin')
 def submissions():
     return render_template('submissions.html', title='Submissions')
 
+'''
+@app.route('/submission/<id>')
+@login_required
+@roles_required('admin')
+def submission():
+    ticket = Tickets.query.get(id)              #<class 'app.models.Tickets'>
+    #this part really depends on how you're doing your HTML stuff
+    ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
+    return render_template('submission.html', title='Submission')
+'''
 
 @app.route('/api/')
 def apipage():
