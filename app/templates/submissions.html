@@ -19,36 +19,30 @@
   <div class = "submissions-body">
     <h1>Submissions</h1>
     <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Category</th>
-          <th>Details</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Type1</td>
-          <td>Category1</td>
-          <td>Details1</td>
-          <td>Status1</td>
-        </tr>
-        <tr>
-          <td>Type2</td>
-          <td>Category2</td>
-          <td>Details2</td>
-          <td>Status2</td>
-        </tr>
-        <tr>
-          <td>Type3</td>
-          <td>Category3</td>
-          <td>Details3</td>
-          <td>Status3</td>
-        </tr>
-      </tbody>
-    </table>
+    {% if tickets|length > 0 %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Details</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in tickets %}
+              <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.options}}</td>
+                <td>{{i.category}}</td>
+                <td>{{i.details}}</td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    {% else %} 
+      <p>No Tickets</p>
+    {% endif %}
   </div>
   </body>
 </html>
