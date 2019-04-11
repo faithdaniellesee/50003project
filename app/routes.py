@@ -21,7 +21,7 @@ def index():
     return render_template('index.html', title='Home')
 
 @app.route('/ticket', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():
@@ -43,8 +43,6 @@ def login():
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        # Tell Flask-Principal the identity changed
-        # identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index', user_data= current_user)

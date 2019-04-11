@@ -53,13 +53,11 @@ if not User.query.filter(User.email == 'admin@example.com').first():
     db.session.add(user)
     db.session.commit()
 
-
 # flask-admin implementation
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         # return current_user.is_authenticated
         return current_user.has_role('admin')
-        # has role - flask security
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))

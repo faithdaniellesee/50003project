@@ -1,5 +1,4 @@
 import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for, g
@@ -16,7 +15,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True) #The collation='NOCASE' is required to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
     email_confirmed_at = db.Column(db.DateTime())
     password = db.Column(db.String(256), nullable=False, server_default='')
-    #password = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
 
     # Relationships
