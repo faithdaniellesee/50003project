@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request, g
+from flask import Flask, render_template, flash, redirect, url_for, request, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
 from app import app, db, secrets
@@ -29,10 +29,15 @@ def ticket():
         options = form.options.data
         category = form.category.data
         details = form.details.data
-        uid = uuid.uuid()
-        ticket = Tickets(id=uid, options=options, category=category, details=details)
+        uid = uuid.uuid1()
+        user = current_user.username
+        ticket = Tickets(id=uid, name=user, options=options, category=category, details=details)
+        emailsending(uid, user)
+        db.session.add(ticket)
+        db.session.commit()
         flash('Your ticket has been submitted.')
         return redirect(url_for('index'))
+    flash('Please fill up all fields')
     return render_template('ticket.html', title='Ticket', form=form)
 
 
@@ -148,9 +153,8 @@ def textCluster():
                                clusterform=clusterForm)
 
 @app.route('/email', methods=["GET", "POST"])
-def emailsending(ticketnumber, ):
-    form = LoginForm()
-    user = "faith"
+def emailsending(ticketnumber, name):
+    user = name
     ticketnumber = ticketnumber
     content = "Dear {user}, <br><br>Thank you for contacting accenture!<p>We have received your ticket " \
               "submission #{ticketnumber}, and our development team will be looking into the issue shortly " \
@@ -160,7 +164,7 @@ def emailsending(ticketnumber, ):
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Confirmation of ticket submission",
-            "sender": "weijin_tan@mymail.sutd.edu.sg",
+            "sender": "noreply@accenture.com",
             "recipient": "weijin_tan@mymail.sutd.edu.sg",
             "html": content
             }
