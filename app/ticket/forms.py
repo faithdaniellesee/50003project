@@ -17,4 +17,7 @@ class TicketForm(FlaskForm):
     file = FileField('File', validators=[FileAllowed(['jpg', 'png', 'pdf'])])
     submit = SubmitField('Submit')
 
+class ViewForm(FlaskForm):
+    reply = TextAreaField('Reply', validators=[DataRequired(), Length(min=1)])
+    resolve = SubmitField('Resolve')
 

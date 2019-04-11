@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm
+from app.ticket.forms import TicketForm, ViewForm
 from app.models import User, Tickets
 from app import secrets
 import requests
@@ -90,16 +90,19 @@ def submissions():
     return render_template('submissions.html', title='Submissions', tickets=tickets)
     # return render_template('submissions.html', title='Submissions')
 
-'''
+
 @app.route('/submission/<id>')
 @login_required
 @roles_required('admin')
 def submission():
+    form = ViewForm()
     ticket = Tickets.query.get(id)              #<class 'app.models.Tickets'>
     #this part really depends on how you're doing your HTML stuff
-    ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
-    return render_template('submission.html', title='Submission')
-'''
+    if form.validate_on_submit():
+        
+
+        return render_template('submission.html', title='Submission')
+
 
 @app.route('/api/')
 def apipage():
