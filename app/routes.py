@@ -43,7 +43,7 @@ def ticket():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("40/minute")
+@limiter.limit("30/minute", methods=['POST'], error_handler(429))
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))
