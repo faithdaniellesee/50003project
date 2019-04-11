@@ -43,7 +43,7 @@ class UserRoles(db.Model):
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
 class Tickets(db.Model):
-    __tablename__ = 'Tickets'
+    __tablename__ = 'tickets'
     id = db.Column(db.String(256), primary_key=True)
     options = db.Column(db.String(10))
     category = db.Column(db.String(10))
