@@ -9,12 +9,8 @@ from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
 
 #flask-user implementation
-#from flask_user import roles_required, UserManager
-from flask_babelex import Babel
-
-#flask-security & flask-principal implementation
-# from flask_principal import Principal, Permission, RoleNeed
-# from flask_security import roles_required
+# from flask_user import roles_required, UserManager
+# from flask_babelex import Babel
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -25,11 +21,10 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 app.jinja_env.autoescape = True
-# principals = Principal(app) #flask-security & flask-principal implementation
 
 from app.models import User, Role, UserRoles, MyModelView
 
-#user_manager = UserManager(app, db, User) #initialize flask-user implementation
+# user_manager = UserManager(app, db, User) #initialize flask-user implementation
 
 # database creation and user addition
 # Create all database tables
@@ -65,7 +60,6 @@ class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         # return current_user.is_authenticated
         return current_user.has_role('admin')
-        # has role - flask security
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login'))

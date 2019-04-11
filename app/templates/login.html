@@ -36,7 +36,7 @@
       {{ form.hidden_tag() }}
       <div class="form-group">
         <label>Username</label><br>
-            {{ form.username(class="form-control", size=64, placeholder="Enter email") }}
+            <input class="form-control", type="text" placeholder="Enter Email" name="email" value="{{request.form.username}}", size=64>
             {% for error in form.username.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
@@ -44,13 +44,15 @@
       </div>
       <div class="form-group">
         <label>Password</label><br>
-            {{ form.password(class="form-control", id="password", placeholder="Password", size=64) }}
+            <!-- {{ form.password(class="form-control", id="password", placeholder="Password", size=64) }} -->
+            <input class="form-control", type="password" placeholder="Password" name="password" value="{{request.form.password}}", size=64>
             {% for error in form.password.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
       </div>
       <div class="form-check", style="margin-bottom: 20px">
-        {{ form.remember_me(id="checkbox", class="form-check-input") }}
+        <!-- {{ form.remember_me(id="checkbox", class="form-check-input") }} -->
+        <input type="checkbox", class="form-check-input", id="checkbox", value="{{request.form.remember_me}}">
         <label class="form-check-label">Remember me</label>
       </div>
       <div class="row">
@@ -62,9 +64,10 @@
             <a href="/register" type="Sign Up" class="btn btn-primary">Sign Up</a>
             <button type="forget" class="btn btn-primary" >Forgot Username / Password?</button> -->
          <div class="col">
-           {{ form.submit(class="btn btn-primary", style="margin-right: 85px") }}
-           <a href="/register" type="Sign Up" class="btn btn-primary">Sign Up</a>
-           <button type="forget" class="btn btn-primary">Forgot Username / Password?</button>
+           <!-- {{ form.submit(class="btn btn-primary", style="margin-right: 85px") }} -->
+           <a href="/login", type="Sing In", class="btn btn-primary", id='sign_in', style="margin-right: 85px", value="{{request.form.submit}}">Sign In</a>
+           <a href="/register", type="Sign Up", class="btn btn-primary", id='sign_up', value="{{request.form.submit}}">Sign Up</a>
+           <button type="forget", class="btn btn-primary", value="{{request.form.submit}}">Forgot Username / Password?</button>
         </div>
       </div>
     </form>

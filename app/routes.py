@@ -14,13 +14,6 @@ bearer_token = secrets.bearer_token
 #flask-user implementation
 from flask_user import roles_required
 
-# #flask-security & flask-principal implementation
-# from flask_security import roles_required
-# from flask_principal import Principal, Permission, RoleNeed
-#
-# # Create a permission with a single Need, in this case a RoleNeed.
-# admin_permission = Permission(RoleNeed('admin'))
-
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -28,7 +21,7 @@ def index():
     return render_template('index.html', title='Home')
 
 @app.route('/ticket', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def ticket():
     form = TicketForm()
     if form.validate_on_submit():
@@ -52,8 +45,6 @@ def login():
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        # Tell Flask-Principal the identity changed
-        # identity_changed.send(current_app._get_current_object(), identity=Identity(user.id))
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index', user_data= current_user)
@@ -84,7 +75,6 @@ def register():
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
-# @admin_permission.require() #flask-security & flask-principal implementation
 def submissions():
     return render_template('submissions.html', title='Submissions')
 
