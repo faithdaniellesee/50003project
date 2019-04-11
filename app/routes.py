@@ -36,7 +36,7 @@ def ticket():
         emailsending(uid, user)
         db.session.add(ticket)
         db.session.commit()
-        flash('Your ticket has been submitted.')
+        flash('Your ticket has been successfully submitted.')
         return redirect(url_for('index'))
     flash('Please fill up all fields')
     return render_template('ticket.html', title='Ticket', form=form)
@@ -81,6 +81,18 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
+@app.route('/submissions/<id>')
+@login_required
+@roles_required('admin')
+def submission(id):
+    tickets = Tickets.query.get(id)  
+    print(tickets)            #<class 'app.models.Tickets'>
+    #this part really depends on how you're doing your HTML stuff
+    # ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
+    return render_template('submissionById.html', title='Submission', tickets=tickets)
+
+
 @app.route('/submissions', methods=['GET', 'POST'])
 @login_required
 @roles_required('admin')
@@ -89,16 +101,7 @@ def submissions():
     return render_template('submissions.html', title='Submissions', tickets=tickets)
     # return render_template('submissions.html', title='Submissions')
 
-'''
-@app.route('/submission/<id>')
-@login_required
-@roles_required('admin')
-def submission():
-    ticket = Tickets.query.get(id)              #<class 'app.models.Tickets'>
-    #this part really depends on how you're doing your HTML stuff
-    ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
-    return render_template('submission.html', title='Submission')
-'''
+
 
 @app.route('/api/')
 def apipage():

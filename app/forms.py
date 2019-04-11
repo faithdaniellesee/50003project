@@ -29,6 +29,10 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
+# class ResolveForm(FlaskForm):
+#     #response = StringField('response', validators=[DataRequired()])
+#     submit = SubmitField('Resolve')
+
 
 class LanguageForm(FlaskForm):
 

@@ -46,8 +46,10 @@ class Tickets(db.Model):
     _tablename_ = 'tickets'
     id = db.Column(db.String(256), primary_key=True)
     options = db.Column(db.String(10))
-    title = db.Column(db.String(100))
     name = db.Column(db.String(50))
+    title = db.Column(db.String(100))
+    status = db.Column(db.String(10))
+    isdelete = db.Column(db.String(5))
     details = db.Column(db.Text())
 
 @login.user_loader
