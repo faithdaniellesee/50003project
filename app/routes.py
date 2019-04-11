@@ -27,11 +27,11 @@ def ticket():
     form = TicketForm()
     if form.validate_on_submit():
         options = form.options.data
-        category = form.category.data
         details = form.details.data
+        title = form.title.data
         uid = uuid.uuid1()
         user = current_user.username
-        ticket = Tickets(id=uid, name=user, options=options, category=category, details=details)
+        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details)
         emailsending(uid, user)
         db.session.add(ticket)
         db.session.commit()
