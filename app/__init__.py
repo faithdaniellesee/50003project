@@ -8,6 +8,8 @@ from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flaskext.mysql import MySQL
 from passlib.hash import sha256_crypt
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 #flask-user implementation
 from flask_user import UserManager
@@ -15,6 +17,11 @@ from flask_user import UserManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["2000 per hour"]
+)
 
 #babel = Babel(app)
 db = SQLAlchemy(app)

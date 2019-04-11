@@ -41,3 +41,4 @@ class Config(object):
 #    MYSQL_DATABASE_USER = 'sql12280733'
 #    MYSQL_DATABASE_PASSWORD ='fUVjrQzntU'
 #    MYSQL_DATABASE_DB = 'sql12280733'
+

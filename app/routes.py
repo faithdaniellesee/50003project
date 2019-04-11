@@ -14,6 +14,7 @@ bearer_token = secrets.bearer_token
 # sanitize form inputs
 #flask-user implementation
 from flask_user import roles_required
+from app import limiter
 
 @app.route('/')
 @app.route('/index')
@@ -42,6 +43,7 @@ def ticket():
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("40/minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))

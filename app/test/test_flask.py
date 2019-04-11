@@ -169,16 +169,88 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You were successfully logged out', response.data)
 
-    def test_empty_ticket1(self):
+    # Test if ticket submits
+    def test_submit_ticket(self):
         tester = app.test_client()
-        response = tester.post(
-            '/ticket',
-            data=dict(email="something@example.com", username="usertest",
-                      password="", password2="admin"),
+        tester.post(
+            '/login',
+            data=dict(username="admin", password="Password1"),
             follow_redirects=True
         )
-        self.assertIn(b'[This field is required.]', response.data)
-    
+        response = tester.post(
+            '/ticket',
+            data=dict(options="Suggestion",
+                      details="blahblah",
+                      title="moreusertest"),
+            follow_redirects=True
+        )
+        self.assertIn(b'<li>Your ticket has been submitted.</li>', response.data)
+
+    # Ensure ticket does not submit if title is empty
+    def test_empty_ticket1(self):
+        tester = app.test_client()
+        tester.post(
+            '/login',
+            data=dict(username="admin", password="Password1"),
+            follow_redirects=True
+        )
+        response = tester.post(
+            '/ticket',
+            data=dict(options="Suggestion",
+                      details="moreusertest"),
+            follow_redirects=True
+        )
+        self.assertIn(b'<li>Please fill up all fields</li>', response.data)
+
+    # Ensure ticket does not submit if details is empty
+    def test_empty_ticket2(self):
+        tester = app.test_client()
+        tester.post(
+            '/login',
+            data=dict(username="admin", password="Password1"),
+            follow_redirects=True
+        )
+        response = tester.post(
+            '/ticket',
+            data=dict(options="Suggestion",
+                      title="moreusertest"),
+            follow_redirects=True
+        )
+        self.assertIn(b'<li>Please fill up all fields</li>', response.data)
+
+    # Ensure ticket does not submit if details is empty
+    def test_empty_ticket3(self):
+        tester = app.test_client()
+        tester.post(
+            '/login',
+            data=dict(username="admin", password="Password1"),
+            follow_redirects=True
+        )
+        response = tester.post(
+            '/ticket',
+            data=dict(details="Suggestion",
+                      title="moreusertest"),
+            follow_redirects=True
+        )
+        self.assertIn(b'<li>Please fill up all fields</li>', response.data)
+
+    # Brute force test to ensure throttling works
+    def test_brute_force(self):
+        tester = app.test_client()
+        for i in range(100):
+            tester.post(
+                '/login',
+                data=dict(username="wrong", password="alsowrong"),
+                follow_redirects=True
+            )
+        response = tester.post(
+            '/login',
+            data=dict(username="wrong", password="alsowrong"),
+            follow_redirects=True
+        )
+        self.assertIn(b'Too Many Requests', response.data)
+
+
 
 if __name__ == '__main__':
     unittest.main()
