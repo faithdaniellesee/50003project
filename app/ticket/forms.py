@@ -19,5 +19,5 @@ class TicketForm(FlaskForm):
 
 class ViewForm(FlaskForm):
     reply = TextAreaField('Reply', validators=[DataRequired(), Length(min=1)])
-    resolve = SubmitField('Resolve')
+    submit = SubmitField('Resolve')
 

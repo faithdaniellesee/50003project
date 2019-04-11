@@ -83,27 +83,27 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/submissions/<id>')
+@app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 @roles_required('admin')
 def submission(id):
-    tickets = Tickets.query.get(id)  
-    print(tickets)            #<class 'app.models.Tickets'>
-    #this part really depends on how you're doing your HTML stuff
-    # ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
-    return render_template('submissionById.html', title='Submission', tickets=tickets)
-
-@app.route('/submission/<id>')
-@login_required
-@roles_required('admin')
-def submission():
     form = ViewForm()
-    ticket = Tickets.query.get(id)              #<class 'app.models.Tickets'>
+    tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
     #this part really depends on how you're doing your HTML stuff
     if form.validate_on_submit():
-        
+        ticket = Tickets.query.filter_by(id=id)
+        ticket.status = 'Resolved'
+        db.session.commit()
+        return redirect('/submissions')
+    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form)
 
-        return render_template('submission.html', title='Submission')
+@app.route('/submissions')
+@login_required
+@roles_required('admin')
+def submissions():
+    tickets = Tickets.query.all()
+    #print(tickets)
+    return render_template('submissions.html', title='Submissions', tickets=tickets)
 
 
 @app.route('/api/')
