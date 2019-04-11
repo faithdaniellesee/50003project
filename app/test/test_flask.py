@@ -169,6 +169,15 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You were successfully logged out', response.data)
 
+    def test_empty_ticket1(self):
+        tester = app.test_client()
+        response = tester.post(
+            '/ticket',
+            data=dict(email="something@example.com", username="usertest",
+                      password="", password2="admin"),
+            follow_redirects=True
+        )
+        self.assertIn(b'[This field is required.]', response.data)
     
 
 if __name__ == '__main__':
