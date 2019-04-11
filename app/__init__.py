@@ -18,6 +18,7 @@ app.config.from_object(Config)
 
 #babel = Babel(app)
 db = SQLAlchemy(app)
+#mysql = MySQL(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
