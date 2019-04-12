@@ -3,56 +3,99 @@
 
 <meta charset="UTF-8" />
 <html>
+
 <head>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"          crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
-            <style>
-                    .submissions-body {
-                      width: 100%;
-                      max-width: 0px auto;
-                      margin-left: 30px;
-                      margin-right: 30px;
-                      margin-top: 30px;
-                    }
-            </style>
-              <script>
-                function viewTicket(ticketId) {
-                  window.location.href = 'submissions/' + ticketId;
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <style>
+    .submissions-body {
+      width: 100%;
+      max-width: 0px auto;
+      margin-left: 30px;
+      margin-right: 30px;
+      margin-top: 30px;
+    }
+  </style>
+  <script>
+
+    function viewTicket(ticketId) {
+      window.location.href = 'submissions/' + ticketId;
+    }
+    function deleteTicket(ticketId) {
+      swal({
+        title: "Delete this ticket?",
+        text: "Once deleted, you will still be able to recover this!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              type: "DELETE",
+              url: "submissions/" + ticketId,
+              contentType: "application/json",
+              success: function (response) {
+                console.log(response);
+                if (response == "success") {
+                  window.location.href = 'submissions'
                 }
-            </script>
-  </head>
-  <body>
-  <div class = "submissions-body">
+              },
+              error: function (err) {
+                console.log(err);
+              }
+            });
+          } else {
+
+          }
+        });
+    }
+  </script>
+</head>
+
+<body>
+  <div class="submissions-body">
     <h1>Submissions</h1>
     <br>
     {% if tickets|length > 0 %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for i in tickets %}
-              <tr onclick="viewTicket('{{i.id}}')">
-                <td>{{i.id}}</td>
-                <td>{{i.name}}</td>
-                <td>{{i.options}}</td>
-                <td>{{i.status}}</td>
-                <!-- <td>{{i.details}}</td> -->
-                <td><button class="btn btn-danger" onclick="viewTicket('{{i.id}}')">Delete</button></td>
-              </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    {% else %} 
-      <p>No Tickets</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in tickets %}
+        <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
+        <td>{{i.id}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.options}}</td>
+        <td>{{i.status}}</td>
+        <!-- <td>{{i.details}}</td> -->
+        <td>
+          <button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View More</button>
+          <button class="btn btn-danger" onclick="deleteTicket('{{i.id}}')">Delete</button>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No Tickets</p>
     {% endif %}
   </div>
-  </body>
+</body>
+
 </html>
 {% endblock %}
