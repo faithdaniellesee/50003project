@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm, ViewForm
+from app.ticket.forms import TicketForm, ViewForm, ResolveForm
 from app.models import User, Tickets
 from app import secrets
 import requests
@@ -33,8 +33,10 @@ def ticket():
         title = form.title.data
         uid = uuid.uuid1()
         user = current_user.username
-        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details)
-        emailsending(uid, user)
+        email = current_user.email
+        status = "New"
+        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status)
+        emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()
         flash('Your ticket has been successfully submitted.')
@@ -88,14 +90,23 @@ def register():
 @roles_required('admin')
 def submission(id):
     form = ViewForm()
+    form2 = ResolveForm()
     tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
     #this part really depends on how you're doing your HTML stuff
     if form.validate_on_submit():
-        ticket = Tickets.query.filter_by(id=id)
+        emailstring = form.reply.data
+        ticket = Tickets.query.filter_by(id=id).first()
+        user = User.query.filter_by(username=ticket.name).first()
+        emailreply(emailstring, id, ticket.name, user.email)
+        ticket.status = 'Pending'
+        db.session.commit()
+        return redirect('/submissions')
+    elif form2.validate_on_submit():
+        ticket = Tickets.query.filter_by(id=id).first()
         ticket.status = 'Resolved'
         db.session.commit()
         return redirect('/submissions')
-    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form)
+    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2)
 
 @app.route('/submissions')
 @login_required
@@ -173,8 +184,9 @@ def textCluster():
                                clusterform=clusterForm)
 
 @app.route('/email', methods=["GET", "POST"])
-def emailsending(ticketnumber, name):
+def emailsending(ticketnumber, name, email):
     user = name
+    email = email
     ticketnumber = ticketnumber
     content = "Dear {user}, <br><br>Thank you for contacting accenture!<p>We have received your ticket " \
               "submission #{ticketnumber}, and our development team will be looking into the issue shortly " \
@@ -185,7 +197,25 @@ def emailsending(ticketnumber, name):
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Confirmation of ticket submission",
             "sender": "noreply@accenture.com",
-            "recipient": "weijin_tan@mymail.sutd.edu.sg",
+            "recipient": email,
+            "html": content
+            }
+    response = requests.post(url, headers=headers, json=body)
+    return redirect(url_for("index"))
+
+
+def emailreply(emailstring, ticketnumber, name, email):
+    user = name
+    email = email
+    ticketnumber = ticketnumber
+    email = "weijin_tan@mymail.sutd.edu.sg"
+    content = "Dear {user}, <br><br>{text}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user=user, text=emailstring, ticketnumber=ticketnumber)
+    url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
+    headers = {"Server-Token": bearer_token}
+    body = {"subject": "Accenture: Confirmation of ticket submission",
+            "sender": "supportteam@accenture.com",
+            "recipient": email,
             "html": content
             }
     response = requests.post(url, headers=headers, json=body)

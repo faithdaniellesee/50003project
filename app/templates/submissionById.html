@@ -29,34 +29,39 @@
 
 <body>
     <div class="submissionById-body">
-
         <div class="row">
-            <div class="form-group col-md-10">
+            <div class="form-group col-md-9">
                 <label><b>Ticket Id</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.id }} </strong></p>
                 </div>
             </div>
-            <div class="form-group col-md-2">
-                    <label><b>Status</b></label>
-                    <div class="form-control">
-                        <p><strong></strong> {{ tickets.status }} </strong></p>
-                    </div>
+            <form action="" method="post">
+            {{ form2.hidden_tag() }}
+                <div class="form-group col-md-2" style="margin-left: 0px">
+                    {{ form2.resolve(class="btn btn-primary", align="left", value="Resolve" )}}
                 </div>
+            </form>
         </div>
-
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                     <label><b>Client</b></label>
                     <div class="form-control">
                         <p><strong></strong> {{ tickets.name }} </strong></p>
                     </div>
                 </div>
-            <div class="form-group col-md-6">
-                    <label><b>Ticket Type</b></label>
-                    <div class="form-control">
-                        <p><strong></strong> {{ tickets.options }} </strong></p>                        </div>
+            <div class="form-group col-md-4">
+                <label><b>Ticket Type</b></label>
+                <div class="form-control">
+                    <p><strong></strong> {{ tickets.options }} </strong></p>
                 </div>
+            </div>
+            <div class="form-group col-md-2">
+                <label><b>Status</b></label>
+                <div class="form-control">
+                    <p><strong></strong> {{ tickets.status }} </strong></p>
+                </div>
+            </div>
         </div>
 
         <div class="row">
@@ -71,15 +76,14 @@
         {{ form.hidden_tag() }}
             <div class="form-group">
                 <label>Reply</label>
-                {{ form.reply(class="form-control", id="details", rows="10") }}
+                {{ form.replytext(class="form-control", id="details", rows="10") }}
             </div>
             <div class="row">
                 <div class="form-group col-md-6" style="margin-left: 0px">
-                    {{ form.submit(class="btn btn-primary", align="left" )}}
+                    {{ form.reply(class="btn btn-primary", align="left", value="Reply" )}}
                 </div>
             </div>
         </form>
-
     </div>
 </body>
 
