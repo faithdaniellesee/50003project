@@ -1,6 +1,7 @@
 import unittest
 from app import app
 from app.forms import LoginForm
+import uuid
 
 
 class FlaskTestCase(unittest.TestCase):
@@ -181,10 +182,11 @@ class FlaskTestCase(unittest.TestCase):
             '/ticket',
             data=dict(options="Suggestion",
                       details="blahblah",
-                      title="moreusertest"),
+                      title="moreusertest",
+                      ),
             follow_redirects=True
         )
-        self.assertIn(b'<li>Your ticket has been submitted.</li>', response.data)
+        self.assertIn(b'<li>Your ticket has been successfully submitted.</li>', response.data)
 
     # Ensure ticket does not submit if title is empty
     def test_empty_ticket1(self):
@@ -192,7 +194,7 @@ class FlaskTestCase(unittest.TestCase):
         tester.post(
             '/login',
             data=dict(username="admin", password="Password1"),
-            follow_redirects=True
+            follow_redirects=True,
         )
         response = tester.post(
             '/ticket',

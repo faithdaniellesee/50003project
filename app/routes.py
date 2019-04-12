@@ -8,7 +8,6 @@ from app.ticket.forms import TicketForm, ViewForm, ResolveForm
 from app.models import User, Tickets
 from app import secrets
 import requests
-from app.errors import too_many_requests_error
 import uuid
 bearer_token = secrets.bearer_token
 
@@ -35,7 +34,8 @@ def ticket():
         user = current_user.username
         email = current_user.email
         status = "New"
-        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status)
+        isdelete = 0
+        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete)
         emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()
@@ -46,7 +46,7 @@ def ticket():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("2/minute", methods=['POST'], error_message=too_many_requests_error)
+@limiter.limit("40 per minute", error_message='Too Many Requests!')
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))
@@ -94,7 +94,7 @@ def submission(id):
     tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
     #this part really depends on how you're doing your HTML stuff
     if form.validate_on_submit():
-        emailstring = form.reply.data
+        emailstring = form.replytext.data
         ticket = Tickets.query.filter_by(id=id).first()
         user = User.query.filter_by(username=ticket.name).first()
         emailreply(emailstring, id, ticket.name, user.email)
@@ -208,6 +208,7 @@ def emailreply(emailstring, ticketnumber, name, email):
     user = name
     email = email
     ticketnumber = ticketnumber
+    emailstring = emailstring
     email = "weijin_tan@mymail.sutd.edu.sg"
     content = "Dear {user}, <br><br>{text}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
               "Accenture Service Team".format(user=user, text=emailstring, ticketnumber=ticketnumber)
