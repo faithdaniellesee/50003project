@@ -9,6 +9,12 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+class RecoverForm(FlaskForm):
+    email = StringField('Email')
+    username = StringField('Username')
+    submitPassword = SubmitField('Recover Password')
+    submitUsername = SubmitField('Recover Username')
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])

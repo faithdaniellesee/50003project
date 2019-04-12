@@ -1,8 +1,8 @@
 from flask import Flask, render_template, flash, redirect, url_for, request, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
-from app import app, db, secrets#, mysql
-from app.auth.forms import LoginForm, RegistrationForm
+from app import app, db, secrets #, mysql
+from app.auth.forms import LoginForm, RegistrationForm, RecoverForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm, ViewForm, ResolveForm
 from app.models import User, Tickets
@@ -84,35 +84,64 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    form = RecoverForm()
+    print('recover password')
+    if form.validate_on_submit():
+        if form.email.data != "":
+            print(form.email.data)
+            user = User.query.filter_by(email=form.email.data).first()
+            if user is None:
+                flash('Invalid email', 'error')
+            else:
+                recoverUsername(user.username, "remnanto@hotmail.com")
+        else:
+            print('validated')
+            print(form.username.data)
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is None:
+                flash('Invalid username', 'error')
+            else:
+                recoverPasswordEmail(user.username, "remnanto@hotmail.com")
+    return render_template('forgot.html', title='Recover Password', form=form)
 
-@app.route('/submissions/<id>', methods=(['GET', 'POST']))
+@app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
 @roles_required('admin')
 def submission(id):
-    form = ViewForm()
-    form2 = ResolveForm()
-    tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
-    #this part really depends on how you're doing your HTML stuff
-    if form.validate_on_submit():
-        emailstring = form.replytext.data
-        ticket = Tickets.query.filter_by(id=id).first()
-        user = User.query.filter_by(username=ticket.name).first()
-        emailreply(emailstring, id, ticket.name, user.email)
-        ticket.status = 'Pending'
+    if request.method == 'DELETE':
+        tickets = Tickets.query.get(id)
+        tickets.isdelete = 1
         db.session.commit()
-        return redirect('/submissions')
-    elif form2.validate_on_submit():
-        ticket = Tickets.query.filter_by(id=id).first()
-        ticket.status = 'Resolved'
-        db.session.commit()
-        return redirect('/submissions')
-    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2)
+        return 'success'
+    else:
+        form = ViewForm()
+        form2 = ResolveForm()
+        tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
+        #this part really depends on how you're doing your HTML stuff
+        if form.validate_on_submit():
+            emailstring = form.replytext.data
+            ticket = Tickets.query.filter_by(id=id).first()
+            user = User.query.filter_by(username=ticket.name).first()
+            emailreply(emailstring, id, ticket.name, user.email)
+            ticket.status = 'Pending'
+            db.session.commit()
+            return redirect('/submissions')
+        elif form2.validate_on_submit():
+            ticket = Tickets.query.filter_by(id=id).first()
+            ticket.status = 'Resolved'
+            db.session.commit()
+            return redirect('/submissions')
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2)
+
+
 
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
 def submissions():
-    tickets = Tickets.query.all()
+    tickets = Tickets.query.filter_by(isdelete=0).all()
     #print(tickets)
     return render_template('submissions.html', title='Submissions', tickets=tickets)
 
@@ -209,7 +238,7 @@ def emailreply(emailstring, ticketnumber, name, email):
     email = email
     ticketnumber = ticketnumber
     emailstring = emailstring
-    email = "weijin_tan@mymail.sutd.edu.sg"
+    email = "remnanto@hotmail.com"
     content = "Dear {user}, <br><br>{text}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
               "Accenture Service Team".format(user=user, text=emailstring, ticketnumber=ticketnumber)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
@@ -221,3 +250,33 @@ def emailreply(emailstring, ticketnumber, name, email):
             }
     response = requests.post(url, headers=headers, json=body)
     return redirect(url_for("index"))
+
+def recoverPasswordEmail(username, email):
+    passwordlink = generatePasswordLink(username)
+    emailstring = "To recover your password please visit " + passwordlink
+    content = "Dear {user}, <br><br>{text}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user=username, text=emailstring)
+    url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
+    headers = {"Server-Token": bearer_token}
+    body = {"subject": "Accenture: Recover Password",
+            "sender": "supportteam@accenture.com",
+            "recipient": email,
+            "html": content
+            }
+    response = requests.post(url, headers=headers, json=body)
+
+def recoverUsername(username, email):
+
+    content = "Dear Member, <br><br>Your username is : {user}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user=username)
+    url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
+    headers = {"Server-Token": bearer_token}
+    body = {"subject": "Accenture: Recover Password",
+            "sender": "supportteam@accenture.com",
+            "recipient": email,
+            "html": content
+            }
+    response = requests.post(url, headers=headers, json=body)
+
+def generatePasswordLink(username):
+    return "localhost:5000"
