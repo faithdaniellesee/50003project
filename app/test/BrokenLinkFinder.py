@@ -17,6 +17,8 @@ for link in links:
         broken_links.append(link.get_attribute('href'))
         print(link.get_attribute('href') + " is a broken link")
 
+driver.close()
+
 if len(broken_links) == 0:
     print ("No broken links!")
 else:
