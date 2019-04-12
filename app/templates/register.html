@@ -56,47 +56,14 @@
                       </div>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <button type="create account" class="btn btn-primary" style="margin-left: 15px">Create Account</button>
+                    {{ form.submit(class="btn btn-primary", style="margin-left: 15px") }}
+                    <!-- <button type="Create Account" class="btn btn-primary" style="margin-left: 15px">Create Account</button> -->
                 </div>
             </div>
         </div>
-                  <!--</div>-->
-        <!--</div>-->
-                <!--<div class="form-group">-->
-                  <!--<label for="inputCompany">Company Name</label>-->
-                  <!--<input type="text" class="form-control" id="inputCompany" placeholder="e.g. SUTD">-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                  <!--<label for="inputAddress">Company Address</label>-->
-                  <!--<input type="text" class="form-control" id="inputAddress" placeholder="e.g. Somapah Road">-->
-                <!--</div>-->
-                <!--<div class="form-row">-->
-                  <!--<div class="form-group col-md-6">-->
-                    <!--<label for="inputCountry">Country</label>-->
-                    <!--<select id="inputCountry" class="form-control">-->
-                      <!--<option selected>Choose...</option>-->
-                      <!--<option value ="1">Singapore</option>-->
-                      <!--<option value ="2">Republic of Korea</option>-->
-                      <!--<option value ="3">Indonesia</option>-->
-                      <!--<option value ="4">Malaysia</option>-->
-                      <!--<option value ="5">Thailand</option>-->
-                      <!--<option value ="6">Japan</option>-->
 
-
-                      <!--<option>...</option>-->
-                    <!--</select>-->
-                  <!--</div>-->
-                  <!--<div class="form-group col-md-4">-->
-                    <!--<label for="inputCity">City</label>-->
-                    <!--<input type="text" class="form-control" id="inputCity">-->
-                  <!--</div>-->
-                  <!--<div class="form-group col-md-2">-->
-                    <!--<label for="inputZip">Zip</label>-->
-                    <!--<input type="text" class="form-control" id="inputZip">-->
-                  <!--</div>-->
-                <!--</div>-->
-              </form>
-            </div>
+      </form>
+    </div>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
       <script>
