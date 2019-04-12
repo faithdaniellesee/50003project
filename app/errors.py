@@ -22,9 +22,9 @@ def not_found_error(error):
     return render_template('errorhandlers/404.html'), 404
 
 # 429: Too Many Requests
-@app.errorhandler(429)
-def too_many_requests_error(error):
-    return render_template('errorhandlers/429.html'), 429
+# @app.errorhandler(429)
+# def too_many_requests_error(error):
+#     return render_template('errorhandlers/429.html'), 429
 
 # 500: Internal Server Error
 @app.errorhandler(500)
