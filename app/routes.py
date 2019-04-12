@@ -4,16 +4,18 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets#, mysql
 from app.auth.forms import LoginForm, RegistrationForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm
+from app.ticket.forms import TicketForm, ViewForm
 from app.models import User, Tickets
 from app import secrets
 import requests
+from app.errors import too_many_requests_error
 import uuid
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
 #flask-user implementation
 from flask_user import roles_required
+from app import limiter
 
 @app.route('/')
 @app.route('/index')
@@ -35,13 +37,14 @@ def ticket():
         emailsending(uid, user)
         db.session.add(ticket)
         db.session.commit()
-        flash('Your ticket has been submitted.')
+        flash('Your ticket has been successfully submitted.')
         return redirect(url_for('index'))
     flash('Please fill up all fields')
     return render_template('ticket.html', title='Ticket', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("2/minute", methods=['POST'], error_message=too_many_requests_error)
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))
@@ -62,7 +65,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    flash("You were successfully logged out.")
+    return redirect("/login")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -78,24 +82,29 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/submissions', methods=['GET', 'POST'])
+
+@app.route('/submissions/<id>', methods=(['GET', 'POST']))
+@login_required
+@roles_required('admin')
+def submission(id):
+    form = ViewForm()
+    tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
+    #this part really depends on how you're doing your HTML stuff
+    if form.validate_on_submit():
+        ticket = Tickets.query.filter_by(id=id)
+        ticket.status = 'Resolved'
+        db.session.commit()
+        return redirect('/submissions')
+    return render_template('submissionById.html', title='Submission', tickets=tickets, form=form)
+
+@app.route('/submissions')
 @login_required
 @roles_required('admin')
 def submissions():
     tickets = Tickets.query.all()
+    #print(tickets)
     return render_template('submissions.html', title='Submissions', tickets=tickets)
-    # return render_template('submissions.html', title='Submissions')
 
-'''
-@app.route('/submission/<id>')
-@login_required
-@roles_required('admin')
-def submission():
-    ticket = Tickets.query.get(id)              #<class 'app.models.Tickets'>
-    #this part really depends on how you're doing your HTML stuff
-    ticketvalue =                               #return as <class 'dict'> for you to iterate in your HTML
-    return render_template('submission.html', title='Submission')
-'''
 
 @app.route('/api/')
 def apipage():
