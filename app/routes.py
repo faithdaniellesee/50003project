@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets #, mysql
 from app.auth.forms import LoginForm, RegistrationForm, RecoverForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm, ViewForm, ResolveForm
+from app.ticket.forms import TicketForm, ViewForm, ResolveForm, BackForm
 from app.models import User, Tickets
 from app import secrets
 import requests
@@ -118,8 +118,8 @@ def submission(id):
     else:
         form = ViewForm()
         form2 = ResolveForm()
-        tickets = Tickets.query.get(id)              #<class 'app.models.Tickets'>
-        #this part really depends on how you're doing your HTML stuff
+        form3 = BackForm()
+        tickets = Tickets.query.get(id)             
         if form.validate_on_submit():
             emailstring = form.replytext.data
             ticket = Tickets.query.filter_by(id=id).first()
@@ -133,7 +133,9 @@ def submission(id):
             ticket.status = 'Resolved'
             db.session.commit()
             return redirect('/submissions')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2)
+        elif form3.validate_on_submit():
+            return redirect('/submissions')
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3)
 
 
 

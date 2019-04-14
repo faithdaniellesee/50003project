@@ -24,3 +24,6 @@ class ViewForm(FlaskForm):
 class ResolveForm(FlaskForm):
     resolve = SubmitField('Resolve')
 
+class BackForm(FlaskForm):
+    back = SubmitField('Back')
+

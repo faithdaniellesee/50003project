@@ -9,10 +9,6 @@
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
-        crossorigin="anonymous"></script>
     <style>
         .submissionById-body {
             width: 100%;
@@ -25,38 +21,41 @@
             width: 100%;
         }
     </style>
+
 </head>
 
 <body>
     <div class="submissionById-body">
+        <label><b>Ticket Id</b></label>
         <div class="row">
             <div class="form-group col-md-9">
-                <label><b>Ticket Id</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.id }} </strong></p>
                 </div>
             </div>
-            <form action="" method="post">
-            {{ form2.hidden_tag() }}
-                <div class="form-group col-md-2" style="margin-left: 0px">
-                    {{ form2.resolve(class="btn btn-primary", align="left", value="Resolve" )}}
-                </div>
-            </form>
+            <div class="form-group col-md-3">
+                <form action="" method="post">
+                    {{ form2.hidden_tag() }}
+                    <div class="form-group col-md-2">
+                        {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width:auto" )}}
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                    <label><b>Client</b></label>
-                    <div class="form-control">
-                        <p><strong></strong> {{ tickets.name }} </strong></p>
-                    </div>
+                <label><b>Client</b></label>
+                <div class="form-control">
+                    <p><strong></strong> {{ tickets.name }} </strong></p>
                 </div>
+            </div>
             <div class="form-group col-md-4">
                 <label><b>Ticket Type</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.options }} </strong></p>
                 </div>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-4">
                 <label><b>Status</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.status }} </strong></p>
@@ -65,27 +64,46 @@
         </div>
 
         <div class="row">
-        <div class="form-group col-md-12">
+            <div class="form-group col-md-12">
                 <label><b>Details</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.details }} </strong></p>
                 </div>
             </div>
         </div>
-        <form action="" method="post">
-        {{ form.hidden_tag() }}
-            <div class="form-group">
-                <label>Reply</label>
-                {{ form.replytext(class="form-control", id="details", rows="10") }}
+        <div class="row">
+            <div class="form-group col-md-12">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <label><b>Reply</b></label>
+                    {{ form.replytext(class="form-control", id="details", rows="10") }}
             </div>
-            <div class="row">
-                <div class="form-group col-md-6" style="margin-left: 0px">
-                    {{ form.reply(class="btn btn-primary", align="left", value="Reply" )}}
-                </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
             </div>
-        </form>
+            </form>
+            <div class="form-group col-md-6" style="text-align: right">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}}
+                </form>
+            </div>
+        </div>
     </div>
 </body>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+    crossorigin="anonymous"></script>
+<script>
+    function navigateBack() {
+        window.location.href = 'submissions';
+</script>
+
 
 </html>
 
