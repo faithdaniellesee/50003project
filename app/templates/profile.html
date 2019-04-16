@@ -48,12 +48,14 @@
 
 <body>
   <div class="profile-body">
-    <h1>Profile</h1>
+    <div class="container" style="background-color: white" width=auto>
+      <h1>Profile</h1>
+    </div>
     <div class="container" style="min-width: 800px">
       <br>
       {% if tickets|length > 0 %}
       <table id="profile_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="profile_table_info"
-      sytle="width: auto">
+        sytle="width: auto">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
             <th class="th-sm">Date</th>
