@@ -1,6 +1,6 @@
 from app import limiter
 from flask_user import roles_required
-from flask import Flask, render_template, flash, redirect, url_for, request, session
+from flask import Flask, render_template, flash, redirect, url_for, request, session, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
 from app import app, db, secrets  # , mysql
@@ -14,8 +14,12 @@ import uuid
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
-# flask-user implementation
-
+#flask-user implementation
+from flask_user import roles_required
+from app import limiter
+from werkzeug.utils import secure_filename
+from io import BytesIO
+from base64 import b64encode
 
 @app.route('/')
 @app.route('/index')
@@ -37,8 +41,12 @@ def ticket():
         email = current_user.email
         status = "New"
         isdelete = 0
-        ticket = Tickets(id=uid, name=user, options=options, title=title,
-                         details=details, status=status, isdelete=isdelete)
+        if form.file.data:
+            file = form.file.data.read()
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, upload=file)
+        else:
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status,
+                             isdelete=isdelete)
         emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()
@@ -185,6 +193,14 @@ def archivedTicket(id):
             return redirect('/archive')
         return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3)
 
+@app.route('/submissions/attachment/<id>')
+@login_required
+@roles_required('admin')
+def attachment(id):
+    ticket = Tickets.query.get(id)
+    img = BytesIO(ticket.upload)
+    img64 = b64encode(img.read())
+    return render_template('attachment.html', image=img64.decode('utf8'))
 
 @app.route('/submissions')
 @login_required
@@ -345,3 +361,10 @@ def recoverUsername(username, email):
 
 def generatePasswordLink(username):
     return "localhost:5000"
+
+
+@app.route("/download", methods=['GET', 'POST'])
+def download_blob():
+    ticket = Tickets.query.get('1ea59f4c-602c-11e9-a5c7-34f39a281f4e')
+    image = ticket.upload
+    return send_file(BytesIO(image), attachment_filename='flask.jpg', as_attachment=True)

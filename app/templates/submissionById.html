@@ -4,10 +4,19 @@
 <!DOCTYPE html>
 <meta charset="UTF-8" />
 
+
+
 <html>
 
+    <script>
+
+        function viewTicket(ticketId) {
+          window.open( 'attachment/' + ticketId, '_blank')
+        }
+    </script>
+
 <head>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    <link href="https://stackpath.bootstrapcdn.com/bootsubmissionById.htmlstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
     <style>
         .submissionById-body {
@@ -59,6 +68,14 @@
                 <label><b>Status</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.status }} </strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-2">
+                <label><b>Attached File</b></label>
+                <div class="form-control">
+                    <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">Attached File</button>
                 </div>
             </div>
         </div>
