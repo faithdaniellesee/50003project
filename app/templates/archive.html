@@ -21,7 +21,7 @@
   <a href="css/addons/datatables.min.css" rel="stylesheet"></a>
 
   <style>
-    .submissions-body {
+    .archive-body {
       /* display:inline-block; */
       width: 80%;
       max-width: 1400px;
@@ -40,27 +40,26 @@
   <script>
 
     function viewTicket(ticketId) {
-      window.location.href = 'submissions/' + ticketId;
+      window.location.href = 'archive/' + ticketId;
     }
-    function archiveTicket(ticketId) {
+    function deleteTicket(ticketId) {
       swal({
-        title: "Archive this ticket?",
-        text: "It will be removed from the submissions table!",
+        title: "Delete this ticket?",
+        text: "Once deleted, you will still be able to recover this!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
       })
-        .then((willArchive) => {
-          if (willArchive) {
-            console.log(willArchive);
+        .then((willDelete) => {
+          if (willDelete) {
             $.ajax({
               type: "DELETE",
-              url: "submissions/" + ticketId,
+              url: "archive/" + ticketId,
               contentType: "application/json",
               success: function (response) {
                 console.log(response);
                 if (response == "success") {
-                  window.location.href = 'submissions'
+                  window.location.href = 'archive'
                 }
               },
               error: function (err) {
@@ -76,12 +75,12 @@
 </head>
 
 <body>
-  <div class="submissions-body">
-    <h1>Submissions</h1>
+  <div class="archive-body">
+    <h1>Archive</h1>
     <div class="container">
       <br>
       {% if tickets|length > 0 %}
-      <table id="submissions_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="submissions_table_info"
+      <table id="archive_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="archive_table_info"
         sytle="width: 100%; vertical-align:">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
@@ -103,7 +102,7 @@
             <!-- <td>{{i.details}}</td> -->
             <td width="205" style="text-align: right">
               <button class="btn btn-info" style="width: 100px" onclick="viewTicket('{{i.id}}')">View More</button>
-              <button class="btn btn-secondary" style="width: 100px" onclick="archiveTicket('{{i.id}}')">Archive</button>
+              <button class="btn btn-danger" style="width: 100px" onclick="deleteTicket('{{i.id}}')">Delete</button>
             </td>
           </tr>
           {% endfor %}
@@ -140,7 +139,7 @@
 
 <script>
   $(document).ready(function () {
-    $('#submissions_table').DataTable();
+    $('#archive_table').DataTable();
     $('.dataTables_length').addClass('bs-select');
   });
 </script>
