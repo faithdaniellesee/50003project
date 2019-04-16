@@ -19,6 +19,7 @@ from flask_user import roles_required
 from app import limiter
 from werkzeug.utils import secure_filename
 from io import BytesIO
+from base64 import b64encode
 
 @app.route('/')
 @app.route('/index')
@@ -185,6 +186,14 @@ def archivedTicket(id):
             return redirect('/archive')
         return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3)
 
+@app.route('/submissions/attachment/<id>')
+@login_required
+@roles_required('admin')
+def attachment(id):
+    ticket = Tickets.query.get(id)
+    img = BytesIO(ticket.upload)
+    img64 = b64encode(img.read())
+    return render_template('attachment.html', image=img64.decode('utf8'))
 
 @app.route('/submissions')
 @login_required
