@@ -2,7 +2,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-driver = webdriver.Firefox(executable_path='/home/faith/geckodriver')
+driver = webdriver.Firefox(executable_path='C:\\Users\\user\\Desktop\\geckodriver')
 driver.get('http://127.0.0.1:5000')
 driver.maximize_window()
 
@@ -36,9 +36,9 @@ time.sleep(3)
 
 driver.find_element_by_link_text("Sign Up").click()
 time.sleep(1)
-driver.find_element_by_id("inputEmail").send_keys("member6@example.com")
+driver.find_element_by_id("inputEmail").send_keys("faith@example.com")
 time.sleep(1)
-driver.find_element_by_id("username").send_keys("member6")
+driver.find_element_by_id("username").send_keys("faith")
 time.sleep(1)
 driver.find_element_by_id("password").send_keys("Password1")
 time.sleep(1)

@@ -2,7 +2,7 @@ import time
 import requests
 from selenium import webdriver
 
-driver = webdriver.Firefox(executable_path='/home/faith/geckodriver')
+driver = webdriver.Firefox(executable_path='C:\\Users\\user\\Desktop\\geckodriver')
 driver.get('http://127.0.0.1:5000')
 driver.maximize_window()
 
