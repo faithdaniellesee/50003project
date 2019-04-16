@@ -236,23 +236,6 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'<li>Please fill up all fields</li>', response.data)
 
-    # Brute force test to ensure throttling works
-    def test_brute_force(self):
-        tester = app.test_client()
-        for i in range(100):
-            tester.post(
-                '/login',
-                data=dict(username="wrong", password="alsowrong"),
-                follow_redirects=True
-            )
-        response = tester.post(
-            '/login',
-            data=dict(username="wrong", password="alsowrong"),
-            follow_redirects=True
-        )
-        self.assertIn(b'Too Many Requests', response.data)
-
-
 
 if __name__ == '__main__':
     unittest.main()
