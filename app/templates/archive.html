@@ -100,9 +100,9 @@
             <td style="text-align: center">{{i.options}}</td>
             <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
-            <td width="225" style="text-align: right">
-              <button class="btn btn-info" style="width: 110px" onclick="viewTicket('{{i.id}}')">View More</button>
-              <button class="btn btn-danger" style="width: 110px" onclick="deleteTicket('{{i.id}}')">Delete</button>
+            <td width="205" style="text-align: right">
+              <button class="btn btn-info" style="width: 100px" onclick="viewTicket('{{i.id}}')">View More</button>
+              <button class="btn btn-danger" style="width: 100px" onclick="deleteTicket('{{i.id}}')">Delete</button>
             </td>
           </tr>
           {% endfor %}
@@ -132,9 +132,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
   crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+
 
 <script>
   $(document).ready(function () {
