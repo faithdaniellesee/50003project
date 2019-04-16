@@ -145,6 +145,7 @@ def submission(id):
             return redirect('/submissions')
         return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3)
 
+
 @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
 @roles_required('admin')
@@ -152,6 +153,7 @@ def archivedTicket(id):
     if request.method == 'DELETE':
         tickets = Tickets.query.get(id)
         db.session.delete(tickets)
+        db.session.commit()
         return 'success'
     else:
         form = ViewForm()
@@ -176,6 +178,7 @@ def archivedTicket(id):
             return redirect('/archive')
         return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3)
 
+
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
@@ -183,6 +186,7 @@ def submissions():
     tickets = Tickets.query.filter_by(isdelete=0).all()
     # print(tickets)
     return render_template('submissions.html', title='Submissions', tickets=tickets)
+
 
 @app.route('/archive')
 @login_required
