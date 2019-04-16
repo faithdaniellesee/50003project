@@ -112,6 +112,13 @@ def forgot():
                 recoverPasswordEmail(user.username, "remnanto@hotmail.com")
     return render_template('forgot.html', title='Recover Password', form=form)
 
+@app.route('/profile')
+@login_required
+def profile():
+    user = current_user.username
+    tickets = Tickets.query.filter_by(name=user).all()
+    # print(tickets)
+    return render_template('profile.html', title='Profile', tickets=tickets)
 
 @app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
