@@ -32,7 +32,8 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'<title>Login Page</title>', response.data)
 
-    def test_register_injection(self):
+'''
+    def test_register_injection1(self):
         tester = app.test_client()
         response = tester.post(
             '/login',
@@ -41,7 +42,7 @@ class FlaskTestCase(unittest.TestCase):
         )
         self.assertIn(b'<title>Login Page</title>', response.data)
 
-    def test_empty_register1(self):
+    def test_register_injection2(self):
         tester = app.test_client()
         response = tester.post(
             '/register',
@@ -50,6 +51,23 @@ class FlaskTestCase(unittest.TestCase):
             follow_redirects=True
         )
         self.assertIn(b'[This field is required.]', response.data)
+        
+    # test for injecting javascript commands
+    def test_register_xss(self):
+        tester = app.test_client()
+        tester.post(
+            '/register',
+            data=dict(email="something@example.com", username="<script>alert(0)</script>",
+                      password="admin", password2="admin"),
+            follow_redirects=True
+        )
+        response = tester.post(
+            '/login',
+            data=dict(username=" ' OR true--", password="Password1"),
+            follow_redirects=True
+        )
+        self.assertIn(b'[This field is required.]', response.data)
+'''
 
 if __name__ == '__main__':
     unittest.main()

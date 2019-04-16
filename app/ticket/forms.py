@@ -12,9 +12,9 @@ class TicketForm(FlaskForm):
     ticketOptions = [("", ' '), ("Query", "Query"), ("Feedback", "Feedback"),
                      ("Suggestion", "Suggestion"), ("Others", "Others")]
     options = SelectField(u'Ticket Options', choices=ticketOptions, validators=[validate_select, DataRequired()])
-    title = StringField(u'Full Name', validators=[Regexp(r'^[\w.@,]+$'), DataRequired(), Length(max=100)])
+    title = StringField(u'Full Name', validators=[DataRequired(), Length(max=100)])
     details = TextAreaField('Details', validators=[DataRequired(), Length(min=1)])
-    file = FileField('File', validators=[FileAllowed(['jpg', 'png', 'pdf'])])
+    file = FileField('File', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class ViewForm(FlaskForm):

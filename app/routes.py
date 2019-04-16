@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request, session
+from flask import Flask, render_template, flash, redirect, url_for, request, session, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.urls import url_parse
 from app import app, db, secrets #, mysql
@@ -15,6 +15,8 @@ bearer_token = secrets.bearer_token
 #flask-user implementation
 from flask_user import roles_required
 from app import limiter
+from werkzeug.utils import secure_filename
+from io import BytesIO
 
 @app.route('/')
 @app.route('/index')
@@ -35,7 +37,12 @@ def ticket():
         email = current_user.email
         status = "New"
         isdelete = 0
-        ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete)
+        if form.file.data:
+            file = form.file.data.read()
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, upload=file)
+        else:
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status,
+                             isdelete=isdelete)
         emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()
@@ -282,3 +289,10 @@ def recoverUsername(username, email):
 
 def generatePasswordLink(username):
     return "localhost:5000"
+
+
+@app.route("/download", methods=['GET', 'POST'])
+def download_blob():
+    ticket = Tickets.query.get('1ea59f4c-602c-11e9-a5c7-34f39a281f4e')
+    image = ticket.upload
+    return send_file(BytesIO(image), attachment_filename='flask.jpg', as_attachment=True)
