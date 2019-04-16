@@ -29,6 +29,8 @@
       /* margin-left: 100px;
       margin-right: 100px; */
       margin-top: 30px;
+      margin-bottom: 100px;
+
     }
     .container{
       background-color: rgba(135,206,250,0.2);
@@ -40,16 +42,16 @@
     function viewTicket(ticketId) {
       window.location.href = 'submissions/' + ticketId;
     }
-    function deleteTicket(ticketId) {
+    function archiveTicket(ticketId) {
       swal({
-        title: "Delete this ticket?",
-        text: "Once deleted, you will still be able to recover this!",
+        title: "Archive this ticket?",
+        text: "It will be removed from the submissions table!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
       })
-        .then((willDelete) => {
-          if (willDelete) {
+        .then((willArchive) => {
+          if (willArchive) {
             $.ajax({
               type: "DELETE",
               url: "submissions/" + ticketId,
@@ -99,8 +101,8 @@
             <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
             <td width="225" style="text-align: right">
-              <button class="btn btn-secondary" style="width: 110px" onclick="viewTicket('{{i.id}}')">View More</button>
-              <button class="btn btn-danger" style="width: 110px" onclick="deleteTicket('{{i.id}}')">Delete</button>
+              <button class="btn btn-info" style="width: 110px" onclick="viewTicket('{{i.id}}')">View More</button>
+              <button class="btn btn-secondary" style="width: 110px" onclick="archiveTicket('{{i.id}}')">Archive</button>
             </td>
           </tr>
           {% endfor %}
@@ -109,6 +111,7 @@
       {% else %}
       <p>No Tickets</p>
       {% endif %}
+      <br>
     </div>
   </div>
 </body>

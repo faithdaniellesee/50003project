@@ -21,7 +21,7 @@
   <a href="css/addons/datatables.min.css" rel="stylesheet"></a>
 
   <style>
-    .submissions-body {
+    .archive-body {
       /* display:inline-block; */
       width: 80%;
       max-width: 1400px;
@@ -29,6 +29,8 @@
       /* margin-left: 100px;
       margin-right: 100px; */
       margin-top: 30px;
+      margin-bottom: 100px;
+
     }
     .container{
       background-color: rgba(135,206,250,0.2);
@@ -38,7 +40,7 @@
   <script>
 
     function viewTicket(ticketId) {
-      window.location.href = 'submissions/' + ticketId;
+      window.location.href = 'archive/' + ticketId;
     }
     function deleteTicket(ticketId) {
       swal({
@@ -52,12 +54,12 @@
           if (willDelete) {
             $.ajax({
               type: "DELETE",
-              url: "submissions/" + ticketId,
+              url: "archive/" + ticketId,
               contentType: "application/json",
               success: function (response) {
                 console.log(response);
                 if (response == "success") {
-                  window.location.href = 'submissions'
+                  window.location.href = 'archive'
                 }
               },
               error: function (err) {
@@ -73,12 +75,12 @@
 </head>
 
 <body>
-  <div class="submissions-body">
-    <h1>Submissions</h1>
+  <div class="archive-body">
+    <h1>Archive</h1>
     <div class="container">
       <br>
       {% if tickets|length > 0 %}
-      <table id="submissions_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="submissions_table_info"
+      <table id="archive_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="archive_table_info"
         sytle="width: 100%; vertical-align:">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
@@ -99,7 +101,7 @@
             <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
             <td width="225" style="text-align: right">
-              <button class="btn btn-secondary" style="width: 110px" onclick="viewTicket('{{i.id}}')">View More</button>
+              <button class="btn btn-info" style="width: 110px" onclick="viewTicket('{{i.id}}')">View More</button>
               <button class="btn btn-danger" style="width: 110px" onclick="deleteTicket('{{i.id}}')">Delete</button>
             </td>
           </tr>
@@ -109,6 +111,7 @@
       {% else %}
       <p>No Tickets</p>
       {% endif %}
+      <br>
     </div>
   </div>
 </body>
@@ -134,7 +137,7 @@
 
 <script>
   $(document).ready(function () {
-    $('#submissions_table').DataTable();
+    $('#archive_table').DataTable();
     $('.dataTables_length').addClass('bs-select');
   });
 </script>
