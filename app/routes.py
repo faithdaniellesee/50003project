@@ -46,7 +46,7 @@ def ticket():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("40 per minute", error_message='Too Many Requests!')
+@limiter.limit("40 per minute", methods=['POST'], error_message='Too Many Requests!')
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('ticket'))
