@@ -7,7 +7,7 @@ from app import app, db, secrets  # , mysql
 from app.auth.forms import LoginForm, RegistrationForm, RecoverForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm, ViewForm, ResolveForm, BackForm
-from app.models import User, Tickets
+from app.models import User, Tickets, UserRoles
 from app import secrets
 import requests
 import uuid
@@ -25,7 +25,9 @@ from base64 import b64encode
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html', title='Home')
+    user = User.query.filter_by(username=current_user.username).first()
+    role = UserRoles.query.get(user.id).role_id
+    return render_template('index.html', title='Home', user=role)
 
 
 @app.route('/ticket', methods=['GET', 'POST'])
