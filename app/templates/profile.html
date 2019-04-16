@@ -21,7 +21,7 @@
   <a href="css/addons/datatables.min.css" rel="stylesheet"></a>
 
   <style>
-    .submissions-body {
+    .profile-body {
       /* display:inline-block; */
       width: 80%;
       max-width: 1400px;
@@ -42,48 +42,19 @@
     function viewTicket(ticketId) {
       window.location.href = 'submissions/' + ticketId;
     }
-    function archiveTicket(ticketId) {
-      swal({
-        title: "Archive this ticket?",
-        text: "It will be removed from the submissions table!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willArchive) => {
-          if (willArchive) {
-            console.log(willArchive);
-            $.ajax({
-              type: "DELETE",
-              url: "submissions/" + ticketId,
-              contentType: "application/json",
-              success: function (response) {
-                console.log(response);
-                if (response == "success") {
-                  window.location.href = 'submissions'
-                }
-              },
-              error: function (err) {
-                console.log(err);
-              }
-            });
-          } else {
 
-          }
-        });
-    }
   </script>
 </head>
 
 <body>
-  <div class="submissions-body">
+  <div class="profile-body">
     <div class="container" style="background-color: white" width=auto>
-      <h1>Submissions</h1>
+      <h1>Profile</h1>
     </div>
-    <div class="container" width=auto>
+    <div class="container" style="min-width: 800px">
       <br>
       {% if tickets|length > 0 %}
-      <table id="submissions_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="submissions_table_info"
+      <table id="profile_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="profile_table_info"
         sytle="width: auto">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
@@ -105,9 +76,8 @@
             <td width="100" style="text-align: center">{{i.options}}</td>
             <td width="100" style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
-            <td width="205" style="text-align: right">
-              <button class="btn btn-info" style="width: 100px" onclick="viewTicket('{{i.id}}')">View More</button>
-              <button class="btn btn-secondary" style="width: 100px" onclick="archiveTicket('{{i.id}}')">Archive</button>
+            <td width="105" style="text-align: right">
+              <button class="btn btn-info" onclick="viewTicket('{{i.id}}')">View More</button>
             </td>
           </tr>
           {% endfor %}
@@ -144,7 +114,7 @@
 
 <script>
   $(document).ready(function () {
-    $('#submissions_table').DataTable();
+    $('#profile_table').DataTable();
     $('.dataTables_length').addClass('bs-select');
   });
 </script>
