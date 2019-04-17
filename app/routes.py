@@ -25,9 +25,13 @@ from base64 import b64encode
 @app.route('/index')
 @login_required
 def index():
-    user = User.query.filter_by(username=current_user.username).first()
-    role = UserRoles.query.get(user.id).role_id
-    return render_template('index.html', title='Home', user=role)
+    user = User.query.filter_by(username=current_user.username).first().id
+    role = UserRoles.query.filter_by(user_id=user).first()
+    if role:
+        roleid = int(role.role_id)
+    else:
+        roleid = 0
+    return render_template('index.html', title='Home', user=roleid)
 
 
 @app.route('/ticket', methods=['GET', 'POST'])

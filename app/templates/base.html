@@ -45,10 +45,10 @@
           <a class="nav-link" href="{{ url_for('ticket') }}">Ticket</a>
         </li>
         <li class="nav-item" id="submissionlink">
-          <a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>
+
         </li>
         <li class="nav-item" id="archivelink">
-          <a class="nav-link" href="{{ url_for('archive') }}">Archive</a>
+
         </li>
         <li class="nav-item">
           {% if current_user.is_anonymous %}
@@ -79,9 +79,16 @@
   crossorigin="anonymous"></script>
 <script>
   var x = document.getElementById("archivelink");
-  if (!{{user}}){
-    x.setAttribute("")
-    }
+  if ({{user}} == 1){
+    x.innerHTML= '<a class="nav-link" href="{{ url_for('archive') }}">Archive</a>'
+   }
+
+   var y = document.getElementById("submissionlink");
+  if ({{user}} == 1){
+    y.innerHTML= '<a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>'
+   }
+
+
 
 </script>
 </html>
