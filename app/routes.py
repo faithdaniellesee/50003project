@@ -21,16 +21,21 @@ from werkzeug.utils import secure_filename
 from io import BytesIO
 from base64 import b64encode
 
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
+def getRole():
     user = User.query.filter_by(username=current_user.username).first().id
     role = UserRoles.query.filter_by(user_id=user).first()
     if role:
         roleid = int(role.role_id)
     else:
         roleid = 0
+    return roleid
+
+
+@app.route('/')
+@app.route('/index')
+@login_required
+def index():
+    roleid = getRole()
     return render_template('index.html', title='Home', user=roleid)
 
 
@@ -38,6 +43,7 @@ def index():
 @login_required
 def ticket():
     form = TicketForm()
+    roleid = getRole()
     if form.validate_on_submit():
         options = form.options.data
         details = form.details.data
@@ -59,7 +65,7 @@ def ticket():
         flash('Your ticket has been successfully submitted.')
         return redirect(url_for('index'))
     flash('Please fill up all fields')
-    return render_template('ticket.html', title='Ticket', form=form)
+    return render_template('ticket.html', title='Ticket', form=form, user=roleid)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -129,15 +135,17 @@ def forgot():
 @app.route('/profile')
 @login_required
 def profile():
+    roleid = getRole()
     user = current_user.username
     tickets = Tickets.query.filter_by(name=user).all()
     # print(tickets)
-    return render_template('profile.html', title='Profile', tickets=tickets)
+    return render_template('profile.html', title='Profile', tickets=tickets, user=roleid)
 
 @app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
 @roles_required('admin')
 def submission(id):
+    roleid = getRole()
     if request.method == 'DELETE':
         tickets = Tickets.query.get(id)
         tickets.isdelete = 1
@@ -164,13 +172,14 @@ def submission(id):
             return redirect('/submissions')
         elif form3.validate_on_submit():
             return redirect('/submissions')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3)
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid)
 
 
 @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
 @roles_required('admin')
 def archivedTicket(id):
+    roleid = getRole()
     if request.method == 'DELETE':
         tickets = Tickets.query.get(id)
         db.session.delete(tickets)
@@ -197,33 +206,36 @@ def archivedTicket(id):
             return redirect('/archive')
         elif form3.validate_on_submit():
             return redirect('/archive')
-        return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3)
+        return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid)
 
 @app.route('/submissions/attachment/<id>')
 @login_required
 @roles_required('admin')
 def attachment(id):
+    roleid = getRole()
     ticket = Tickets.query.get(id)
     img = BytesIO(ticket.upload)
     img64 = b64encode(img.read())
-    return render_template('attachment.html', image=img64.decode('utf8'))
+    return render_template('attachment.html', image=img64.decode('utf8'), user=roleid)
 
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
 def submissions():
+    roleid = getRole()
     tickets = Tickets.query.filter_by(isdelete=0).all()
     # print(tickets)
-    return render_template('submissions.html', title='Submissions', tickets=tickets)
+    return render_template('submissions.html', title='Submissions', tickets=tickets, user=roleid)
 
 
 @app.route('/archive')
 @login_required
 @roles_required('admin')
 def archive():
+    roleid = getRole()
     tickets = Tickets.query.filter_by(isdelete=1).all()
     # print(tickets)
-    return render_template('archive.html', title='Archive', tickets=tickets)
+    return render_template('archive.html', title='Archive', tickets=tickets, user=roleid)
 
 
 @app.route('/api/')
