@@ -39,9 +39,6 @@
           <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="{{ url_for('ticket') }}">Ticket</a>
         </li>
         <li class="nav-item" id="submissionlink">
@@ -81,7 +78,9 @@
   var x = document.getElementById("archivelink");
   if ({{user}} == 1){
     x.innerHTML= '<a class="nav-link" href="{{ url_for('archive') }}">Archive</a>'
-   }
+   } else {
+    x.innerHTML = '<a class="nav-link" href="{{ url_for('profile') }}">Profile</a>'
+    }
 
    var y = document.getElementById("submissionlink");
   if ({{user}} == 1){
