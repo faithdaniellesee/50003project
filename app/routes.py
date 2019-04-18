@@ -11,6 +11,7 @@ from app.models import User, Tickets, UserRoles
 from app import secrets
 import requests
 import uuid
+from datetime import datetime
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
@@ -60,12 +61,12 @@ def ticket():
         email = current_user.email
         status = "New"
         isdelete = 0
+        date = datetime.today()
         if form.file.data:
             file = form.file.data.read()
-            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, upload=file)
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, upload=file, date=date)
         else:
-            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status,
-                             isdelete=isdelete)
+            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, date=date)
         emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()

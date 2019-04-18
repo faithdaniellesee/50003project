@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from app import db, login
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for, g
@@ -52,6 +52,7 @@ class Tickets(db.Model):
     isdelete = db.Column(db.String(5))
     details = db.Column(db.Text())
     upload = db.Column(db.String(256))
+    date = db.Column(db.DateTime)
 
 @login.user_loader
 def load_user(id):
