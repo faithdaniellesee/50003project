@@ -18,6 +18,9 @@
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootsubmissionById.htmlstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
     <style>
         .submissionById-body {
             width: 100%;
@@ -29,6 +32,15 @@
         .row {
             width: 100%;
         }
+
+        div.msg_bbl {
+        background-color: #ddd;
+        padding: 5px 10px;
+        border-radius: 10px;
+        color: #555;
+        margin-bottom: 5px;
+        overflow-wrap: break-word
+      }
     </style>
 
 </head>
@@ -96,26 +108,66 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="form-group col-md-12">
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
                     <label><b>Reply</b></label>
                     {{ form.replytext(class="form-control", id="details", rows="10") }}
             </div>
+        </div> -->
+
+        <!-- chat function -->
+        <div class="container row">
+            <div class="col-md-12">
+
+                <div class="no_message">
+
+                    <div class="message_holder">
+                        {% for message in messages %}
+                        <div class="msg_bbl"><b style="color: #000">{{message.username}} </b><p>{{message.message}}</p></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
+        <form action="" method="POST">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+
+                    <div style="padding-top: 5px;"></div>
+                    <input class="message form-control" style="overflow-wrap: break-word" rows="5" placeholder="Messages">
+                    <div style="padding-top: 5px;"></div>
+                    <!-- <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span>
+                        Send</button> -->
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ form3.back(class="btn btn-success btn-block", value="Send", style="width:110px" )}}
+                    </form>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
+                </div>
+                <div class="form-group col-md-6" style="text-align: right">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}}
+                    </form>
+                </div>
+            </div>
+        </form>
+        <!-- end of chat function -->
+
+        <!-- <div class="row">
             <div class="form-group col-md-6">
                 {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
             </div>
-            </form>
-            <div class="form-group col-md-6" style="text-align: right">
-                <form action="" method="post">
-                    {{ form.hidden_tag() }}
-                    {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}}
-                </form>
-            </div>
-        </div>
+            </form> -->
+
     </div>
 </body>
 
@@ -125,7 +177,36 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port)
+    // broadcast a message
+    socket.on('connect', function () {
+        var form = $('form').on('submit', function (e) {
+            e.preventDefault()
+            let user_name = '{{ user.username }}'
+            let user_input = $('input.message').val()
+            console.log('sending message')
+            socket.emit('message', {
+                user_id: '{{ user.id }}',
+                user_name: user_name,
+                message: user_input,
+                ticket_id: '{{ tickets.id }}'
+            })
+            // empty the input field
+            $('input.message').val('').focus()
+        })
+    })
+    // capture message
+    socket.on('my response', function (msg) {
+        console.log(msg)
+        if (typeof msg.user_name !== 'undefined') {
+            $('h1').remove()
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + msg.message + '</div>')
+        }
+    })
+</script>
 
 </html>
 

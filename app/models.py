@@ -1,8 +1,8 @@
-from datetime import datetime
 from app import db, login
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for, g
 from passlib.hash import sha256_crypt
+from datetime import datetime
 
 #flask-user implementation
 from flask_user import UserManager, UserMixin, current_user
@@ -53,6 +53,14 @@ class Tickets(db.Model):
     details = db.Column(db.Text())
     upload = db.Column(db.String(256))
     date = db.Column(db.DateTime)
+
+class Messages(db.Model):
+    _tablename_ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text())
+    username = db.Column(db.String(255))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    ticket_id = db.Column(db.String(255), db.ForeignKey('tickets.id', ondelete='CASCADE'))
 
 @login.user_loader
 def load_user(id):

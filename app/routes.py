@@ -7,7 +7,7 @@ from app import app, db, secrets  # , mysql
 from app.auth.forms import LoginForm, RegistrationForm, RecoverForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
 from app.ticket.forms import TicketForm, ViewForm, ResolveForm, BackForm
-from app.models import User, Tickets, UserRoles
+from app.models import User, Tickets, UserRoles, Messages
 from app import secrets
 import requests
 import uuid
@@ -15,12 +15,8 @@ from datetime import datetime
 bearer_token = secrets.bearer_token
 
 # sanitize form inputs
-#flask-user implementation
-from flask_user import roles_required
-from app import limiter
-from werkzeug.utils import secure_filename
-from io import BytesIO
-from base64 import b64encode
+# flask-user implementation
+
 
 def getRole():
     user = User.query.filter_by(username=current_user.username).first().id
@@ -31,13 +27,16 @@ def getRole():
         roleid = 0
     return roleid
 
+
 def getNotif():
     tickets = Tickets.query.filter_by(status="New").all()
     return len(tickets)
 
+
 @app.route('/')
 def homepage():
     return render_template('landingpage.html')
+
 
 @app.route('/index')
 @login_required
@@ -64,9 +63,11 @@ def ticket():
         date = datetime.today()
         if form.file.data:
             file = form.file.data.read()
-            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, upload=file, date=date)
+            ticket = Tickets(id=uid, name=user, options=options, title=title,
+                             details=details, status=status, isdelete=isdelete, upload=file, date=date)
         else:
-            ticket = Tickets(id=uid, name=user, options=options, title=title, details=details, status=status, isdelete=isdelete, date=date)
+            ticket = Tickets(id=uid, name=user, options=options, title=title,
+                             details=details, status=status, isdelete=isdelete, date=date)
         emailsending(uid, user, email)
         db.session.add(ticket)
         db.session.commit()
@@ -140,6 +141,7 @@ def forgot():
                 recoverPasswordEmail(user.username, "remnanto@hotmail.com")
     return render_template('forgot.html', title='Recover Password', form=form)
 
+
 @app.route('/profile')
 @login_required
 def profile():
@@ -149,9 +151,10 @@ def profile():
     # print(tickets)
     return render_template('profile.html', title='Profile', tickets=tickets, user=roleid)
 
+
 @app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
-@roles_required('admin')
+# @roles_required('admin')
 def submission(id):
     roleid = getRole()
     notif = getNotif()
@@ -164,8 +167,11 @@ def submission(id):
         form = ViewForm()
         form2 = ResolveForm()
         form3 = BackForm()
-
+        form4 = ResolveForm()
+        user = current_user
         tickets = Tickets.query.get(id)
+        allMsg = Messages.query.filter_by(ticket_id=id).all()
+        print(allMsg)
         if form.validate_on_submit():
             emailstring = form.replytext.data
             ticket = Tickets.query.filter_by(id=id).first()
@@ -181,7 +187,9 @@ def submission(id):
             return redirect('/submissions')
         elif form3.validate_on_submit():
             return redirect('/submissions')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
+        elif form4.validate_on_submit():
+            return redirect('/submissions')
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, form4=form4, messages=allMsg, user=user)
 
 
 @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
@@ -218,6 +226,7 @@ def archivedTicket(id):
             return redirect('/archive')
         return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
 
+
 @app.route('/submissions/attachment/<id>')
 @login_required
 @roles_required('admin')
@@ -228,6 +237,7 @@ def attachment(id):
     img = BytesIO(ticket.upload)
     img64 = b64encode(img.read())
     return render_template('attachment.html', image=img64.decode('utf8'), user=roleid, notif=notif)
+
 
 @app.route('/submissions')
 @login_required

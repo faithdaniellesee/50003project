@@ -23,6 +23,8 @@ class ViewForm(FlaskForm):
 
 class ResolveForm(FlaskForm):
     resolve = SubmitField('Resolve')
+    send = SubmitField('Send')
+    msgContent = TextAreaField('msgContent')
 
 class BackForm(FlaskForm):
     back = SubmitField('Back')
