@@ -43,9 +43,9 @@
                 <div class="uploadFile col-md-2">
                     {{form.submit(class="btn btn-primary", align="left")}}
                 </div>
-                <div class="uploadFile col-md-5" style="margin-left: auto">
-                    {{form.file(class="custom-file-input")}}
-                    <label class="custom-file-label">Choose file</label>
+                <div class="uploadFile col-md-5" style="margin-left: auto" id="fileclass">
+                    {{form.file(class="custom-file-input", id="upload")}}
+                    <label class="custom-file-label" id="filefield">Attach File</label>
                     <font size="0.5"><label class="form-text text-muted">* JPG, PNG</label></font>
                 </div>
             </div>
@@ -53,6 +53,19 @@
         </form>
     </div>
 </body>
+
+<script>
+    var filefield = document.getElementById('filefield')
+    var fileclass = document.getElementById('fileclass')
+    var upload = document.getElementById("upload")
+    var x = document.getElementsByClassName("custom-file-input")[2];
+    upload.addEventListener("change", function(){
+        var name = fileclass.children[0].value
+        name = name.split('\\')
+        name = name[name.length-1]
+        filefield.innerHTML = name;
+    })
+</script>
 </html>
 
 {% endblock %}

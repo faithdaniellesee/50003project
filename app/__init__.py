@@ -31,6 +31,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+login.login_message = ""
 app.jinja_env.autoescape = True
 
 from app.models import User, Role, UserRoles, MyModelView, Messages

@@ -8,13 +8,20 @@ def validate_select(form, field):
     if field.data == "":
         raise ValidationError("Please select a field")
 
+def checkfile(form,field):
+    if field.data:
+        filename=field.data.lower()
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+        if not ('.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS):
+            raise ValidationError('Only png,jpg,jpeg files allowed')
+
 class TicketForm(FlaskForm):
     ticketOptions = [("", ' '), ("Query", "Query"), ("Feedback", "Feedback"),
                      ("Suggestion", "Suggestion"), ("Others", "Others")]
     options = SelectField(u'Ticket Options', choices=ticketOptions, validators=[validate_select, DataRequired()])
     title = StringField(u'Full Name', validators=[DataRequired(), Length(max=100)])
     details = TextAreaField('Details', validators=[DataRequired(), Length(min=1)])
-    file = FileField('File', validators=[DataRequired()])
+    file = FileField('File', validators=[checkfile])
     submit = SubmitField('Submit')
 
 class ViewForm(FlaskForm):
