@@ -35,6 +35,9 @@ def getNotif():
     return len(tickets)
 
 @app.route('/')
+def homepage():
+    return render_template('landingpage.html')
+
 @app.route('/index')
 @login_required
 def index():
