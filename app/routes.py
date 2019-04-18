@@ -34,16 +34,16 @@ def getNotif():
     tickets = Tickets.query.filter_by(status="New").all()
     return len(tickets)
 
-@app.route('/')
-def homepage():
-    return render_template('landingpage.html')
 
+@app.route('/')
 @app.route('/index')
-@login_required
 def index():
-    roleid = getRole()
-    notif = getNotif()
-    return render_template('index.html', title='Home', user=roleid, notif=notif)
+    if current_user.is_authenticated:
+        roleid = getRole()
+        notif = getNotif()
+        return render_template('index.html', title='Home', user=roleid, notif=notif)
+    else:
+        return render_template('index.html')
 
 
 @app.route('/ticket', methods=['GET', 'POST'])

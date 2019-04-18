@@ -14,7 +14,7 @@ class Config(object):
     USER_ENABLE_EMAIL = False
     USER_ENABLE_USERNAME = False
     USER_LOGIN_URL = '/home'
-    USER_LOGIN_TEMPLATE = '/landingpage.html'
+    USER_LOGIN_TEMPLATE = '/index.html'
 
     # Flask-Mail SMTP server settings
     '''
