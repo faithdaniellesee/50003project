@@ -30,13 +30,17 @@ def getRole():
         roleid = 0
     return roleid
 
+def getNotif():
+    tickets = Tickets.query.filter_by(status="New").all()
+    return len(tickets)
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
     roleid = getRole()
-    return render_template('index.html', title='Home', user=roleid)
+    notif = getNotif()
+    return render_template('index.html', title='Home', user=roleid, notif=notif)
 
 
 @app.route('/ticket', methods=['GET', 'POST'])
@@ -146,6 +150,7 @@ def profile():
 @roles_required('admin')
 def submission(id):
     roleid = getRole()
+    notif = getNotif()
     if request.method == 'DELETE':
         tickets = Tickets.query.get(id)
         tickets.isdelete = 1
@@ -172,13 +177,14 @@ def submission(id):
             return redirect('/submissions')
         elif form3.validate_on_submit():
             return redirect('/submissions')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid)
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
 
 
 @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
 @login_required
 @roles_required('admin')
 def archivedTicket(id):
+    notif = getNotif()
     roleid = getRole()
     if request.method == 'DELETE':
         tickets = Tickets.query.get(id)
@@ -206,26 +212,28 @@ def archivedTicket(id):
             return redirect('/archive')
         elif form3.validate_on_submit():
             return redirect('/archive')
-        return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid)
+        return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
 
 @app.route('/submissions/attachment/<id>')
 @login_required
 @roles_required('admin')
 def attachment(id):
     roleid = getRole()
+    notif = getNotif()
     ticket = Tickets.query.get(id)
     img = BytesIO(ticket.upload)
     img64 = b64encode(img.read())
-    return render_template('attachment.html', image=img64.decode('utf8'), user=roleid)
+    return render_template('attachment.html', image=img64.decode('utf8'), user=roleid, notif=notif)
 
 @app.route('/submissions')
 @login_required
 @roles_required('admin')
 def submissions():
     roleid = getRole()
+    notif = getNotif()
     tickets = Tickets.query.filter_by(isdelete=0).all()
     # print(tickets)
-    return render_template('submissions.html', title='Submissions', tickets=tickets, user=roleid)
+    return render_template('submissions.html', title='Submissions', tickets=tickets, user=roleid, notif=notif)
 
 
 @app.route('/archive')
@@ -233,9 +241,10 @@ def submissions():
 @roles_required('admin')
 def archive():
     roleid = getRole()
+    notif = getNotif()
     tickets = Tickets.query.filter_by(isdelete=1).all()
     # print(tickets)
-    return render_template('archive.html', title='Archive', tickets=tickets, user=roleid)
+    return render_template('archive.html', title='Archive', tickets=tickets, user=roleid, notif=notif)
 
 
 @app.route('/api/')

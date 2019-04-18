@@ -58,6 +58,8 @@
           </div>
           {% endif %}
         </li>
+        <li>
+      </li>
       </ul>
     </div>
   </nav>
@@ -85,7 +87,8 @@
 
    var y = document.getElementById("submissionlink");
   if ({{user}} == 1){
-    y.innerHTML= '<a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>'
+    y.innerHTML= '<a class="nav-link" href="{{ url_for('submissions') }}">Submissions<span class="badge">({{ notif }})</span></a>'
+
    }
 
 
