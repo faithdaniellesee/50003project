@@ -4,8 +4,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8" />
 
-
-
 <html>
 
 <script>
@@ -166,10 +164,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                <form action="" method="POST">
-                    {{ form.hidden_tag() }}
-                    {{ form3.send(class="btn btn-primary btn-block", value="Send")}}
-                </form>
+                <button id="send_button" type="submit" class="btn btn-primary btn-block">Send</button>
             </div>
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
@@ -204,11 +199,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <script>
+
     var socket = io.connect('http://' + document.domain + ':' + location.port)
     // broadcast a message
     socket.on('connect', function () {
-        var form = $('form').on('submit', function (e) {
-            e.preventDefault()
+        $('#send_button').click(function () {
             let user_name = '{{ user.username }}'
             let user_input = $('#text_area').val()
             console.log('sending message')
@@ -236,6 +231,8 @@
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<pre class="sansserif">' + msg.message + '</pre>' + '</div>')
         }
     })
+
+
 
     // function navigateBack() {
     //     let user_name = '{{ user.username }}'

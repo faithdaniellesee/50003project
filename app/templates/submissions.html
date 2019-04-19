@@ -38,6 +38,7 @@
     }
     .table{
       table-layout:fixed;
+      width: 100%;
       max-width: 1350px;
     }
     .text-overflow {
@@ -46,18 +47,6 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    .table-sm td:nth-child(1),
-    .table-sm td:nth-child(3),
-    .table-sm td:nth-child(4),
-    .table-sm td:nth-child(5),
-    .table-sm td:nth-child(6) {
-      width: 10%;
-      max-width: min-content;
-    }
-    .table-sm td:nth-child(2) {
-      width: 50%;
-      width: 100px;
-    } 
   </style>
   <script>
 
@@ -102,34 +91,34 @@
     <div class="container" style="background-color: white" width=auto>
       <h1>Submissions</h1>
     </div>
-    <div class="container" width=auto>
+    <div class="container table-responsive" width=auto>
       <br>
       {% if tickets|length > 0 %}
-      <table id="submissions_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="submissions_table_info"
+      <table id="submissions_table" class="table" cellspacing="0" role="grid" aria-describedby="submissions_table_info"
         sytle="width: auto">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
-            <th class="th-sm" style="text-align: center">Date</th>
-            <th class="th-sm">Title</th>
-            <th class="th-sm" style="text-align: center">Name</th>
-            <th class="th-sm" style="text-align: center">Type</th>
-            <th class="th-sm" style="text-align: center">Status</th>
-            <th class="th-sm" style="text-align: center; empty-cells:show;"></th>
+            <th style="text-align: center; width: 10%">Date</th>
+            <th style="text-align: center; width: 36%">Title</th>
+            <th style="text-align: center; width: 15%">Name</th>
+            <th style="text-align: center; width: 10%">Type</th>
+            <th style="text-align: center; width: 10%">Status</th>
+            <th style="text-align: center; empty-cells:show; width: 19%"></th>
           </tr>
         </thead>
         <tbody>
           {% for i in tickets %}
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
-            <td width="100" style="text-align: center">{{i.date}}</td>
+            <td style="text-align: center; width: 30%">{{i.date}}</td>
             <td class="text-overflow">{{i.title}}</td>
-            <td width="100" style="text-align: center">{{i.name}}</td>
-            <td width="100" style="text-align: center">{{i.options}}</td>
-            <td width="100" style="text-align: center">{{i.status}}</td>
+            <td style="text-align: center">{{i.name}}</td>
+            <td style="text-align: center">{{i.options}}</td>
+            <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
-            <td width="205" style="text-align: right">
-              <button class="btn btn-info" style="width: 100px" onclick="viewTicket('{{i.id}}')">View More</button>
-              <button class="btn btn-secondary" style="width: 100px" onclick="archiveTicket('{{i.id}}')">Archive</button>
+            <td>
+              <button class="btn btn-info" onclick="viewTicket('{{i.id}}')">View More</button>
+              <button class="btn btn-secondary" onclick="archiveTicket('{{i.id}}')">Archive</button>
             </td>
           </tr>
           {% endfor %}
