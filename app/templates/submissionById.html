@@ -34,13 +34,13 @@
         }
 
         div.msg_bbl {
-        background-color: #ddd;
-        padding: 5px 10px;
-        border-radius: 10px;
-        color: #555;
-        margin-bottom: 5px;
-        overflow-wrap: break-word
-      }
+            background-color: #ddd;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #555;
+            margin-bottom: 5px;
+            overflow-wrap: break-word
+        }
     </style>
 
 </head>
@@ -125,41 +125,43 @@
 
                     <div class="message_holder">
                         {% for message in messages %}
-                        <div class="msg_bbl"><b style="color: #000">{{message.username}} </b><p>{{message.message}}</p></div>
+                        <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
+                            <p>{{message.message}}</p>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        <form action="" method="POST">
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
 
-                    <div style="padding-top: 5px;"></div>
-                    <input class="message form-control" style="overflow-wrap: break-word" rows="5" placeholder="Messages">
-                    <div style="padding-top: 5px;"></div>
-                    <!-- <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span>
-                        Send</button> -->
-                    <form action="" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form3.back(class="btn btn-success btn-block", value="Send", style="width:110px" )}}
-                    </form>
-                </div>
+                <!-- <div style="padding-top: 5px;"></div> -->
+                <input type="text" class="message form-control" style="overflow-wrap: break-word" columns= "30" rows="5" placeholder="Messages">
+                <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
+            </div>
 
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <form action="" method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form4.send(class="btn btn-success btn-block", value="Send")}}
+                </form>
             </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
-                </div>
-                <div class="form-group col-md-6" style="text-align: right">
-                    <form action="" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}}
-                    </form>
-                </div>
+            <div class="form-group col-md-4"></div>
+            <div class="form-group col-md-4">
+                <!-- <form action="{{ url_for('profile') }}"> -->
+                <!-- {{ form.hidden_tag() }}
+                    {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}} -->
+                <!-- <button onclick="adminBack()" class="btn btn-success btn-block">Back</button> -->
+
+                <button type="button" onclick="navigateBack()" class="btn btn-secondary btn-block" style="float: right;">Back</button>
+
+                <!-- </form> -->
             </div>
-        </form>
+        </div>
         <!-- end of chat function -->
 
         <!-- <div class="row">
@@ -206,6 +208,17 @@
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + msg.message + '</div>')
         }
     })
+
+    function navigateBack() {
+        if (current_user_role = 'admin'){
+            window.location.href = href="{{ url_for('submissions') }}";
+        } else{
+            window.location.href = href="{{ url_for('profile') }}";
+
+        }
+    }
+
+
 </script>
 
 </html>

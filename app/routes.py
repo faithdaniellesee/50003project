@@ -35,7 +35,7 @@ def getNotif():
 
 @app.route('/')
 def homepage():
-    return render_template('landingpage.html')
+    return render_template('index.html')
 
 
 
