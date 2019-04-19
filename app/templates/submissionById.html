@@ -74,9 +74,7 @@
         <div class="row">
             <div class="form-group col-md-5">
                 <label><b>Attachment</b></label>
-                <div>
-                    <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">View Attached
-                        File</button>
+                <div id="attach">
                 </div>
             </div>
             <div class="form-group col-md-3" style="visibility:hidden"></div>
@@ -125,7 +123,17 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+<script>var image = ("{{tickets.upload}}")
+</script>
+<script>
+    var attach = document.getElementById('attach')
+    console.log(image.length);
+    if (image.length > 100) {
+        attach.innerHTML = "<button class=\"btn btn-info\" onclick=\"viewTicket(\'{{tickets.id}}\')\" target=\"_blank\">View Attached File</button>"
+    } else {
+        attach.innerHTML = "<p>No Attachment</p>"
+    }
+</script>
 
 </html>
 

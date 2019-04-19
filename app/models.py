@@ -51,7 +51,7 @@ class Tickets(db.Model):
     status = db.Column(db.String(10))
     isdelete = db.Column(db.String(5))
     details = db.Column(db.Text())
-    upload = db.Column(db.String(256))
+    upload = db.Column(db.String(256), nullable=True)
     date = db.Column(db.DateTime)
 
 @login.user_loader
