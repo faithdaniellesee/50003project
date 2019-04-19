@@ -189,43 +189,43 @@ def submission(id):
             db.session.commit()
             return redirect('/submissions')
         elif form3.validate_on_submit():
-            return redirect('/submissions')
+            return redirect('/submissions/<id>')
         return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, messages=allMsg, user=user)
 
 
-@app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
-@login_required
-@roles_required('admin')
-def archivedTicket(id):
-    notif = getNotif()
-    roleid = getRole()
-    if request.method == 'DELETE':
-        tickets = Tickets.query.get(id)
-        db.session.delete(tickets)
-        db.session.commit()
-        return 'success'
-    else:
-        form = ViewForm()
-        form2 = ResolveForm()
-        form3 = ResolveForm()
+# @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
+# @login_required
+# @roles_required('admin')
+# def archivedTicket(id):
+#     notif = getNotif()
+#     roleid = getRole()
+#     if request.method == 'DELETE':
+#         tickets = Tickets.query.get(id)
+#         db.session.delete(tickets)
+#         db.session.commit()
+#         return 'success'
+#     else:
+#         form = ViewForm()
+#         form2 = ResolveForm()
+#         form3 = ResolveForm()
 
-        tickets = Tickets.query.get(id)
-        if form.validate_on_submit():
-            emailstring = form.replytext.data
-            ticket = Tickets.query.filter_by(id=id).first()
-            user = User.query.filter_by(username=ticket.name).first()
-            emailreply(emailstring, id, ticket.name, user.email)
-            ticket.status = 'Pending'
-            db.session.commit()
-            return redirect('/archive')
-        elif form2.validate_on_submit():
-            ticket = Tickets.query.filter_by(id=id).first()
-            ticket.status = 'Resolved'
-            db.session.commit()
-            return redirect('/archive')
-        elif form3.validate_on_submit():
-            return redirect('/archive')
-        return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
+#         tickets = Tickets.query.get(id)
+#         if form.validate_on_submit():
+#             emailstring = form.replytext.data
+#             ticket = Tickets.query.filter_by(id=id).first()
+#             user = User.query.filter_by(username=ticket.name).first()
+#             emailreply(emailstring, id, ticket.name, user.email)
+#             ticket.status = 'Pending'
+#             db.session.commit()
+#             return redirect('/archive')
+#         elif form2.validate_on_submit():
+#             ticket = Tickets.query.filter_by(id=id).first()
+#             ticket.status = 'Resolved'
+#             db.session.commit()
+#             return redirect('/archive')
+#         elif form3.validate_on_submit():
+#             return redirect('/archive')
+#         return render_template('archiveById.html', title='Archive', tickets=tickets, form=form, form2=form2, form3=form3, user=roleid, notif=notif)
 
 
 @app.route('/submissions/attachment/<id>')

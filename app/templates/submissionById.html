@@ -41,6 +41,10 @@
             margin-bottom: 5px;
             overflow-wrap: break-word
         }
+
+        pre.sansserif {
+            font-family: Arial, Helvetica, sans-serif;
+        }
     </style>
 
 </head>
@@ -141,7 +145,8 @@
                     <div class="message_holder">
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
-                            <p>{{message.message}}</p>
+                            <br />
+                            <pre class="sansserif">{{message.message}}</pre>
                         </div>
                         {% endfor %}
                     </div>
@@ -153,7 +158,8 @@
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
 
                 <!-- <div style="padding-top: 5px;"></div> -->
-                <input type="text" class="message form-control" style="overflow-wrap: break-word" rows="5" placeholder="Messages">
+                <textarea id="text_area" class="message form-control" style="overflow-wrap: break-word" rows="5"
+                    placeholder="Messages"></textarea>
                 <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
             </div>
 
@@ -204,7 +210,7 @@
         var form = $('form').on('submit', function (e) {
             e.preventDefault()
             let user_name = '{{ user.username }}'
-            let user_input = $('input.message').val()
+            let user_input = $('#text_area').val()
             console.log('sending message')
             // message = ''
             if (user_input == "") {
@@ -219,15 +225,15 @@
             }
 
             // empty the input field
-            $('input.message').val('').focus()
+            $('#text_area').val('').focus()
         })
     })
     // capture message
     socket.on('my response', function (msg) {
         console.log(msg)
         if (typeof msg.user_name !== 'undefined') {
-            $('h1').remove()
-            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + msg.message + '</div>')
+            // $('h1').remove()
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<pre class="sansserif">' + msg.message + '</pre>' + '</div>')
         }
     })
 
