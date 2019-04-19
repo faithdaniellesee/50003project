@@ -23,7 +23,7 @@
   <style>
     .archive-body {
       /* display:inline-block; */
-      width: 80%;
+      width: 100%;
       max-width: 1400px;
       margin: auto;
       /* margin-left: 100px;
@@ -36,6 +36,28 @@
       background-color: rgba(135,206,250,0.2);
       border-radius: 15px
     }
+    .table{
+      table-layout:fixed;
+      max-width: 1350px;
+    }
+    .text-overflow {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .table-sm td:nth-child(1),
+    .table-sm td:nth-child(3),
+    .table-sm td:nth-child(4),
+    .table-sm td:nth-child(5),
+    .table-sm td:nth-child(6) {
+      width: 10%;
+      max-width: min-content;
+    }
+    .table-sm td:nth-child(2) {
+      width: 50%;
+      width: 100px;
+    } 
   </style>
   <script>
 
@@ -99,7 +121,7 @@
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
             <td width="100" style="text-align: center">{{i.date}}</td>
-            <td>{{i.title}}</td>
+            <td class="text-overflow">{{i.title}}</td>
             <td width="100" style="text-align: center">{{i.name}}</td>
             <td width="100" style="text-align: center">{{i.options}}</td>
             <td width="100" style="text-align: center">{{i.status}}</td>
