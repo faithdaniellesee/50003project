@@ -10,9 +10,10 @@ def validate_select(form, field):
 
 def checkfile(form,field):
     if field.data:
-        filename=field.data.lower()
+        filename=str(field.data.filename).lower()
+        print(filename)
         ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-        if not ('.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS):
+        if not ('.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS):
             raise ValidationError('Only png,jpg,jpeg files allowed')
 
 class TicketForm(FlaskForm):
