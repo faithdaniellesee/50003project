@@ -37,13 +37,7 @@
       border-radius: 15px
     }
   </style>
-  <script>
 
-    function viewTicket(ticketId) {
-      window.location.href = 'submissions/' + ticketId;
-    }
-
-  </script>
 </head>
 
 <body>
@@ -58,7 +52,7 @@
         sytle="width: auto">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
-            <th class="th-sm">Date</th>
+            <th class="th-sm" style="text-align: center">Date</th>
             <th class="th-sm">Title</th>
             <th class="th-sm" style="text-align: center">Name</th>
             <th class="th-sm" style="text-align: center">Type</th>
@@ -70,7 +64,7 @@
           {% for i in tickets %}
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
-            <td>{{i.date}}</td>
+            <td width="100" style="text-align: center">{{i.date}}</td>
             <td>{{i.title}}</td>
             <td width="100" style="text-align: center">{{i.name}}</td>
             <td width="100" style="text-align: center">{{i.options}}</td>
@@ -117,6 +111,10 @@
     $('#profile_table').DataTable();
     $('.dataTables_length').addClass('bs-select');
   });
+
+  function viewTicket(ticketId) {
+    window.location.href = 'submissions/' + ticketId;
+  }
 </script>
 
 </html>

@@ -10,6 +10,8 @@ from flaskext.mysql import MySQL
 from passlib.hash import sha256_crypt
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_socketio import SocketIO, emit
+import uuid
 
 #flask-user implementation
 from flask_user import UserManager
@@ -32,7 +34,7 @@ login.login_view = 'login'
 login.login_message = ""
 app.jinja_env.autoescape = True
 
-from app.models import User, Role, UserRoles, MyModelView
+from app.models import User, Role, UserRoles, MyModelView, Messages
 
 user_manager = UserManager(app, db, User) #initialize flask-user implementation
 
@@ -40,22 +42,42 @@ user_manager = UserManager(app, db, User) #initialize flask-user implementation
 # Create all database tables
 db.create_all()
 
+# chat
+socketio = SocketIO(app)
+@socketio.on('message')
+def handle_message(message):
+    print('received message: ' + str(message))
+    status = "Pending"
+    msg = Messages(message=message["message"], username=message["user_name"],
+                   user_id=message["user_id"], ticket_id=message["ticket_id"])
+    db.session.add(msg)
+    db.session.commit()
+    socketio.emit('my response', message)
+
+def handle_my_custom_event(json):
+    print('recived my event: ' + str(json))
+    socketio.emit('my response', json, callback=handle_message)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
+
+
 # Create 'member@example.com' user with no roles
 if not User.query.filter(User.email == 'member@example.com').first():
     user = User(
         username = 'member',
-        email='member@example.com',
-        email_confirmed_at=datetime.datetime.utcnow(),
-        password=sha256_crypt.hash('Password1'),
+        email = 'member@example.com',
+        email_confirmed_at = datetime.datetime.utcnow(),
+        password = sha256_crypt.hash('Password1'),
     )
     db.session.add(user)
     db.session.commit()
 
-# Create 'admin@example.com' user with 'admin' roles
 
+# Create 'admin@example.com' user with 'admin' roles
 if not User.query.filter(User.email == 'admin@example.com').first():
     user = User(
-        username = 'admin',
+        username='admin',
         email='admin@example.com',
         email_confirmed_at=datetime.datetime.utcnow(),
         password=sha256_crypt.hash('Password1'),
@@ -63,6 +85,8 @@ if not User.query.filter(User.email == 'admin@example.com').first():
     user.roles.append(Role(name='admin'))
     db.session.add(user)
     db.session.commit()
+
+
 
 # flask-admin implementation
 class MyAdminIndexView(AdminIndexView):
