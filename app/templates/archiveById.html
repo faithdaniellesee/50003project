@@ -12,13 +12,21 @@
     <style>
         .archiveById-body {
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             margin: 0px auto;
             margin-top: 50px;
         }
 
         .row {
             width: 100%;
+        }
+        div.msg_bbl {
+            background-color: #ddd;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #555;
+            margin-bottom: 5px;
+            overflow-wrap: break-word
         }
     </style>
 
@@ -71,27 +79,46 @@
                 </div>
             </div>
         </div>
+
+        <!-- chat function -->
+        <div class="container row">
+            <div class="col-md-12">
+                <div class="no_message">
+                    <div class="message_holder">
+                        {% for message in messages %}
+                        <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
+                            <p>{{message.message}}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="form-group col-md-12">
+                <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+                <input type="text" class="message form-control" style="overflow-wrap: break-word" columns="30" rows="5"
+                    placeholder="Messages">
+            </div>
+            <!-- <div class="form-group col-md-12">
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
                     <label><b>Reply</b></label>
                     {{ form.replytext(class="form-control", id="details", rows="10") }}
-            </div>
+            </div> -->
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
-                {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
-            </div>
-            </form>
-            <div class="form-group col-md-6" style="text-align: right">
-                <form action="" method="post">
+            <div class="form-group col-md-4">
+                <form action="" method="POST">
                     {{ form.hidden_tag() }}
-                        {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}}
+                    {{ form4.send(class="btn btn-primary btn-block", value="Send")}}
                 </form>
+                <div class="form-group col-md-4"></div>
+                <div class="form-group col-md-4">
+                    <button onclick="goBack()" class="btn btn-secondary btn-block">Back</button>
+                </div>
             </div>
         </div>
-    </div>
 </body>
 
 
@@ -100,7 +127,62 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port)
+    // broadcast a message
+    socket.on('connect', function () {
+        var form = $('form').on('submit', function (e) {
+            e.preventDefault()
+            let user_name = '{{ user.username }}'
+            let user_input = $('input.message').val()
+            console.log('sending message')
+            // message = ''
+            if (user_input == "") {
+                return
+            } else {
+                socket.emit('message', {
+                    user_id: '{{ user.id }}',
+                    user_name: user_name,
+                    message: user_input,
+                    ticket_id: '{{ tickets.id }}'
+                })
+            }
 
+            // empty the input field
+            $('input.message').val('').focus()
+        })
+    })
+    // capture message
+    socket.on('my response', function (msg) {
+        console.log(msg)
+        if (typeof msg.user_name !== 'undefined') {
+            $('h1').remove()
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + msg.message + '</div>')
+        }
+    })
+
+    // function navigateBack() {
+    //     let user_name = '{{ user.username }}'
+    //     if (user_name = 'admin') {
+    //         window.location.href = href = "{{ url_for('submissions') }}";
+    //     } else {
+    //         window.location.href = href = "{{ url_for('profile') }}";
+
+    //     }
+    // }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function viewTicket(ticketId) {
+        window.open('attachment/' + ticketId, '_blank')
+    }
+
+
+</script>
 
 </html>
 

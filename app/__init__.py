@@ -54,14 +54,13 @@ def handle_message(message):
     db.session.commit()
     socketio.emit('my response', message)
 
-
 def handle_my_custom_event(json):
     print('recived my event: ' + str(json))
     socketio.emit('my response', json, callback=handle_message)
 
-
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+
 
 # Create 'member@example.com' user with no roles
 if not User.query.filter(User.email == 'member@example.com').first():
@@ -74,8 +73,8 @@ if not User.query.filter(User.email == 'member@example.com').first():
     db.session.add(user)
     db.session.commit()
 
-# Create 'admin@example.com' user with 'admin' roles
 
+# Create 'admin@example.com' user with 'admin' roles
 if not User.query.filter(User.email == 'admin@example.com').first():
     user = User(
         username='admin',
@@ -87,9 +86,9 @@ if not User.query.filter(User.email == 'admin@example.com').first():
     db.session.add(user)
     db.session.commit()
 
+
+
 # flask-admin implementation
-
-
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         # return current_user.is_authenticated

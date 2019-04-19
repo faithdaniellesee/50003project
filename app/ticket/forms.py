@@ -33,6 +33,4 @@ class ResolveForm(FlaskForm):
     send = SubmitField('Send')
     msgContent = TextAreaField('msgContent')
 
-class BackForm(FlaskForm):
-    back = SubmitField('Back')
 

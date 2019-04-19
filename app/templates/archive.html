@@ -40,7 +40,7 @@
   <script>
 
     function viewTicket(ticketId) {
-      window.location.href = 'archive/' + ticketId;
+      window.location.href = 'submissions/' + ticketId;
     }
     function deleteTicket(ticketId) {
       swal({
@@ -54,12 +54,12 @@
           if (willDelete) {
             $.ajax({
               type: "DELETE",
-              url: "archive/" + ticketId,
+              url: "submissions/" + ticketId,
               contentType: "application/json",
               success: function (response) {
                 console.log(response);
                 if (response == "success") {
-                  window.location.href = 'archive'
+                  window.location.href = 'submissions'
                 }
               },
               error: function (err) {
@@ -98,7 +98,7 @@
           {% for i in tickets %}
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
-            <td style="text-align: center">{{i.date}}</td>
+            <td width="100" style="text-align: center">{{i.date}}</td>
             <td>{{i.title}}</td>
             <td width="100" style="text-align: center">{{i.name}}</td>
             <td width="100" style="text-align: center">{{i.options}}</td>

@@ -24,7 +24,7 @@
     <style>
         .submissionById-body {
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             margin: 0px auto;
             margin-top: 50px;
         }
@@ -47,58 +47,67 @@
 
 <body>
     <div class="submissionById-body">
-        <label><b>Ticket Id</b></label>
-        <div class="row">
-            <div class="form-group col-md-9">
-                <div class="form-control" style="font-size: 15px">
-                    <p><strong></strong> {{ tickets.id }} </strong></p>
-                </div>
+        <div class="row" height="80">
+            <div class="form-group col-md-10">
+                <h1>Ticket</h1>
             </div>
-            <div class="form-group col-md-3">
-                <form action="" method="post">
-                    {{ form2.hidden_tag() }}
-                    <div class="form-group col-md-2">
-                        {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width:auto" )}}
-                    </div>
-                </form>
+            <div class="form-group col-md-2">
+                <h1>
+                    <form action="" method="post">
+                        {{ form2.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width: 108.2px; height:
+                            39px" )}}
+                        </div>
+                    </form>
+                </h1>
             </div>
         </div>
+
+
         <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-10">
+                <label><b>ID</b></label>
+                <div class="form-control">
+                    <p><b>{{ tickets.id }}</b></p>
+                </div>
+            </div>
+            <div class="form-group col-md-2">
+                <label><b>Attachment</b></label>
+                <div >
+                    <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">Attached
+                        File</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3">
                 <label><b>Client</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.name }} </strong></p>
                 </div>
             </div>
-            <div class="form-group col-md-4">
-                <label><b>Ticket Type</b></label>
+            <div class="form-group col-md-3">
+                <label><b>Type</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.options }} </strong></p>
                 </div>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label><b>Status</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.status }} </strong></p>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-5">
-                <label><b>Attachment</b></label>
-                <div>
-                    <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">View Attached
-                        File</button>
-                </div>
-            </div>
-            <div class="form-group col-md-3" style="visibility:hidden"></div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label><b>Date</b></label>
                 <div class="form-control">
                     <p><strong></strong> {{ tickets.date }} </strong></p>
                 </div>
             </div>
         </div>
+
 
         <div class="row">
             <div class="form-group col-md-12">
@@ -120,9 +129,7 @@
         <!-- chat function -->
         <div class="container row">
             <div class="col-md-12">
-
                 <div class="no_message">
-
                     <div class="message_holder">
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
@@ -138,7 +145,8 @@
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
 
                 <!-- <div style="padding-top: 5px;"></div> -->
-                <input type="text" class="message form-control" style="overflow-wrap: break-word" columns= "30" rows="5" placeholder="Messages">
+                <input type="text" class="message form-control" style="overflow-wrap: break-word" rows="5"
+                    placeholder="Messages">
                 <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
             </div>
 
@@ -147,28 +155,18 @@
             <div class="form-group col-md-4">
                 <form action="" method="POST">
                     {{ form.hidden_tag() }}
-                    {{ form4.send(class="btn btn-success btn-block", value="Send")}}
+                    {{ form3.send(class="btn btn-primary btn-block", value="Send")}}
                 </form>
             </div>
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
-                <!-- <form action="{{ url_for('profile') }}"> -->
-                <!-- {{ form.hidden_tag() }}
-                    {{ form3.back(class="btn btn-secondary", value="Back", style="width:110px" )}} -->
-                <!-- <button onclick="adminBack()" class="btn btn-success btn-block">Back</button> -->
 
-                <button type="button" onclick="navigateBack()" class="btn btn-secondary btn-block" style="float: right;">Back</button>
+                <button onclick="goBack()" class="btn btn-secondary btn-block">Back</button>
 
-                <!-- </form> -->
             </div>
         </div>
         <!-- end of chat function -->
 
-        <!-- <div class="row">
-            <div class="form-group col-md-6">
-                {{ form.reply(class="btn btn-primary", value="Reply", style="width:110px" )}}
-            </div>
-            </form> -->
 
     </div>
 </body>
@@ -190,12 +188,18 @@
             let user_name = '{{ user.username }}'
             let user_input = $('input.message').val()
             console.log('sending message')
-            socket.emit('message', {
-                user_id: '{{ user.id }}',
-                user_name: user_name,
-                message: user_input,
-                ticket_id: '{{ tickets.id }}'
-            })
+            // message = ''
+            if (user_input == "") {
+                return
+            } else {
+                socket.emit('message', {
+                    user_id: '{{ user.id }}',
+                    user_name: user_name,
+                    message: user_input,
+                    ticket_id: '{{ tickets.id }}'
+                })
+            }
+
             // empty the input field
             $('input.message').val('').focus()
         })
@@ -209,13 +213,18 @@
         }
     })
 
-    function navigateBack() {
-        if (current_user_role = 'admin'){
-            window.location.href = href="{{ url_for('submissions') }}";
-        } else{
-            window.location.href = href="{{ url_for('profile') }}";
+    // function navigateBack() {
+    //     let user_name = '{{ user.username }}'
+    //     if (user_name = 'admin') {
+    //         window.location.href = href = "{{ url_for('submissions') }}";
+    //     } else {
+    //         window.location.href = href = "{{ url_for('profile') }}";
 
-        }
+    //     }
+    // }
+
+    function goBack() {
+        window.history.back();
     }
 
 

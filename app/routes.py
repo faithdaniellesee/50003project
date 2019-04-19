@@ -6,7 +6,7 @@ from werkzeug.urls import url_parse
 from app import app, db, secrets  # , mysql
 from app.auth.forms import LoginForm, RegistrationForm, RecoverForm
 from app.forms import LanguageForm, LoginForm, GetLanguage
-from app.ticket.forms import TicketForm, ViewForm, ResolveForm, BackForm
+from app.ticket.forms import TicketForm, ViewForm, ResolveForm
 from app.models import User, Tickets, UserRoles, Messages
 from app import secrets
 import requests
@@ -170,8 +170,7 @@ def submission(id):
     else:
         form = ViewForm()
         form2 = ResolveForm()
-        form3 = BackForm()
-        form4 = ResolveForm()
+        form3 = ResolveForm()
         user = current_user
         tickets = Tickets.query.get(id)
         allMsg = Messages.query.filter_by(ticket_id=id).all()
@@ -191,9 +190,7 @@ def submission(id):
             return redirect('/submissions')
         elif form3.validate_on_submit():
             return redirect('/submissions')
-        elif form4.validate_on_submit():
-            return redirect('/submissions')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, form4=form4, messages=allMsg, user=user)
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, messages=allMsg, user=user)
 
 
 @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
@@ -210,7 +207,7 @@ def archivedTicket(id):
     else:
         form = ViewForm()
         form2 = ResolveForm()
-        form3 = BackForm()
+        form3 = ResolveForm()
 
         tickets = Tickets.query.get(id)
         if form.validate_on_submit():
