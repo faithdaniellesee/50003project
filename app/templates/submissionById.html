@@ -74,7 +74,7 @@
             </div>
             <div class="form-group col-md-2">
                 <label><b>Attachment</b></label>
-                <div >
+                <div>
                     <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">Attached
                         File</button>
                 </div>
@@ -100,15 +100,6 @@
                     <p><strong></strong> {{ tickets.status }} </strong></p>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-5">
-                <label><b>Attachment</b></label>
-                <div id="attach">
-                </div>
-            </div>
-            <div class="form-group col-md-3" style="visibility:hidden"></div>
-
             <div class="form-group col-md-3">
                 <label><b>Date</b></label>
                 <div class="form-control">
@@ -116,6 +107,14 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="form-group col-md-5">
+                <label><b>Attachment</b></label>
+                <div id="attach">
+                </div>
+            </div>
+            <div class="form-group col-md-3" style="visibility:hidden"></div>
+        </div> -->
 
 
         <div class="row">
@@ -154,8 +153,7 @@
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
 
                 <!-- <div style="padding-top: 5px;"></div> -->
-                <input type="text" class="message form-control" style="overflow-wrap: break-word" rows="5"
-                    placeholder="Messages">
+                <input type="text" class="message form-control" style="overflow-wrap: break-word" rows="5" placeholder="Messages">
                 <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
             </div>
 
