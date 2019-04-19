@@ -23,7 +23,7 @@
   <style>
     .profile-body {
       /* display:inline-block; */
-      width: 80%;
+      width: 100%;
       max-width: 1400px;
       margin: auto;
       /* margin-left: 100px;
@@ -36,6 +36,30 @@
       background-color: rgba(135,206,250,0.2);
       border-radius: 15px
     }
+    .table{
+      table-layout:fixed;
+      max-width: 1350px;
+    }
+    .text-overflow {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .table-sm td:nth-child(1),
+    .table-sm td:nth-child(3),
+    .table-sm td:nth-child(4),
+    .table-sm td:nth-child(5),
+    .table-sm td:nth-child(6) {
+      width: 10%;
+      max-width: min-content;
+    }
+    .table-sm td:nth-child(2) {
+      width: 50%;
+      width: 100px;
+    } 
+
+
   </style>
 
 </head>
@@ -48,12 +72,11 @@
     <div class="container" style="min-width: 800px">
       <br>
       {% if tickets|length > 0 %}
-      <table id="profile_table" class="table table-sm " cellspacing="0" role="grid" aria-describedby="profile_table_info"
-        sytle="width: auto">
+      <table id="profile_table" class="table table-sm" cellspacing="0" role="grid" aria-describedby="profile_table_info">
         <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
-            <th class="th-sm" style="text-align: center">Date</th>
-            <th class="th-sm">Title</th>
+            <th style="text-align: center">Date</th>
+            <th>Title</th>
             <th class="th-sm" style="text-align: center">Name</th>
             <th class="th-sm" style="text-align: center">Type</th>
             <th class="th-sm" style="text-align: center">Status</th>
@@ -64,13 +87,13 @@
           {% for i in tickets %}
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
-            <td width="100" style="text-align: center">{{i.date}}</td>
-            <td>{{i.title}}</td>
-            <td width="100" style="text-align: center">{{i.name}}</td>
-            <td width="100" style="text-align: center">{{i.options}}</td>
-            <td width="100" style="text-align: center">{{i.status}}</td>
+            <td style="text-align: center">{{i.date}}</td>
+            <td class="text-overflow">{{i.title}}</td>
+            <td style="text-align: center">{{i.name}}</td>
+            <td style="text-align: center">{{i.options}}</td>
+            <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
-            <td width="105" style="text-align: right">
+            <td style="text-align: right">
               <button class="btn btn-info" onclick="viewTicket('{{i.id}}')">View More</button>
             </td>
           </tr>
