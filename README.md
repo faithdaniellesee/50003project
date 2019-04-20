@@ -14,7 +14,7 @@ In using Accenture's APIs, a secret token must be obtained from them.
 This is an academic project which explains potential security loopholes that may be seen in the project. A commercial product would definitely ensure all these loopholes do not exist on the public repository.
 
 ### **Contributors:**
-- Billio Jeverson (@BillioJeverson) (1002939)
-- Kwon Inhyuk (@remnanto) (1001834)
-- See Wan Yi Faith (@faithdaniellesee) (1002851)
-- Tan Wei Jin (@JinBean) (1002737)
+- Billio Jeverson [@BillioJeverson](https://github.com/BillioJeverson) (1002939)
+- Kwon Inhyuk [@remnanto](https://github.com/remnanto) (1001834)
+- See Wan Yi Faith [@faithdaniellesee](https://github.com/faithdaniellesee) (1002851)
+- Tan Wei Jin [@JinBean](https://github.com/JinBean) (1002737)
