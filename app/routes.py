@@ -43,7 +43,7 @@ def index():
         notif = getNotif()
         return render_template('index.html', title='Home', user=roleid, notif=notif)
     else:
-        return render_template('index.html')
+        return render_template('index.html', title='Home')
 
 
 @app.route('/ticket', methods=['GET', 'POST'])
@@ -144,7 +144,29 @@ def profile():
     return render_template('profile.html', title='Profile', tickets=tickets, user=roleid)
 
 
-@app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
+@app.route('/archiving/<id>', methods=(['GET', 'POST']))
+@roles_required('admin')
+def archivingTicket(id):
+    tickets = Tickets.query.get(id)
+    if tickets.status != "New":
+        tickets.isdelete = 1
+        db.session.commit()
+        return 'success'
+    else:
+        flash("Issue is not resolved, unable to archive")
+        return 'fail'
+
+
+@app.route('/deleting/<id>', methods=(['GET', 'POST']))
+@roles_required('admin')
+def deletingTicket(id):
+    tickets = Tickets.query.get(id)
+    db.session.delete(tickets)
+    db.session.commit()
+    return 'success'
+
+
+@app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 # @roles_required('admin')
 def submission(id):
@@ -152,35 +174,30 @@ def submission(id):
     notif = getNotif()
     tickets = Tickets.query.get(id)
     if(roleid == 1 or current_user.username == tickets.name):
-        if request.method == 'DELETE':
-            tickets.isdelete = 1
+        form = ViewForm()
+        form2 = ResolveForm()
+        form3 = ResolveForm()
+        user = current_user
+        tickets = Tickets.query.get(id)
+        allMsg = Messages.query.filter_by(ticket_id=id).all()
+        print(allMsg)
+        if form.validate_on_submit():
+            emailstring = form.replytext.data
+            ticket = Tickets.query.filter_by(id=id).first()
+            user = User.query.filter_by(username=ticket.name).first()
+            emailreply(emailstring, id, ticket.name, user.email)
+            ticket.status = 'Pending'
             db.session.commit()
-            return 'success'
-        else:
-            form = ViewForm()
-            form2 = ResolveForm()
-            form3 = ResolveForm()
-            user = current_user
-            tickets = Tickets.query.get(id)
-            allMsg = Messages.query.filter_by(ticket_id=id).all()
-            print(allMsg)
-            if form.validate_on_submit():
-                emailstring = form.replytext.data
-                ticket = Tickets.query.filter_by(id=id).first()
-                user = User.query.filter_by(username=ticket.name).first()
-                emailreply(emailstring, id, ticket.name, user.email)
-                ticket.status = 'Pending'
-                db.session.commit()
-                return redirect('/submissions')
-            elif form2.validate_on_submit():
-                ticket = Tickets.query.filter_by(id=id).first()
-                ticket.status = 'Resolved'
-                db.session.commit()
-                return redirect('/submissions')
-            elif form3.validate_on_submit():
-                return redirect('/submissions/<id>')
-            return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
-                                   form3=form3, messages=allMsg, user=roleid, notif=notif)
+            return redirect('/submissions')
+        elif form2.validate_on_submit():
+            ticket = Tickets.query.filter_by(id=id).first()
+            ticket.status = 'Resolved'
+            db.session.commit()
+            return redirect('/submissions')
+        elif form3.validate_on_submit():
+            return redirect('/submissions/<id>')
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
+                               form3=form3, messages=allMsg, user=roleid, notif=notif)
     else:
         return render_template('errorhandlers/401.html'), 401
 

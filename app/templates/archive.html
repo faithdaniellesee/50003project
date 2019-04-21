@@ -57,7 +57,7 @@
     function deleteTicket(ticketId) {
       swal({
         title: "Delete this ticket?",
-        text: "Once deleted, you will still be able to recover this!",
+        text: "Once deleted, you will not be able to recover this!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -65,13 +65,13 @@
         .then((willDelete) => {
           if (willDelete) {
             $.ajax({
-              type: "DELETE",
-              url: "submissions/" + ticketId,
+              type: "GET",
+              url: "deleting/" + ticketId,
               contentType: "application/json",
               success: function (response) {
                 console.log(response);
                 if (response == "success") {
-                  window.location.href = 'submissions'
+                  window.location.reload(true)
                 }
               },
               error: function (err) {
