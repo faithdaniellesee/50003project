@@ -229,7 +229,7 @@
     // broadcast a message
     socket.on('connect', function () {
         $('#send_button').click(function () {
-            let user_name = '{{ user.username }}'
+            let user_name = '{{ current_user.username }}'
             let user_input = $('#text_area').val()
             console.log('sending message')
             // message = ''
@@ -241,7 +241,7 @@
                     user_name: user_name,
                     message: user_input,
                     ticket_id: '{{ tickets.id }}'
-                })
+                });
             }
 
             // empty the input field
@@ -254,8 +254,25 @@
         if (typeof msg.user_name !== 'undefined') {
             // $('h1').remove()
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ')
+            
         }
+        if("{{tickets.status}}" == "New"){
+            window.location.href = '{{ url_for('changingstatus', id=tickets.id) }}'
+        }
+
     })
+
+
+
+    // function navigateBack() {
+    //     let user_name = '{{ user.username }}'
+    //     if (user_name = 'admin') {
+    //         window.location.href = href = "{{ url_for('submissions') }}";
+    //     } else {
+    //         window.location.href = href = "{{ url_for('profile') }}";
+
+    //     }
+    // }
 
     function goBack() {
         window.history.back();

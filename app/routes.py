@@ -166,6 +166,15 @@ def deletingTicket(id):
     return 'success'
 
 
+@app.route('/changingstatus/<id>', methods=(['GET', 'POST']))
+def changingstatus(id):
+    print('hello')
+    tickets = Tickets.query.get(id)
+    tickets.status = "Pending"
+    db.session.commit()
+    return redirect(url_for('submission', id=id))
+
+
 @app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 # @roles_required('admin')
