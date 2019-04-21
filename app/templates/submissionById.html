@@ -28,13 +28,29 @@
             border-radius: 10px;
             color: #555;
             margin-bottom: 5px;
-            overflow-wrap: break-word
+            overflow-wrap: break-word;
         }
 
         pre.sansserif {
             font-family: Arial, Helvetica, sans-serif;
         }
     </style>
+
+    <script type="text/javascript">
+        // Auto-Grow-TextArea script.
+        // Script copyright (C) 2011 www.cryer.co.uk.
+        // Script is free to use provided this copyright header is included.
+        function AutoGrowTextArea(textField) {
+            if (textField.clientHeight < textField.scrollHeight) {
+                textField.style.height = textField.scrollHeight + "px";
+                if (textField.clientHeight < textField.scrollHeight) {
+                    textField.style.height =
+                        (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+                }
+            }
+        }
+    </script>
+
 
 </head>
 
@@ -59,14 +75,14 @@
 
 
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-8">
                 <label><b>ID</b></label>
                 <div class="form-control">
                     <p><b>{{ tickets.id }}</b></p>
                 </div>
             </div>
-            <div class="form-group col-md-4" style="visibility:hidden"></div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-1" style="visibility:hidden"></div>
+            <div class="form-group col-md-3">
                 <label><b>Attachment</b></label>
                 <div id="attach">
                 </div>
@@ -112,8 +128,12 @@
         <div class="row">
             <div class="form-group col-md-12">
                 <label><b>Details</b></label>
-                <div class="form-control">
-                    <p><strong></strong> {{ tickets.details }} </strong></p>
+                <div>
+                    <pre class="form-control sansserif" id="detail_textarea" rows="5" cols="30" style="overflow:hidden"
+                        onkeyup="AutoGrowTextArea(this)"> {{ tickets.details }} </pre>
+                    <script type="text/javascript">
+                        AutoGrowTextArea(document.getElementById("detail_textarea"));
+                    </script>
                 </div>
             </div>
         </div>
@@ -134,7 +154,11 @@
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
                             <br />
-                            <pre class="sansserif">{{message.message}}</pre>
+                            <pre class="form-control sansserif" id="chat_history" rows="5" cols="30" style="overflow:hidden; background-color: #ddd; border:none"
+                                onkeyup="AutoGrowTextArea(this)">{{message.message}}</pre>
+                            <script type="text/javascript">
+                                AutoGrowTextArea(document.getElementById("chat_history"));
+                            </script>
                         </div>
                         {% endfor %}
                     </div>
@@ -239,6 +263,8 @@
     function goBack() {
         window.history.back();
     }
+
+
 </script>
 
 </html>
