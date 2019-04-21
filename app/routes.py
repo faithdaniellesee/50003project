@@ -192,7 +192,7 @@ def submission(id):
             return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
                                    form3=form3, messages=allMsg, user=roleid, notif=notif)
     else:
-        render_template('401.html'), 401
+        return render_template('errorhandlers/401.html'), 401
 
 
 # @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
@@ -241,7 +241,7 @@ def attachment(id):
         img64 = b64encode(img.read())
         return render_template('attachment.html', image=img64.decode('utf8'), user=roleid, notif=notif)
     else:
-        render_template('401.html'), 401
+        return render_template('errorhandlers/401.html'), 401
 
 
 @app.route('/submissions')
