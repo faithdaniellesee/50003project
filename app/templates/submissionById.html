@@ -10,6 +10,7 @@
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootsubmissionById.htmlstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <style>
         .submissionById-body {
             width: 100%;
@@ -240,7 +241,7 @@
                     user_name: user_name,
                     message: user_input,
                     ticket_id: '{{ tickets.id }}'
-                })
+                });
             }
 
             // empty the input field
@@ -252,9 +253,11 @@
         console.log(msg)
         if (typeof msg.user_name !== 'undefined') {
             // $('h1').remove()
-            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ')
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ');
+            window.location.href = '{{ url_for('submission', id=tickets.id) }}'
+
         }
-        if("{{tickets.status}}" == "New"){
+        if ("{{tickets.status}}" == "New") {
             window.location.href = '{{ url_for('changingstatus', id=tickets.id) }}'
         }
 
