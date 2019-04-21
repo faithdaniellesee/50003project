@@ -79,10 +79,10 @@
           {% for i in tickets %}
           <!-- <tr onclick="viewTicket('{{i.id}}')"> -->
           <tr style="background-color: rgba(243, 243, 243, 0.808);vertical-align: middle">
-            <td style="text-align: center; width: 30%">{{i.date}}</td>
-            <td class="text-overflow">{{i.title}}</td>
-            <td style="text-align: center">{{i.options}}</td>
-            <td style="text-align: center">{{i.status}}</td>
+            <td style="text-align: center; vertical-align: middle; width: 30%">{{i.date}}</td>
+            <td style="text-overflow; vertical-align: middle">{{i.title}}</td>
+            <td style="text-align: center; vertical-align: middle">{{i.options}}</td>
+            <td style="text-align: center; vertical-align: middle">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
             <td>
               <button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View More</button>
