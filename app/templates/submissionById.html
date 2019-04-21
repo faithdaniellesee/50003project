@@ -129,7 +129,7 @@
             <div class="form-group col-md-12">
                 <label><b>Details</b></label>
                 <div>
-                    <pre class="form-control sansserif" id="detail_textarea" rows="5" cols="30" style="overflow:hidden"
+                    <pre class="form-control sansserif" id="detail_textarea" rows="5" style="overflow-wrap: break-word"
                         onkeyup="AutoGrowTextArea(this)"> {{ tickets.details }} </pre>
                     <script type="text/javascript">
                         AutoGrowTextArea(document.getElementById("detail_textarea"));
@@ -154,7 +154,7 @@
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
                             <br />
-                            <pre class="form-control sansserif" id="chat_history" rows="5" cols="30" style="overflow:hidden; background-color: #ddd; border:none"
+                            <pre class="form-control sansserif" id="chat_history" rows="5" cols="20" style="overflow-x: hidden; background-color: #ddd; border:none"
                                 onkeyup="AutoGrowTextArea(this)">{{message.message}}</pre>
                             <script type="text/javascript">
                                 AutoGrowTextArea(document.getElementById("chat_history"));
@@ -169,7 +169,7 @@
             <div class="form-group col-md-12">
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
                 <!-- <div style="padding-top: 5px;"></div> -->
-                <textarea id="text_area" class="message form-control" style="overflow-wrap: break-word" rows="5"
+                <textarea id="text_area" class="message form-control" style="overflow-wrap: break-word" rows="5" cols="20"
                     placeholder="Messages"></textarea>
                 <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
             </div>
@@ -244,10 +244,10 @@
         console.log(msg)
         if (typeof msg.user_name !== 'undefined') {
             // $('h1').remove()
-            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<pre class="sansserif">' + msg.message + '</pre>' + '</div>')
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<class="form-control sansserif" id="chat_history" rows="5" style="overflow-wrap: break-word; background-color: #ddd; border:none" onkeyup="AutoGrowTextArea(this)">' + msg.message + '</pre>' + '</div>')
+                            
         }
     })
-
 
 
     // function navigateBack() {
