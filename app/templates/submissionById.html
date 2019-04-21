@@ -254,10 +254,15 @@
         console.log(msg)
         if (typeof msg.user_name !== 'undefined') {
             // $('h1').remove()
+<<<<<<< HEAD
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ')
+=======
+            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ');
+            window.location.href = '{{ url_for('submission', id=tickets.id) }}'
+>>>>>>> 393f91704f29acfc19aa17c78da0dc6da26b8ab7
 
         }
-        if("{{tickets.status}}" == "New"){
+        if ("{{tickets.status}}" == "New" && "{{ user }}" == "1") {
             window.location.href = '{{ url_for('changingstatus', id=tickets.id) }}'
         }
 
