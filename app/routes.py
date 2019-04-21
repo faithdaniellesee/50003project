@@ -126,21 +126,11 @@ def forgot():
     form = RecoverForm()
     print('recover password')
     if form.validate_on_submit():
-        if form.email.data != "":
+        if form.email.data:
             print(form.email.data)
             user = User.query.filter_by(email=form.email.data).first()
-            if user is None:
-                flash('Invalid email', 'error')
-            else:
-                recoverUsername(user.username, "remnanto@hotmail.com")
-        else:
-            print('validated')
-            print(form.username.data)
-            user = User.query.filter_by(username=form.username.data).first()
-            if user is None:
-                flash('Invalid username', 'error')
-            else:
-                recoverPasswordEmail(user.username, "remnanto@hotmail.com")
+            if user:
+                recoverPasswordEmail(user.username, form.email.data)
     return render_template('forgot.html', title='Recover Password', form=form)
 
 
@@ -384,7 +374,7 @@ def recoverPasswordEmail(username, email):
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Recover Password",
-            "sender": "supportteam@accenture.com",
+            "sender": "noreply@accenture.com",
             "recipient": email,
             "html": content
             }
