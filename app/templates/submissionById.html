@@ -74,9 +74,7 @@
             <div class="form-group col-md-4" style="visibility:hidden"></div>
             <div class="form-group col-md-2">
                 <label><b>Attachment</b></label>
-                <div>
-                    <button class="btn btn-info" onclick="viewTicket('{{tickets.id}}')" target="_blank">Attached
-                        File</button>
+                <div id="attach">
                 </div>
             </div>
 
@@ -185,7 +183,7 @@
     var attach = document.getElementById('attach')
     console.log(image.length);
     if (image.length > 100) {
-        attach.innerHTML = "<button class=\"btn btn-info\" onclick=\"viewTicket(\'{{tickets.id}}\')\" target=\"_blank\">View Attached File</button>"
+        attach.innerHTML = "<button class=\"btn btn-info\" onclick=\"viewTicket(\'{{tickets.id}}\')\" target=\"_blank\">View File</button>"
     } else {
         attach.innerHTML = "<p>No Attachment</p>"
     }
