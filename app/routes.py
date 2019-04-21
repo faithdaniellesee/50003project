@@ -168,10 +168,11 @@ def deletingTicket(id):
 
 @app.route('/changingstatus/<id>', methods=(['GET', 'POST']))
 def changingstatus(id):
-    print('hello')
     tickets = Tickets.query.get(id)
+    user = User.query.filter_by(username=tickets.name).first()
     tickets.status = "Pending"
     db.session.commit()
+    replyConfirmation(user.username, user.email, tickets.id)
     return redirect(url_for('submission', id=id))
 
 
@@ -190,15 +191,7 @@ def submission(id):
         tickets = Tickets.query.get(id)
         allMsg = Messages.query.filter_by(ticket_id=id).all()
         print(allMsg)
-        if form.validate_on_submit():
-            emailstring = form.replytext.data
-            ticket = Tickets.query.filter_by(id=id).first()
-            user = User.query.filter_by(username=ticket.name).first()
-            emailreply(emailstring, id, ticket.name, user.email)
-            ticket.status = 'Pending'
-            db.session.commit()
-            return redirect('/submissions')
-        elif form2.validate_on_submit():
+        if form2.validate_on_submit():
             ticket = Tickets.query.filter_by(id=id).first()
             ticket.status = 'Resolved'
             db.session.commit()
@@ -358,7 +351,7 @@ def emailsending(ticketnumber, name, email):
     content = "Dear {user}, <br><br>Thank you for contacting accenture!<p>We have received your ticket " \
               "submission #{ticketnumber}, and our development team will be looking into the issue shortly " \
               "and will send you a follow up email once it has been reviewed.</p>You can view your " \
-              "existing tickets at accenture.com <br>Thanks and have a great day.<br><br> Best regards, <br>" \
+              "existing tickets at www.accenture.com <br>Thanks and have a great day.<br><br> Best regards, <br>" \
               "Accenture Service Team".format(
                   user=user, ticketnumber=ticketnumber)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
@@ -371,25 +364,6 @@ def emailsending(ticketnumber, name, email):
     response = requests.post(url, headers=headers, json=body)
     return redirect(url_for("index"))
 
-
-def emailreply(emailstring, ticketnumber, name, email):
-    user = name
-    email = email
-    ticketnumber = ticketnumber
-    emailstring = emailstring
-    email = "remnanto@hotmail.com"
-    content = "Dear {user}, <br><br>{text}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
-              "Accenture Service Team".format(
-                  user=user, text=emailstring, ticketnumber=ticketnumber)
-    url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
-    headers = {"Server-Token": bearer_token}
-    body = {"subject": "Accenture: Confirmation of ticket submission",
-            "sender": "supportteam@accenture.com",
-            "recipient": email,
-            "html": content
-            }
-    response = requests.post(url, headers=headers, json=body)
-    return redirect(url_for("index"))
 
 
 def recoverPasswordEmail(username, email):
@@ -407,10 +381,10 @@ def recoverPasswordEmail(username, email):
     response = requests.post(url, headers=headers, json=body)
 
 
-def recoverUsername(username, email):
+def replyConfirmation(username, email, ticketid):
 
-    content = "Dear Member, <br><br>Your username is : {user}<br>Thanks and have a great day.<br><br> Best regards, <br>" \
-              "Accenture Service Team".format(user=username)
+    content = "Dear {user}, <br><br>Your ticket with id: {id} has just been replied. You can view your existing tickets at www.accenture.com<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user=username, id=ticketid)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Recover Password",
