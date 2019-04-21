@@ -44,7 +44,14 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-
+    /* .btn-primary,
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-primary:visited,
+    .btn-primary:focus {
+    background-color: #E9AFA3;
+    border-color: #E9AFA3;
+    } */
 
   </style>
 
@@ -52,15 +59,14 @@
 
 <body>
   <div class="profile-body">
-    <div class="container" style="background-color: white" width=auto>
+    <div class="container" style="background-color: #6C8EAD" width=auto>
       <h1>Profile</h1>
     </div>
     <div class="container table-responsive" width=auto>
       <br>
       {% if tickets|length > 0 %}
-      <table id="profile_table" class="table" cellspacing="0" role="grid" aria-describedby="profile_table_info"
-        sytle="width: auto">
-        <thead style="background-color: rgb(255, 255, 255);border-radius: 15px">
+      <table id="profile_table" class="table" cellspacing="0" role="grid" aria-describedby="profile_table_info" sytle="width: auto">
+        <thead style="background-color: rgba(255, 255, 255, 0.952);border-radius: 15px">
           <tr style="vertical-align: middle; font-size: 20px" height=45>
             <th style="text-align: center; width: 10%">Date</th>
             <th style="text-align: center; width: 43%">Title</th>
@@ -81,7 +87,7 @@
             <td style="text-align: center">{{i.status}}</td>
             <!-- <td>{{i.details}}</td> -->
             <td>
-              <button class="btn btn-info" onclick="viewTicket('{{i.id}}')">View More</button>
+              <button class="btn btn-primary" onclick="viewTicket('{{i.id}}')">View More</button>
             </td>
           </tr>
           {% endfor %}
