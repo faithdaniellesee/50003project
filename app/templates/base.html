@@ -33,6 +33,12 @@
         text-align: center;
         background-color: #f4623a;
     }
+    .error{
+      color: red
+    }
+    .success{
+      color: green
+    }
     </style>
 
   <title>{{ title }} - 50.003 Project</title>
@@ -75,16 +81,25 @@
 
 </body>
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
+{% with messages = get_flashed_messages(category_filter=["error"]) %}
     {% for message in messages %}
       <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <!-- <strong>Title</strong> --> {{ message }}
+      {{ message }}
       </div>
     {% endfor %}
-  {% endif %} {% endwith %}
-  {% block content %}{% endblock %}
+  {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+{% block content %}
+{% endblock %}
 
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"

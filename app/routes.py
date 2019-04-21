@@ -43,7 +43,7 @@ def index():
         notif = getNotif()
         return render_template('index.html', title='Home', user=roleid, notif=notif)
     else:
-        return render_template('index.html')
+        return render_template('index.html', title='Home')
 
 
 @app.route('/ticket', methods=['GET', 'POST'])
@@ -72,10 +72,10 @@ def ticket():
             emailsending(uid, user, email)
             db.session.add(ticket)
             db.session.commit()
-            flash('Your ticket has been successfully submitted.')
+            flash('Your ticket has been successfully submitted.', 'success')
             return redirect(url_for('index'))
         else:
-            flash('Error: File must be jpg or png')
+            flash('Error: File must be jpg or png', 'error')
     return render_template('ticket.html', title='Ticket', form=form, user=roleid)
 
 
@@ -102,7 +102,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You were successfully logged out.")
+    flash("You were successfully logged out.", 'success')
     return redirect("/login")
 
 
@@ -116,7 +116,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -126,21 +126,11 @@ def forgot():
     form = RecoverForm()
     print('recover password')
     if form.validate_on_submit():
-        if form.email.data != "":
+        if form.email.data:
             print(form.email.data)
             user = User.query.filter_by(email=form.email.data).first()
-            if user is None:
-                flash('Invalid email', 'error')
-            else:
-                recoverUsername(user.username, "remnanto@hotmail.com")
-        else:
-            print('validated')
-            print(form.username.data)
-            user = User.query.filter_by(username=form.username.data).first()
-            if user is None:
-                flash('Invalid username', 'error')
-            else:
-                recoverPasswordEmail(user.username, "remnanto@hotmail.com")
+            if user:
+                recoverPasswordEmail(user.username, form.email.data)
     return render_template('forgot.html', title='Recover Password', form=form)
 
 
@@ -154,7 +144,29 @@ def profile():
     return render_template('profile.html', title='Profile', tickets=tickets, user=roleid)
 
 
-@app.route('/submissions/<id>', methods=(['GET', 'POST', 'DELETE']))
+@app.route('/archiving/<id>', methods=(['GET', 'POST']))
+@roles_required('admin')
+def archivingTicket(id):
+    tickets = Tickets.query.get(id)
+    if tickets.status != "New":
+        tickets.isdelete = 1
+        db.session.commit()
+        return 'success'
+    else:
+        flash("Issue is not resolved, unable to archive")
+        return 'fail'
+
+
+@app.route('/deleting/<id>', methods=(['GET', 'POST']))
+@roles_required('admin')
+def deletingTicket(id):
+    tickets = Tickets.query.get(id)
+    db.session.delete(tickets)
+    db.session.commit()
+    return 'success'
+
+
+@app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 # @roles_required('admin')
 def submission(id):
@@ -162,35 +174,30 @@ def submission(id):
     notif = getNotif()
     tickets = Tickets.query.get(id)
     if(roleid == 1 or current_user.username == tickets.name):
-        if request.method == 'DELETE':
-            tickets.isdelete = 1
+        form = ViewForm()
+        form2 = ResolveForm()
+        form3 = ResolveForm()
+        user = current_user
+        tickets = Tickets.query.get(id)
+        allMsg = Messages.query.filter_by(ticket_id=id).all()
+        print(allMsg)
+        if form.validate_on_submit():
+            emailstring = form.replytext.data
+            ticket = Tickets.query.filter_by(id=id).first()
+            user = User.query.filter_by(username=ticket.name).first()
+            emailreply(emailstring, id, ticket.name, user.email)
+            ticket.status = 'Pending'
             db.session.commit()
-            return 'success'
-        else:
-            form = ViewForm()
-            form2 = ResolveForm()
-            form3 = ResolveForm()
-            user = current_user
-            tickets = Tickets.query.get(id)
-            allMsg = Messages.query.filter_by(ticket_id=id).all()
-            print(allMsg)
-            if form.validate_on_submit():
-                emailstring = form.replytext.data
-                ticket = Tickets.query.filter_by(id=id).first()
-                user = User.query.filter_by(username=ticket.name).first()
-                emailreply(emailstring, id, ticket.name, user.email)
-                ticket.status = 'Pending'
-                db.session.commit()
-                return redirect('/submissions')
-            elif form2.validate_on_submit():
-                ticket = Tickets.query.filter_by(id=id).first()
-                ticket.status = 'Resolved'
-                db.session.commit()
-                return redirect('/submissions')
-            elif form3.validate_on_submit():
-                return redirect('/submissions/<id>')
-            return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
-                                   form3=form3, messages=allMsg, user=roleid, notif=notif)
+            return redirect('/submissions')
+        elif form2.validate_on_submit():
+            ticket = Tickets.query.filter_by(id=id).first()
+            ticket.status = 'Resolved'
+            db.session.commit()
+            return redirect('/submissions')
+        elif form3.validate_on_submit():
+            return redirect('/submissions/<id>')
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
+                               form3=form3, messages=allMsg, user=roleid, notif=notif)
     else:
         return render_template('errorhandlers/401.html'), 401
 
@@ -384,7 +391,7 @@ def recoverPasswordEmail(username, email):
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
     body = {"subject": "Accenture: Recover Password",
-            "sender": "supportteam@accenture.com",
+            "sender": "noreply@accenture.com",
             "recipient": email,
             "html": content
             }
