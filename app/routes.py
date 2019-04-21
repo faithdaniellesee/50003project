@@ -72,10 +72,10 @@ def ticket():
             emailsending(uid, user, email)
             db.session.add(ticket)
             db.session.commit()
-            flash('Your ticket has been successfully submitted.')
+            flash('Your ticket has been successfully submitted.', 'success')
             return redirect(url_for('index'))
         else:
-            flash('Error: File must be jpg or png')
+            flash('Error: File must be jpg or png', 'error')
     return render_template('ticket.html', title='Ticket', form=form, user=roleid)
 
 
@@ -102,7 +102,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You were successfully logged out.")
+    flash("You were successfully logged out.", 'success')
     return redirect("/login")
 
 
@@ -116,7 +116,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
