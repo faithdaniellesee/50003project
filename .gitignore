@@ -106,9 +106,11 @@ venv.bak/
 
 
 /app/secrets.py
+/app/test/secrets.py
 /app.db
 .idea/workspace.xml
 /idea/workspace.xml
 .idea
 
 *.pyc
+
