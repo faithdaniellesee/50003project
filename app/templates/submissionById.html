@@ -147,10 +147,11 @@
         </div> -->
 
         <!-- chat function -->
+        <label><b>Chat</b></label>
         <div class="container row">
             <div class="col-md-12">
                 <div class="no_message">
-                    <div class="message_holder" style="max-height: 1500px; overflow:scroll">
+                    <div class="message_holder" style="max-height: 800px; overflow-y:scroll">
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
                             <br />
@@ -165,6 +166,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="form-group col-md-12">
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
