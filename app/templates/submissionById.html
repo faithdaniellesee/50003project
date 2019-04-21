@@ -147,10 +147,11 @@
         </div> -->
 
         <!-- chat function -->
+        <label><b>Chat</b></label>
         <div class="container row">
             <div class="col-md-12">
                 <div class="no_message">
-                    <div class="message_holder" style="max-height: 1500px; overflow-y:scroll">
+                    <div class="message_holder" style="max-height: 800px; overflow-y:scroll">
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
                             <br />
@@ -165,6 +166,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="form-group col-md-12">
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
@@ -226,7 +228,7 @@
     // broadcast a message
     socket.on('connect', function () {
         $('#send_button').click(function () {
-            let user_name = '{{ user.username }}'
+            let user_name = '{{ current_user.username }}'
             let user_input = $('#text_area').val()
             console.log('sending message')
             // message = ''
@@ -253,8 +255,23 @@
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ')
             
         }
+        if("{{tickets.status}}" == "New"){
+            window.location.href = '{{ url_for('changingstatus', id=tickets.id) }}'
+        }
 
     })
+
+
+
+    // function navigateBack() {
+    //     let user_name = '{{ user.username }}'
+    //     if (user_name = 'admin') {
+    //         window.location.href = href = "{{ url_for('submissions') }}";
+    //     } else {
+    //         window.location.href = href = "{{ url_for('profile') }}";
+
+    //     }
+    // }
 
     function goBack() {
         window.history.back();
