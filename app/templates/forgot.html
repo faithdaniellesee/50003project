@@ -35,21 +35,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </div>
-                <div>
-                    {{ form.submitUsername(class="btn btn-primary", style="margin-left: 15px") }}
-                </div>
-            </div>
             <div class="form-row" style="text-align: center">
-                <p style="font-size:48px; width: 100%;"><strong>OR</strong></p>
-            </div>
-            <div class="form-row" style="text-align: center">
-                <div class="form-group col-md-6">
-                    {{ form.username(class="form-control", placeholder="Username", size=32) }}
-
-                    {% for error in form.username.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
                 <div>
                     {{ form.submitPassword(class="btn btn-primary", style="margin-left: 15px") }}
                 </div>
