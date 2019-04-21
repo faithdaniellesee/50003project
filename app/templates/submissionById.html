@@ -64,9 +64,8 @@
                 <h1>
                     <form action="" method="post">
                         {{ form2.hidden_tag() }}
-                        <div class="form-group">
-                            {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width: 108.2px; height:
-                            39px" )}}
+                        <div class="form-group" id="resolve">
+                            {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width: 108.2px; height: 39px" )}}
                         </div>
                     </form>
                 </h1>
@@ -203,7 +202,13 @@
     if (image.length > 100) {
         attach.innerHTML = "<button class=\"btn btn-info\" onclick=\"viewTicket(\'{{tickets.id}}\')\" target=\"_blank\">View File</button>"
     } else {
-        attach.innerHTML = "<p>No Attachment</p>"
+        attach.innerHTML = "<p>No File</p>"
+    }
+</script>
+<script>
+    var res = document.getElementById('resolve')
+    if ({{user}} != 1){
+        res.innerHTML = "";
     }
 </script>
 <script>
