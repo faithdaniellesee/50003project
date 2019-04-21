@@ -12,7 +12,10 @@ from app import secrets
 import requests
 import uuid
 from datetime import datetime
+from io import BytesIO
+from base64 import b64encode
 bearer_token = secrets.bearer_token
+
 
 # sanitize form inputs
 # flask-user implementation
