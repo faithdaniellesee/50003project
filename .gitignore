@@ -104,7 +104,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-
+/app/test/secrets.py
 /app/secrets.py
 /app.db
 .idea/workspace.xml
