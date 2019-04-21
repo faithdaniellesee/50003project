@@ -148,7 +148,7 @@ def profile():
 @roles_required('admin')
 def archivingTicket(id):
     tickets = Tickets.query.get(id)
-    if tickets.status != "New":
+    if tickets.status == "Resolved":
         print('new')
         tickets.isdelete = 1
         db.session.commit()
@@ -388,7 +388,7 @@ def replyConfirmation(username, email, ticketid):
               "Accenture Service Team".format(user=username, id=ticketid)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
-    body = {"subject": "Accenture: Recover Password",
+    body = {"subject": "Accenture: Replied Ticket",
             "sender": "supportteam@accenture.com",
             "recipient": email,
             "html": content
