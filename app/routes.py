@@ -190,7 +190,8 @@ def submission(id):
             return redirect('/submissions')
         elif form3.validate_on_submit():
             return redirect('/submissions/<id>')
-        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2, form3=form3, messages=allMsg, user=user)
+        return render_template('submissionById.html', title='Submission', tickets=tickets, form=form, form2=form2,
+                               form3=form3, messages=allMsg, user=roleid, notif=notif)
 
 
 # @app.route('/archive/<id>', methods=(['GET', 'POST', 'DELETE']))
