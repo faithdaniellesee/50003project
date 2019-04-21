@@ -1,14 +1,16 @@
 import mysql.connector
+import secrets
+db_password = secrets.db_password
 
 mydbtest = mysql.connector.connect(
 	host = "sql12.freemysqlhosting.net",
 	user = "sql12280733",
-	password = "fUVjrQzntU",
+	password = db_password,
 	database = "sql12280733"
 )
 cur = mydbtest.cursor()
 
-Real_List = [('roles',), ('tickets',), ('user_roles',), ('users',)]
+Real_List = [('messages',),('roles',), ('tickets',), ('user_roles',), ('users',)]
 ##test for all the table in the db
 def test_1 ():
 	ls = []
@@ -52,6 +54,7 @@ def test_4 ():
 	assert ls == Real_List,"Test for deletion of tables : FAIL"
 	print ("Test for deletion of tables : PASS")
 
+##test for querying inexistent table should produce an error
 def test_5 ():
 	#assert ()
 	try:
