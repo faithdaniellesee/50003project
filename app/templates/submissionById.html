@@ -6,12 +6,6 @@
 
 <html>
 
-<script>
-
-    function viewTicket(ticketId) {
-        window.open('attachment/' + ticketId, '_blank')
-    }
-</script>
 
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootsubmissionById.htmlstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
@@ -186,6 +180,12 @@
         attach.innerHTML = "<button class=\"btn btn-info\" onclick=\"viewTicket(\'{{tickets.id}}\')\" target=\"_blank\">View File</button>"
     } else {
         attach.innerHTML = "<p>No Attachment</p>"
+    }
+</script>
+<script>
+
+    function viewTicket(ticketId) {
+        window.open('attachment/' + ticketId, '_blank')
     }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

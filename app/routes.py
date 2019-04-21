@@ -35,13 +35,6 @@ def getNotif():
     tickets = Tickets.query.filter_by(status="New").all()
     return len(tickets)
 
-
-@app.route('/')
-def homepage():
-    return render_template('index.html')
-
-
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -80,7 +73,7 @@ def ticket():
         db.session.commit()
         flash('Your ticket has been successfully submitted.')
         return redirect(url_for('index'))
-    flash('Please fill up all fields')
+    #flash('Please fill up all fields')
     return render_template('ticket.html', title='Ticket', form=form, user=roleid)
 
 
