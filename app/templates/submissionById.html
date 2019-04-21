@@ -113,7 +113,7 @@
             <div class="form-group col-md-3">
                 <label><b>Date</b></label>
                 <div class="form-control">
-                    <p><strong></strong> {{ tickets.date }} </strong></p>
+                    <p id =date><strong></strong> {{ tickets.date }} </strong></p>
                 </div>
             </div>
         </div>
@@ -203,6 +203,12 @@
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>var image = ("{{tickets.upload}}")</script>
+<script>
+    var date = document.getElementById('date')
+    var number = "{{tickets.date}}"
+    number = number.split(" ")[0]
+    date.innerHTML = `<strong></strong> ${number} </strong>`;
+</script>
 <script>
     var attach = document.getElementById('attach')
     console.log(image.length);
