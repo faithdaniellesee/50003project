@@ -65,7 +65,8 @@
                     <form action="" method="post">
                         {{ form2.hidden_tag() }}
                         <div class="form-group" id="resolve">
-                            {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width: 108.2px; height: 39px" )}}
+                            {{ form2.resolve(class="btn btn-primary", value="Resolve", style="width: 108.2px; height:
+                            39px" )}}
                         </div>
                     </form>
                 </h1>
@@ -128,8 +129,8 @@
             <div class="form-group col-md-12">
                 <label><b>Details</b></label>
                 <div>
-                    <pre class="form-control sansserif" id="detail_textarea" rows="5" style="overflow-wrap: break-word"
-                        onkeyup="AutoGrowTextArea(this)"> {{ tickets.details }} </pre>
+                    <textarea readonly style="max-height: 500px; width:100%; outline: none ; background-color: white; border-color:rgb(206, 212, 218) ; -webkit-text-fill-color: rgb(73, 80, 87); -webkit-text-stroke-color: rgb(73, 80, 87);border-radius: 5px"
+                        id="detail_textarea" onkeyup="AutoGrowTextArea(this)">{{ tickets.details }}</textarea>
                     <script type="text/javascript">
                         AutoGrowTextArea(document.getElementById("detail_textarea"));
                     </script>
@@ -146,17 +147,18 @@
         </div> -->
 
         <!-- chat function -->
+        <label><b>Chat</b></label>
         <div class="container row">
             <div class="col-md-12">
                 <div class="no_message">
-                    <div class="message_holder">
+                    <div class="message_holder" style="max-height: 800px; overflow-y:scroll">
                         {% for message in messages %}
                         <div class="msg_bbl"><b style="color: #000">{{message.username}} </b>
                             <br />
-                            <pre class="form-control sansserif" id="chat_history" rows="5" cols="20" style="overflow-x: hidden; background-color: #ddd; border:none"
-                                onkeyup="AutoGrowTextArea(this)">{{message.message}}</pre>
+                            <textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;"
+                                id="{{message.id}}" style="background-color: #ddd; border:none" onkeyup="AutoGrowTextArea(this)">{{message.message}}</textarea>
                             <script type="text/javascript">
-                                AutoGrowTextArea(document.getElementById("chat_history"));
+                                AutoGrowTextArea(document.getElementById("{{message.id}}"));
                             </script>
                         </div>
                         {% endfor %}
@@ -164,11 +166,12 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="form-group col-md-12">
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
                 <!-- <div style="padding-top: 5px;"></div> -->
-                <textarea id="text_area" class="message form-control" style="overflow-wrap: break-word" rows="5" cols="20"
+                <textarea id="text_area" class="message form-control" style="overflow-wrap: break-word" rows="5"
                     placeholder="Messages"></textarea>
                 <!-- <div class="form-group col-md-6" style="padding-top: 5px;"></div> -->
             </div>
@@ -207,7 +210,7 @@
 </script>
 <script>
     var res = document.getElementById('resolve')
-    if ({{user}} != 1){
+    if ({{ user }} != 1) {
         res.innerHTML = "";
     }
 </script>
@@ -272,7 +275,6 @@
     function goBack() {
         window.history.back();
     }
-
 
 </script>
 
