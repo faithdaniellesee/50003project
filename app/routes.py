@@ -177,6 +177,29 @@ def changingstatus(id):
     return redirect(url_for('submission', id=id))
 
 
+@app.route("/chatlog/<id>", methods=(['GET', 'POST']))
+def chatlog(id):
+    tickets = Tickets.query.get(id)
+    allMsg = Messages.query.filter_by(ticket_id=id).all()
+    messages = "Chat Log: <br>"
+    for i in allMsg:
+        messages = messages + i.username + ": " + i.message + "<br>"
+    print(messages)
+    user = User.query.filter_by(username=tickets.name).first()
+    content = "Dear {user}, <br><br>You have requested a history of your chat log for ticket {id}.<br>" \
+              "{allMsg}<br><br> Best regards, <br>" \
+              "Accenture Service Team".format(user=user.username, id=tickets.id, allMsg=messages)
+    url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
+    headers = {"Server-Token": bearer_token}
+    body = {"subject": "Accenture: Ticket Chat History",
+            "sender": "supportteam@accenture.com",
+            "recipient": user.email,
+            "html": content
+            }
+    response = requests.post(url, headers=headers, json=body)
+    return redirect(url_for("submission", id=tickets.id))
+
+
 @app.route('/submissions/<id>', methods=(['GET', 'POST']))
 @login_required
 # @roles_required('admin')
@@ -405,3 +428,4 @@ def download_blob():
     ticket = Tickets.query.get('1ea59f4c-602c-11e9-a5c7-34f39a281f4e')
     image = ticket.upload
     return send_file(BytesIO(image), attachment_filename='flask.jpg', as_attachment=True)
+
