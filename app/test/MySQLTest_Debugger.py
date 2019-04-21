@@ -1,4 +1,6 @@
 import mysql.connector
+import secrets
+db_password = secrets.db_password
 #from Test1.py import Real_List
 
 mydbtest = mysql.connector.connect(

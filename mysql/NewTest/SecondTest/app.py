@@ -17,7 +17,6 @@ app = Flask(__name__)
 #Configuration by Billio
 app.config['MYSQL_DATABASE_HOST'] = 'sql12.freemysqlhosting.net' 
 app.config['MYSQL_DATABASE_USER'] = 'sql12280733' 
-app.config['MYSQL_DATABASE_PASSWORD'] ='fUVjrQzntU'
 app.config['MYSQL_DATABASE_DB'] = 'sql12280733'
 
 #Initialising the app

@@ -3,7 +3,6 @@ import mysql.connector
 mydbtest = mysql.connector.connect(
 	host = "sql12.freemysqlhosting.net",
 	user = "sql12280733",
-	password = "fUVjrQzntU",
 	database = "sql12280733"
 )
 cur = mydbtest.cursor()
