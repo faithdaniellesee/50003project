@@ -225,7 +225,7 @@
     // broadcast a message
     socket.on('connect', function () {
         $('#send_button').click(function () {
-            let user_name = '{{ user.username }}'
+            let user_name = '{{ current_user.username }}'
             let user_input = $('#text_area').val()
             console.log('sending message')
             // message = ''
@@ -250,9 +250,13 @@
         if (typeof msg.user_name !== 'undefined') {
             // $('h1').remove()
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<class="form-control sansserif" id="chat_history" rows="5" style="overflow-wrap: break-word; background-color: #ddd; border:none" onkeyup="AutoGrowTextArea(this)">' + msg.message + '</pre>' + '</div>')
-                            
         }
+        if("{{tickets.status}}" == "New"){
+            window.location.replace('changingstatus/{{ tickets.id }}')
+        }
+
     })
+
 
 
     // function navigateBack() {
