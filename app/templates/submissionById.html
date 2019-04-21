@@ -257,7 +257,7 @@
             window.location.href = '{{ url_for('submission', id=tickets.id) }}'
 
         }
-        if ("{{tickets.status}}" == "New") {
+        if ("{{tickets.status}}" == "New" && "{{ user }}" == "1") {
             window.location.href = '{{ url_for('changingstatus', id=tickets.id) }}'
         }
 
