@@ -113,7 +113,7 @@
             <div class="form-group col-md-3">
                 <label><b>Date</b></label>
                 <div class="form-control">
-                    <p><strong></strong> {{ tickets.date }} </strong></p>
+                    <p id =date><strong></strong> {{ tickets.date }} </strong></p>
                 </div>
             </div>
         </div>
@@ -183,7 +183,9 @@
             <div class="form-group col-md-4">
                 <button id="send_button" type="submit" class="btn btn-primary btn-block">Send</button>
             </div>
-            <div class="form-group col-md-4"></div>
+            <div class="form-group col-md-4" id="chatlog">
+                <button onclick="window.location.href='{{ url_for('chatlog', id=tickets.id) }}'"  class="btn btn-primary btn-block">Request Chat Log</button>
+            </div>
             <div class="form-group col-md-4">
                 <button onclick="goBack()" class="btn btn-secondary btn-block">Back</button>
             </div>
@@ -202,6 +204,12 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>var image = ("{{tickets.upload}}")</script>
 <script>
+    var date = document.getElementById('date')
+    var number = "{{tickets.date}}"
+    number = number.split(" ")[0]
+    date.innerHTML = `${number}`;
+</script>
+<script>
     var attach = document.getElementById('attach')
     console.log(image.length);
     if (image.length > 100) {
@@ -209,6 +217,13 @@
     } else {
         attach.innerHTML = "<p>No File</p>"
     }
+</script>
+<script>
+    chat = document.getElementById('chatlog')
+    if ({{ user }} != 1){
+        chat.innerHTMl = "<button onclick="window.location.href='{{ url_for('chatlog', id=tickets.id) }}'"  class="btn btn-primary btn-block">Request Chat Log</button>"
+    }
+
 </script>
 <script>
     var res = document.getElementById('resolve')
@@ -253,13 +268,8 @@
     socket.on('my response', function (msg) {
         console.log(msg)
         if (typeof msg.user_name !== 'undefined') {
-            // $('h1').remove()
-<<<<<<< HEAD
-            $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ')
-=======
             $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">' + msg.user_name + '</b> ' + '<br />' + '<textarea readonly style="max-height: 500px; width:100%; border: none; outline: none; background-color: #ddd;" id = "{{' + msg.message + '}}" style = "background-color: #ddd; border:none" onkeyup = "AutoGrowTextArea(this)">' + msg.message + '</textarea><script>AutoGrowTextArea(document.getElementById("{{' + msg.message + '}}"));<\/script>' + '</div > ');
             window.location.href = '{{ url_for('submission', id=tickets.id) }}'
->>>>>>> 393f91704f29acfc19aa17c78da0dc6da26b8ab7
 
         }
         if ("{{tickets.status}}" == "New" && "{{ user }}" == "1") {
