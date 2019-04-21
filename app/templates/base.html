@@ -75,14 +75,19 @@
       </ul>
     </div>
   </nav>
-  {% with messages = get_flashed_messages() %} {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} {% endwith %} {% block content %}{% endblock %}
+
 </body>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <!-- <strong>Title</strong> --> {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %} {% endwith %}
+  {% block content %}{% endblock %}
 
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
