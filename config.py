@@ -39,8 +39,5 @@ class Config(object):
     # collation = "NOCASE"
     # USER_IFIND_MODE = 'nocase_collation'
 
-#    MYSQL_DATABASE_HOST = 'sql12.freemysqlhosting.net'
-#    MYSQL_DATABASE_USER = 'sql12280733'
-#    MYSQL_DATABASE_PASSWORD ='fUVjrQzntU'
-#    MYSQL_DATABASE_DB = 'sql12280733'
+
 
