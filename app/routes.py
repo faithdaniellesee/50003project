@@ -35,13 +35,6 @@ def getNotif():
     tickets = Tickets.query.filter_by(status="New").all()
     return len(tickets)
 
-
-@app.route('/')
-def homepage():
-    return render_template('index.html')
-
-
-
 @app.route('/')
 @app.route('/index')
 def index():
