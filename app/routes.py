@@ -149,11 +149,12 @@ def profile():
 def archivingTicket(id):
     tickets = Tickets.query.get(id)
     if tickets.status != "New":
+        print('new')
         tickets.isdelete = 1
         db.session.commit()
         return 'success'
     else:
-        flash("Issue is not resolved, unable to archive")
+        flash("Issue is not resolved, unable to archive", "error")
         return 'fail'
 
 
