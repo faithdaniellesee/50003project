@@ -186,8 +186,8 @@ def chatlog(id):
         messages = messages + i.username + ": " + i.message + "<br>"
     print(messages)
     user = User.query.filter_by(username=tickets.name).first()
-    content = "Dear {user}, <br><br>You have requested a history of your chat log for ticket {id}.<br>" \
-              "{allMsg}<br><br> Best regards, <br>" \
+    content = "Dear {user}, <br><br>You have requested a history of your chat log for ticket {id}.<br><br>" \
+              "{allMsg}<br>Best regards, <br>" \
               "Accenture Service Team".format(user=user.username, id=tickets.id, allMsg=messages)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
@@ -407,7 +407,7 @@ def recoverPasswordEmail(username, email):
 
 def replyConfirmation(username, email, ticketid):
 
-    content = "Dear {user}, <br><br>Your ticket with id: {id} has just been replied. You can view your existing tickets at www.accenture.com<br><br> Best regards, <br>" \
+    content = "Dear {user}, <br><br>Your ticket with id: {id} has just been replied. <br>You can view your existing tickets at www.accenture.com<br><br> Best regards, <br>" \
               "Accenture Service Team".format(user=username, id=ticketid)
     url = "https://ug-api.acnapiv3.io/swivel/email-services/api/mailer"
     headers = {"Server-Token": bearer_token}
