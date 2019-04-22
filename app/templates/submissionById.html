@@ -207,11 +207,7 @@
     var date = document.getElementById('date')
     var number = "{{tickets.date}}"
     number = number.split(" ")[0]
-<<<<<<< HEAD
     date.innerHTML = `${number}`;
-=======
-    date.innerHTML = `<strong></strong> ${number} </strong>`;
->>>>>>> a352b96417e6792f900b438bd68d08d478d5ee36
 </script>
 <script>
     var attach = document.getElementById('attach')
@@ -225,7 +221,7 @@
 <script>
     chat = document.getElementById('chatlog')
     if ({{ user }} != 1){
-        chat.innerHTMl = "<button onclick="window.location.href='{{ url_for('chatlog', id=tickets.id) }}'"  class="btn btn-primary btn-block">Request Chat Log</button>"
+        chat.innerHTMl = "<button onclick="window.location.href='{{ url_for('chatlog', id=tickets.id) }}'"  class="btn btn-info btn-block">Request Chat Log</button>"
     }
 
 </script>
