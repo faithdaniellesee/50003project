@@ -1,12 +1,13 @@
 import mysql.connector
 import secrets
+
 db_password = secrets.db_password
 
 mydbtest = mysql.connector.connect(
 	host = "sql12.freemysqlhosting.net",
-	user = "sql12280733",
+	user = "sql12292850",
 	password = db_password,
-	database = "sql12280733"
+	database = "sql12292850"
 )
 cur = mydbtest.cursor()
 
