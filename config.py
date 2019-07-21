@@ -6,7 +6,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    SQLALCHEMY_DATABASE_URI =  'mysql://sql12292850:'+ db_password + '@sql12.freemysqlhosting.net/sql12292850'
+    SQLALCHEMY_DATABASE_URI =  'mysql://sql12298779:'+ db_password + '@sql12.freemysqlhosting.net/sql12298779'
     #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
      #   'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
